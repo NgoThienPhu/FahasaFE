@@ -1,0 +1,91 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 80px;
+    background-color: #f2f4f5;
+    width: 1200px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.header .search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header .search .menu {
+    cursor: pointer;
+    border: 2px solid #c92127;
+    padding: 0 10px;
+    border-radius: 0.4rem;
+}
+
+.header .search .inputSearch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    height: 40px;
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+.header .search input {
+    padding: 5px 10px;
+    border: none;
+    background-color: #f2f4f5;
+    outline: none;
+    color: gray;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.header .search button {
+    background-color: #c92127;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 5px 25px;
+    cursor: pointer;
+}
+
+.header .options {
+    display: flex;
+    gap: 25px;
+}
+
+.header .options .notify,
+.header .options .cart,
+.header .options .account {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: gray;
+    gap: 5px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+@media(min-width: 1200px) {
+    .header {
+        width: 1200px;
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1200px) {
+    .header {
+        gap: 50px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+@media (max-width: 900px) {
+    .header {
+        display: none;
+    }
+}

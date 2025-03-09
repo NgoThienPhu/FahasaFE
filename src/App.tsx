@@ -1,10 +1,11 @@
-function App() {
+import HomePage from "./pages/HomePage/HomePage";
 
+const App: React.FC = () => {
   return (
-    <div>
-      <h1>React Typescript</h1>
-    </div>
+    <>
+      <HomePage />
+    </>
   )
 }
 
-export default App
+export default App;
