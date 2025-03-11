@@ -1,5 +1,5 @@
 import styles from './homePage.module.css';
-import Header from './Header';
+import Header from './header/Header';
 
 const HomePage: React.FC = () => {
     return (
