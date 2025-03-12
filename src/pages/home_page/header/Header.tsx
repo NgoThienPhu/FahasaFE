@@ -5,11 +5,13 @@ import styles from './header.module.css'
 import { useState } from 'react';
 import ModalMenu from './modal_menu/ModalMenu';
 import ModelNotification from './ModalNotification';
+import ModalAccount from './ModalAccount';
 
 const Header: React.FC = () => {
 
     const [showModalMenu, setShowModalMenu] = useState(false);
     const [showModalNotification, setShowNotification] = useState(false);
+    const [showModalAccount, setShowModalAccount] = useState(false);
 
     return (
         <div className={styles.container}>
@@ -49,9 +51,15 @@ const Header: React.FC = () => {
                         <FontAwesomeIcon icon={faCartShopping} size='xl' color='gray' />
                         <p>Giỏ hàng</p>
                     </div>
-                    <div className={styles.account}>
+                    <div className={styles.account}
+                        onMouseMove={() => setShowModalAccount(true)}
+                        onMouseLeave={() => setShowModalAccount(false)}
+                    >
                         <FontAwesomeIcon icon={faUser} size='xl' color='gray' />
                         <p>Tài khoản</p>
+                        <ModalAccount
+                            showModalAccount={showModalAccount}
+                        />
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@
     align-items: center;
     position: absolute;
     width: 240px;
-    top: 41px;
+    top: 50px;
     right: -100px;
     background-color: #ffffff;
     padding: 10px;
@@ -57,7 +57,7 @@
     color: white;
 }
 
-.body>button:nth-child(even) {
+.body button:nth-child(even) {
     color: #c92127;
     border: 2px solid #c92127;
 }

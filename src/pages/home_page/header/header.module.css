@@ -24,7 +24,7 @@
 .header .search .menu {
     cursor: pointer;
     border: 2px solid #c92127;
-    padding: 0 10px;
+    padding: 2px 10px;
     border-radius: 0.4rem;
     position: relative;
 }
@@ -73,6 +73,7 @@
     font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
+    padding: 5px;
 }
 
 .header .options .notify,
