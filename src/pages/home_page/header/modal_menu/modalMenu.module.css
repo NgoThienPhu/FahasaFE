@@ -1,0 +1,74 @@
+.menu {
+    cursor: pointer;
+    border: 2px solid #c92127;
+    padding: 0 10px;
+    border-radius: 0.4rem;
+    position: relative;
+}
+
+.subMenu {
+    display: none;
+    position: absolute;
+    width: 1200px;
+    height: auto;
+    left: -300px;
+    top: 36px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 25px 10px;
+    /* box-shadow: 4px 4px 6px gray; */
+    transition: all 0.5 ease-in;
+}
+
+.subMenu.isShow {
+    display: flex;
+}
+
+.subMenuLeft {
+    border-right: 1px solid rgb(206, 206, 206);
+    padding: 0 15px;
+}
+
+.subMenuLeft .lable {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: gray;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
+
+.subMenuLeft .items {
+    list-style-type: none;
+}
+
+.subMenuRight {
+    flex: 1;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 150px;
+    gap: 10px;
+}
+
+.subMenuRight .menu {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: none;
+}
+
+.subMenuRight .subMenuName {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.subMenuRight .subSubMenuName {
+    font-size: 13px;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+.subMenuRight .subSubMenuName:hover {
+    color: #2489f4;
+}
