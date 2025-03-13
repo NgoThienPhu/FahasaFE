@@ -1,13 +1,12 @@
 import styles from './homePage.module.css';
 import Header from './header/Header';
+import Body from './body/Body';
 
 const HomePage: React.FC = () => {
     return (
         <div className={styles.container}>
             <Header />
-            <div className={styles.content}>
-
-            </div>
+            <Body />
             <div className={styles.footer}>
 
             </div>
