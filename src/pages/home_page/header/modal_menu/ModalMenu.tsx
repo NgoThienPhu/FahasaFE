@@ -10,7 +10,6 @@ interface ModalMenuProps {
 const ModalMenu: React.FC<ModalMenuProps> = ({ showModalMenu }) => {
 
     const [menuHover, setMenuHover] = useState("Sách Trong Nước");
-
     const selectedMenu = MenuData.find((data) => data.menuName === menuHover);
 
     return (
@@ -19,8 +18,9 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ showModalMenu }) => {
                 <p className={styles.lable}>Danh mục sản phẩm</p>
                 <ul className={styles.items}>
                     {
-                        MenuData.map((subMenu) => {
+                        MenuData.map((subMenu, index) => {
                             return <ItemMenu
+                                key={index}
                                 lable={subMenu.menuName}
                                 menuHover={menuHover}
                                 setMenuHover={setMenuHover}
@@ -32,14 +32,17 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ showModalMenu }) => {
             <div className={styles.subMenuRight}>
                 {
                     selectedMenu &&
-                    selectedMenu.subMenu.map((subMenu) => {
+                    selectedMenu.subMenu.map((subMenu, index) => {
                         return (
-                            <div className={styles.menu}>
+                            <div
+                                key={index}
+                                className={styles.menu}
+                            >
                                 <p className={styles.subMenuName}>{subMenu.subMenuName.toUpperCase()}</p>
                                 <div>
                                     {
-                                        subMenu.subSubMenu.map((subSubMenu) => {
-                                            return <p className={styles.subSubMenuName}>{subSubMenu}</p>
+                                        subMenu.subSubMenu.map((subSubMenu, index) => {
+                                            return <p key={index} className={styles.subSubMenuName}>{subSubMenu}</p>
                                         })
                                     }
                                 </div>

@@ -1,12 +1,11 @@
 import styles from './banner.module.css';
+import Carousel from './Carousel';
 
 const Banner: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.containerBannerOne}>
-                <div className={styles.carosel}>
-                    <img src='https://cdn1.fahasa.com/media/magentothem/banner7/MCBooksT3_KC_840x320.png' alt='sale' />
-                </div>
+                <Carousel />
                 <div className={styles.saleOne}>
                     <img src='https://cdn1.fahasa.com/media/wysiwyg/Thang-03-2025/pizzahut_392x156.jpg' alt='sale' />
                 </div>

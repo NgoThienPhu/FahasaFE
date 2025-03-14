@@ -10,8 +10,11 @@
     margin: 20px 0;
 }
 
-.containerBannerOne .carosel {
-    grid-area: 1 / 1 / -1 / 5;
+.containerBannerOne img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    min-width: 100%;
 }
 
 .containerBannerOne .saleOne {
@@ -22,10 +25,10 @@
     grid-area: 2 / -1 / 3 / -3;
 }
 
-.containerBannerOne img {
-    width: 100%;
-    height: 100%;
+.containerBannerOne .saleOne,
+.containerBannerOne .saleTwo {
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .containerBannerTwo {
@@ -53,7 +56,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.9rem;
+    font-size: 14px;
     color: rgb(97, 97, 97);
     text-align: center;
     gap: 5px;

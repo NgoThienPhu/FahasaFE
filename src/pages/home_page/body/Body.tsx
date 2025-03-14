@@ -1,4 +1,4 @@
-import Banner from './Banner';
+import Banner from './banner/Banner';
 import styles from './body.module.css'
 
 const Body: React.FC = () => {
