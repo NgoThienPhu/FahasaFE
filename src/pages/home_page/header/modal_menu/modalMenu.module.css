@@ -16,8 +16,8 @@
     background-color: #ffffff;
     border-radius: 5px;
     padding: 25px 10px;
-    /* box-shadow: 4px 4px 6px gray; */
     transition: all 0.5 ease-in;
+    z-index: 1000;
 }
 
 .subMenu.isShow {
