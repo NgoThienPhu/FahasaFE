@@ -3,7 +3,11 @@ import styles from './carousel.module.css';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
-const Carosel: React.FC = () => {
+interface CarouselProps {
+    images: string[];
+}
+
+const Carousel: React.FC<CarouselProps> = ({ images }) => {
 
     const caroselTrack = useRef<HTMLDivElement | null>(null);
     const [items, setItems] = useState<NodeListOf<Element> | []>([]);
@@ -91,27 +95,15 @@ const Carosel: React.FC = () => {
                     onMouseMove={handleMouseMoveCarousel}
                     onMouseLeave={handleMouseLeaveCarousel}
                 >
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/Mainbanner_1503_840x320.png' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/MCBooksT3_KC_840x320.png' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/saigonbooks_bac_840x320_1.png' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/tranguudai_840x320.png' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/hoisacht3_840x320_2.jpg' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/BlingboxT125_840X320_1.jpg' alt='sale' draggable="false" />
-                    </div>
-                    <div className={styles.carouselItem}>
-                        <img src='https://cdn1.fahasa.com/media/magentothem/banner7/CanhCutThanToc_840x320.png' alt='sale' draggable="false" />
-                    </div>
+                    {
+                        images.map((image, index) => {
+                            return (
+                                <div key={index} className={styles.carouselItem}>
+                                    <img src={image} alt='sale' draggable="false" />
+                                </div>
+                            );
+                        })
+                    }
                 </div>
             </div>
             <button onClick={clickButtonPrev} className={`${styles.carouselBtn} ${styles.prev}`}>
@@ -125,4 +117,4 @@ const Carosel: React.FC = () => {
     )
 }
 
-export default Carosel;
+export default Carousel;

@@ -1,0 +1,43 @@
+.container {
+    overflow: hidden;
+    background-color: #ffffff;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.containerBanner {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    transform: translateX(0);
+    transition: transform 2s ease;
+    user-select: none;
+}
+
+.containerBanner .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: rgb(97, 97, 97);
+    text-align: center;
+    gap: 5px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.containerBanner .logo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+
+    .containerBanner {
+        grid-template-columns: repeat(5, 1fr);
+        row-gap: 15px;
+    }
+
+}

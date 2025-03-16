@@ -31,46 +31,6 @@
     overflow: hidden;
 }
 
-.containerBannerTwo {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.containerBannerTwo img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.containerBannerThree {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    padding: 15px;
-    background-color: #ffffff;
-    margin: 15px 0;
-    border-radius: 5px;
-}
-
-.containerBannerThree .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    color: rgb(97, 97, 97);
-    text-align: center;
-    gap: 5px;
-    line-height: 20px;
-    cursor: pointer;
-}
-
-.containerBannerThree .logo img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    margin-bottom: 8px;
-}
-
 @media (max-width: 1200px) {
 
     .container {
@@ -81,15 +41,6 @@
     .containerBannerOne .saleOne,
     .containerBannerOne .saleTwo {
         display: none;
-    }
-
-}
-
-@media (max-width: 900px) {
-
-    .containerBannerThree {
-        grid-template-columns: repeat(5, 1fr);
-        row-gap: 15px;
     }
 
 }
