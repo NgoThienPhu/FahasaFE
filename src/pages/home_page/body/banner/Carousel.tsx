@@ -66,11 +66,17 @@ const Carosel: React.FC = () => {
         if (caroselTrack.current) caroselTrack.current.style.transition = 'transform 1s ease';
         if (start - event.clientX < 0 && Math.abs(start - event.clientX) >= (event.currentTarget.clientWidth * 0.3) && indexItem - 1 >= 0) {
             setIndexItem(indexItem - 1);
-            return;
         }
         if (start - event.clientX > 0 && Math.abs(start - event.clientX) >= (event.currentTarget.clientWidth * 0.3) && indexItem + 1 < items.length) {
             setIndexItem(indexItem + 1);
-            return;
+        }
+    }
+
+    function handleMouseLeaveCarousel(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+        if (isMouseDown) {
+            handleMouseUpCarousel(event);
+        } else {
+            if (caroselTrack.current) caroselTrack.current.style.transform = `translateX(-${100 * indexItem}%)`;
         }
     }
 
@@ -83,7 +89,7 @@ const Carosel: React.FC = () => {
                     onMouseDown={handleMouseDownCarousel}
                     onMouseUp={handleMouseUpCarousel}
                     onMouseMove={handleMouseMoveCarousel}
-                    onMouseLeave={handleMouseUpCarousel}
+                    onMouseLeave={handleMouseLeaveCarousel}
                 >
                     <div className={styles.carouselItem}>
                         <img src='https://cdn1.fahasa.com/media/magentothem/banner7/Mainbanner_1503_840x320.png' alt='sale' draggable="false" />
