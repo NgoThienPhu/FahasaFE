@@ -7,7 +7,11 @@ import ModalMenu from './modal_menu/ModalMenu';
 import ModelNotification from './ModalNotification';
 import ModalAccount from './ModalAccount';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    setIsOverlayBody: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({ setIsOverlayBody }) => {
 
     const [showModalMenu, setShowModalMenu] = useState(false);
     const [showModalNotification, setShowNotification] = useState(false);
@@ -21,8 +25,14 @@ const Header: React.FC = () => {
                 </div>
                 <div className={styles.search}>
                     <div className={styles.menu}
-                        onMouseMove={() => setShowModalMenu(true)}
-                        onMouseLeave={() => setShowModalMenu(false)}
+                        onMouseMove={() => {
+                            setShowModalMenu(true);
+                            setIsOverlayBody(true);
+                        }}
+                        onMouseLeave={() => {
+                            setShowModalMenu(false);
+                            setIsOverlayBody(false);
+                        }}
                     >
                         <FontAwesomeIcon icon={faCaretDown} size='2x' color='#c92127' />
                         <ModalMenu
