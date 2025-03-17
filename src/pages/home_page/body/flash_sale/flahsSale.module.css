@@ -1,0 +1,78 @@
+.container {
+    display: flex;
+    justify-content: center;
+    background-image: url("https://cdn0.fahasa.com/media/fahasa_web_image/flash_sale_background_image.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    background-color: #ff6c6b;
+}
+
+.flashSale {
+    width: 1200px;
+    padding: 15px 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.header .headerLeft {
+    display: flex;
+    gap: 15px;
+}
+
+.header .lableCownDown {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.header .headerLeft .cownDown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .time {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: black;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.header .flashSaleCownDownNumber {
+    background-color: black;
+    padding: 4px 5px;
+    border-radius: 8px;
+    color: white;
+}
+
+.header .headerRight {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2489f4;
+}
+
+.header .headerRight a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.header .headerRight a:visited {
+    color: #2489f4;
+}
+
+.items {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
