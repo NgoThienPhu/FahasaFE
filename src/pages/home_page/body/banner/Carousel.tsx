@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './carousel.module.css';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
+import PaginationCarousel from './PaginationCarousel';
 
 interface CarouselProps {
     images: string[];
@@ -113,6 +114,8 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
             <button onClick={clickButtonNext} className={`${styles.carouselBtn} ${styles.next}`}>
                 <FontAwesomeIcon icon={faChevronRight} size='sm' color='gray' />
             </button>
+
+            <PaginationCarousel current={indexItem} sum={items.length} />
         </div>
     )
 }

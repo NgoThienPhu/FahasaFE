@@ -1,0 +1,22 @@
+.container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    bottom: 10px;
+    left: 43%;
+    user-select: none;
+}
+
+.container .page {
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.container .page.isActive {
+    padding: 0 15px;
+    border-radius: 5px;
+    background-color: #c12530;
+}
