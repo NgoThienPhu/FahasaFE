@@ -30,7 +30,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ images }) => {
     function handleMouseUpBanner() {
         setIsMouseDown(false);
         if (refBannerThree.current) {
-            refBannerThree.current.style.transition = `transform 1s ease`;
+            refBannerThree.current.style.transition = `transform 0.5s ease`;
             refBannerThree.current.style.transform = `translateX(0px)`;
         }
     }

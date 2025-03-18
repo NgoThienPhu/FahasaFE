@@ -6,6 +6,7 @@
     background-position: center center;
     width: 100%;
     background-color: #ff6c6b;
+    user-select: none;
 }
 
 .flashSale {
@@ -71,8 +72,44 @@
     color: #2489f4;
 }
 
-.items {
+.containerItems {
+    position: relative;
+}
+
+.wrapItems {
+    overflow: hidden;
+}
+
+.wrapItems .items {
     display: flex;
     gap: 10px;
     margin-top: 15px;
+    transform: translateX(0px);
+    transition: transform 0.5s ease;
+}
+
+.containerItems button {
+    height: 40px;
+    width: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 1px black;
+    background-color: #ffffff;
+}
+
+.containerItems button.isHidden {
+    display: none;
+}
+
+.containerItems .buttonLeft {
+    position: absolute;
+    bottom: 45%;
+    left: -20px;
+}
+
+.containerItems .buttonRight {
+    position: absolute;
+    bottom: 45%;
+    right: -20px;
 }

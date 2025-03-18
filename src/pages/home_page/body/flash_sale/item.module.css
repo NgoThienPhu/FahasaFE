@@ -1,8 +1,10 @@
 .container {
     padding: 15px;
     background-color: white;
-    width: calc(100%/5 + 10px);
+    width: calc(100%/5 - 8px);
     border-radius: 8px;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .container .productImage {

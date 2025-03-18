@@ -10,6 +10,7 @@
     padding: 10px;
     border-radius: 5px;
     box-shadow: 1px 1px 4px gray;
+    z-index: 1000;
 }
 
 .container.isShow {
