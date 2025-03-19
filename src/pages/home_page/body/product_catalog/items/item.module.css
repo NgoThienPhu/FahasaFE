@@ -1,0 +1,15 @@
+.item {
+    width: calc(100%/10);
+    font-size: 16px;
+    color: #646464;
+    text-align: center;
+    cursor: pointer;
+}
+
+.item img {
+    height: 100px;
+}
+
+.item .itemName {
+    margin-top: 10px;
+}

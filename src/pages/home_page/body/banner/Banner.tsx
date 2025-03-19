@@ -2,7 +2,7 @@ import styles from './banner.module.css';
 import Carousel from './carousel/Carousel';
 import CategoryMenu from './CategoryMenu';
 import PromotionBanner from './PromotionBanner';
-import { PromotionBannerImages, CategoryMenuImages, CarouselImages } from './BannerData'
+import { PromotionBannerImages, CategoryMenuImages, CarouselImages } from '../BannerData'
 
 const Banner: React.FC = () => {
 
