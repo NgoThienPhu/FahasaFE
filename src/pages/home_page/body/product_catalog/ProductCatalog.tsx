@@ -3,6 +3,7 @@ import styles from './productCatalog.module.css';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import Items from './items/Items';
 import ProductCatalogData from '../ProductCatalogData';
+import Line from '../../../../conponents/Line';
 
 const ProductCatalog: React.FC = () => {
     return (
@@ -12,9 +13,7 @@ const ProductCatalog: React.FC = () => {
                     <FontAwesomeIcon icon={faList} size='xl' color='#c92127' />
                     <p>Danh mục sản phẩm</p>
                 </div>
-                <div className={styles.containerLine}>
-                    <div className={styles.line}></div>
-                </div>
+                <Line />
                 <Items items={ProductCatalogData} />
             </div>
         </div>

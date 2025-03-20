@@ -1,0 +1,8 @@
+.containerLine {
+    padding: 0 15px;
+}
+
+.containerLine .line {
+    height: 1px;
+    background-color: #F2F4F5;
+}

@@ -18,12 +18,3 @@
     font-weight: bold;
     padding: 15px 20px;
 }
-
-.warpContent .containerLine {
-    padding: 0 15px;
-}
-
-.warpContent .containerLine .line {
-    height: 1px;
-    background-color: #F2F4F5;
-}

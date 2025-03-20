@@ -3,6 +3,7 @@ import styles from './body.module.css'
 import FlashSale from './flash_sale/FlashSale';
 import Overlay from './Overlay';
 import ProductCatalog from './product_catalog/ProductCatalog';
+import TopOrders from './TopOrders';
 
 interface BodyProps {
     isOverlay: boolean;
@@ -14,6 +15,7 @@ const Body: React.FC<BodyProps> = ({ isOverlay }) => {
             <Banner />
             <FlashSale />
             <ProductCatalog />
+            <TopOrders />
             {isOverlay && <Overlay />}
         </div>
     )
