@@ -3,7 +3,7 @@ import styles from './body.module.css'
 import FlashSale from './flash_sale/FlashSale';
 import Overlay from './Overlay';
 import ProductCatalog from './product_catalog/ProductCatalog';
-import TopOrders from './TopOrders';
+import TopOrders from './top_orders/TopOrders';
 
 interface BodyProps {
     isOverlay: boolean;

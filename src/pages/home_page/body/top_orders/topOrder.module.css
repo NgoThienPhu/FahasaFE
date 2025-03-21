@@ -77,21 +77,3 @@
     height: 380px;
     overflow: scroll;
 }
-
-.topOrders .bodyRight .body table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.topOrders .bodyRight .body table td,
-.topOrders .bodyRight .body table th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 10px;
-    flex-grow: 0;
-    flex-shrink: 0;
-}
-
-.topOrders .bodyRight .body table tr:nth-child(even) {
-    background-color: #ececec;
-}
