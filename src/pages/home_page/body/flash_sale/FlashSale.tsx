@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './flahsSale.module.css';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Item from './Item';
 import { useEffect, useRef, useState } from 'react';
+import Item from './Item';
 
 const FlashSale: React.FC = () => {
 

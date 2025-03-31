@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+}
+
+.container .menu {
+    display: flex;
+    width: 100%;
+    gap: 15px;
+    padding: 0 15px;
+}
+
+.container .menu p {
+    color: rgb(65, 65, 65);
+    padding: 15px 5px;
+    font-size: 14px;
+}
+
+.container .menu p:hover {
+    color: #c92127;
+    cursor: pointer;
+}
+
+.container .menu p.isActive {
+    font-weight: bold;
+    color: #c92127;
+    border-bottom: 2px solid red;
+}
+
+.container .body {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 15px;
+    gap: 8px;
+}
