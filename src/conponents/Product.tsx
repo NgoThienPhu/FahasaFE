@@ -1,9 +1,26 @@
+import { useEffect, useRef } from 'react';
 import { VNDCurrencyFormatting } from '../util/PublicMethod';
 import styles from './product.module.css';
 
-const Product: React.FC = () => {
+interface ProductProps {
+    width?: string;
+    borderRadius?: string;
+}
+
+const Product: React.FC<ProductProps> = (props) => {
+
+    const productRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (productRef.current) {
+            const style = productRef.current.style;
+            if (props.width) style.width = props.width;
+            if (props.borderRadius) style.borderRadius = props.borderRadius;
+        }
+    }, [props.width, props.borderRadius])
+
     return (
-        <div className={styles.productContainer}>
+        <div ref={productRef} className={styles.productContainer}>
             <div className={styles.productImage}>
                 <img src='https://cdn1.fahasa.com/media/catalog/product/8/9/8935236434775.jpg' alt='product-image' draggable="false" />
             </div>
