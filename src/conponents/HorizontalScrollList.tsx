@@ -4,10 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Product from './Product';
 
-const HoziontalScrollList: React.FC = () => {
+interface HoziontalScrollListProps {
+    padding?: string;
+}
+
+const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
 
     const [start, setStart] = useState(0);
     const itemsRef = useRef<HTMLDivElement | null>(null);
+    const wrapItemsRef = useRef<HTMLDivElement | null>(null);
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [indexPage, setIndexPage] = useState(0);
 
@@ -16,6 +21,13 @@ const HoziontalScrollList: React.FC = () => {
         if (indexPage === 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - 10px))`;
         if (indexPage === 0) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100%))`;
     }, [indexPage])
+
+    useEffect(() => {
+        if (wrapItemsRef.current) {
+            const style = wrapItemsRef.current.style;
+            if (props.padding) style.padding = props.padding;
+        }
+    }, [props.padding])
 
     function handleMouseDown(event: React.MouseEvent<HTMLDivElement> | MouseEvent): void {
         setStart(event.clientX);
@@ -70,7 +82,10 @@ const HoziontalScrollList: React.FC = () => {
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
         >
-            <div className={styles.wrapItems}>
+            <div
+                ref={wrapItemsRef}
+                className={styles.wrapItems}
+            >
                 <div
                     ref={itemsRef}
                     className={styles.items}

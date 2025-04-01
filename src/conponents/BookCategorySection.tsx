@@ -1,10 +1,8 @@
 import styles from './bookCategorySection.module.css';
-import ButtonViewMore from './ButtonViewMore';
 import Line from './Line';
-import Product from './Product';
-import Products from './Products';
 
 interface BookCategorySectionProps {
+    children: React.ReactNode;
     listMenu: string[];
 }
 
@@ -19,23 +17,7 @@ const BookCategorySection: React.FC<BookCategorySectionProps> = (props) => {
                 }
             </div>
             <Line padding={0} backgroundColor='#cdcfd0' />
-            <Products
-                padding='15px 15px'
-                gapColumn='5px'
-                gapRow='5px'
-            >
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-            </Products>
-            <ButtonViewMore />
+            {props.children}
         </div>
     )
 }

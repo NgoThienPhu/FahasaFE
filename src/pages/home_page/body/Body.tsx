@@ -1,9 +1,11 @@
 import Banner from './banner/Banner';
 import styles from './body.module.css'
+import ComboTrending from './combo_trending/ComboTrending';
 import FlashSale from './flash_sale/FlashSale';
-import Overlay from './Overlay';
+import OutStandingBrand from './out_standing_brand/OutStandingBrand';
+import Overlay from './overlay/Overlay';
 import ProductCatalog from './product_catalog/ProductCatalog';
-import ShoppingTrends from './ShoppingTrens';
+import ShoppingTrends from './shopping_trends/ShoppingTrends';
 import TopOrders from './top_orders/TopOrders';
 
 interface BodyProps {
@@ -18,6 +20,8 @@ const Body: React.FC<BodyProps> = ({ isOverlay }) => {
             <ProductCatalog />
             <TopOrders />
             <ShoppingTrends />
+            <OutStandingBrand />
+            <ComboTrending />
             {isOverlay && <Overlay />}
         </div>
     )

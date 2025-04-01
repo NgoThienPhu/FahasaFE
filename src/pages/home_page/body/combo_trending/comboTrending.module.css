@@ -1,0 +1,8 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.comboTrendingContainer {
+    width: 1200px;
+}
