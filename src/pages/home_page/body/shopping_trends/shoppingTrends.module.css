@@ -1,10 +1,8 @@
 .container {
     display: flex;
     justify-content: center;
-    margin-bottom: 25px;
 }
 
 .shoppingTrends {
     width: 1200px;
-    border-radius: 5px;
 }

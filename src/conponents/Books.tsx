@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import styles from './products.module.css';
+import styles from './books.module.css';
 
 interface ProductsProps {
     children: React.ReactNode;
@@ -9,7 +9,7 @@ interface ProductsProps {
     padding?: string;
 }
 
-const Products: React.FC<ProductsProps> = (props) => {
+const Books: React.FC<ProductsProps> = (props) => {
 
     const productContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,4 +30,4 @@ const Products: React.FC<ProductsProps> = (props) => {
     );
 };
 
-export default Products;
+export default Books;

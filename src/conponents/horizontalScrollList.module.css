@@ -10,7 +10,6 @@
 .wrapItems .items {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
     transform: translateX(0px);
     transition: transform 0.5s ease;
 }

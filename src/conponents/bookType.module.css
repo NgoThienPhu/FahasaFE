@@ -1,0 +1,17 @@
+.container {
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 15px;
+}
+
+.bookTypeImage {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.bookTypeName {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+}

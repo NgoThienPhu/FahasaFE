@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    margin-bottom: 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.featuredBookShelfContainer {
+    width: 1200px;
+}

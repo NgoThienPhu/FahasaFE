@@ -1,6 +1,8 @@
 import Banner from './banner/Banner';
 import styles from './body.module.css'
 import ComboTrending from './combo_trending/ComboTrending';
+import FeaturedBookShelf from './featured_bookshelf/FeaturedBookShelf';
+import FeaturedCollections from './featured_collections/FeaturedCollections';
 import FlashSale from './flash_sale/FlashSale';
 import OutStandingBrand from './out_standing_brand/OutStandingBrand';
 import Overlay from './overlay/Overlay';
@@ -20,6 +22,8 @@ const Body: React.FC<BodyProps> = ({ isOverlay }) => {
             <ProductCatalog />
             <TopOrders />
             <ShoppingTrends />
+            <FeaturedBookShelf />
+            <FeaturedCollections />
             <OutStandingBrand />
             <ComboTrending />
             {isOverlay && <Overlay />}

@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { VNDCurrencyFormatting } from '../util/PublicMethod';
-import styles from './product.module.css';
+import styles from './book.module.css';
 
 interface ProductProps {
     width?: string;
     borderRadius?: string;
+    bookImage: string;
+    bookName: string;
 }
 
-const Product: React.FC<ProductProps> = (props) => {
+const Book: React.FC<ProductProps> = (props) => {
 
     const productRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,9 +24,9 @@ const Product: React.FC<ProductProps> = (props) => {
     return (
         <div ref={productRef} className={styles.productContainer}>
             <div className={styles.productImage}>
-                <img src='https://cdn1.fahasa.com/media/catalog/product/8/9/8935236434775.jpg' alt='product-image' draggable="false" />
+                <img src={props.bookImage} alt='product-image' draggable="false" />
             </div>
-            <p className={styles.productName}>Take Note! - Kiến Thức Trọng Tâm Luyện Thi Môn Tiếng Anh Vào Lớp 10 - Bản Màu Có Lò Xo</p>
+            <p className={styles.productName}>{props.bookName}</p>
             <p className={styles.priceDiscount}>
                 <span className={styles.price}>{VNDCurrencyFormatting(90000)}</span>
                 <span className={styles.discount}>-10%</span>
@@ -37,4 +39,4 @@ const Product: React.FC<ProductProps> = (props) => {
     );
 };
 
-export default Product;
+export default Book;

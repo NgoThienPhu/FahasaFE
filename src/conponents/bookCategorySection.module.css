@@ -2,8 +2,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 15px;
     background-color: #ffffff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 15px;
 }
 
 .container .menu {

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './horizontalScrollList.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Product from './Product';
 
 interface HoziontalScrollListProps {
+    children: React.ReactNode;
     padding?: string;
 }
 
@@ -90,46 +90,7 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
                     ref={itemsRef}
                     className={styles.items}
                 >
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
-                    <Product
-                        width='calc(100%/5 - 8px)'
-                        borderRadius='5px'
-                    />
+                    {props.children}
                 </div>
             </div>
             <button
