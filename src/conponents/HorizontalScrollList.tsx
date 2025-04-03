@@ -8,6 +8,7 @@ interface HoziontalScrollListProps {
     padding?: string;
     totalElement: number;
     limitElement: number;
+    gap?: string;
 }
 
 const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
@@ -21,16 +22,18 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
 
     useEffect(() => {
         if (!itemsRef.current) return;
-        if (indexPage === 0) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100%))`;
-        if (indexPage <= totalPage - 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - (10px * ${indexPage})))`;
-    }, [indexPage, totalPage])
+        const style = itemsRef.current.style;
+        if (indexPage === 0) style.transform = `translateX(calc(${indexPage} * -100%))`;
+        if (indexPage <= totalPage - 1) style.transform = `translateX(calc(${indexPage} * -100% - (10px * ${indexPage})))`;
+        if (props.gap) style.gap = props.gap;
+    }, [indexPage, totalPage, props.gap])
 
     useEffect(() => {
         if (wrapItemsRef.current) {
             const style = wrapItemsRef.current.style;
             if (props.padding) style.padding = props.padding;
         }
-    }, [props.padding])
+    }, [props.padding, props.gap])
 
     function handleMouseDown(event: React.MouseEvent<HTMLDivElement> | MouseEvent): void {
         setStart(event.clientX);

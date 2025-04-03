@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.partnerBrandsListContainer {
+    display: flex;
+    background-color: #ffffff;
+    width: 1200px;
+    border-radius: 5px;
+}
+
+.partnerBrandsListContainer .banner {
+    width: calc(100% / 9);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
