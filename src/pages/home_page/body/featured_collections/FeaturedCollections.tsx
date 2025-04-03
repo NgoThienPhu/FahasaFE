@@ -11,7 +11,10 @@ const FeaturedCollections: React.FC = () => {
                     iconUrl='https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/category/ico_sachtrongnuoc.svg'
                     lable='Bộ Sưu Tập Nổi Bật'
                 />
-                <HoziontalScrollList>
+                <HoziontalScrollList
+                    limitElement={8}
+                    totalElement={8}
+                >
                     <BookType
                         width='calc((100%/8) - 8px)'
                         image='https://cdn0.fahasa.com/media/catalog/product/6/9/6976919369788_1.jpg'
@@ -51,11 +54,6 @@ const FeaturedCollections: React.FC = () => {
                         width='calc((100%/8) - 8px)'
                         image='https://cdn0.fahasa.com/media/catalog/product/f/u/fun-with-mickey-and-friends-9781788108676_2.jpg'
                         name='Sanrio'
-                    />
-                    <BookType
-                        width='calc((100%/8) - 8px)'
-                        image='https://cdn0.fahasa.com/media/catalog/product/8/9/8936134263238-_1_.jpg'
-                        name='Ôn Luyện THPT'
                     />
                 </HoziontalScrollList>
             </div>

@@ -90,6 +90,8 @@ const ShoppingTrends: React.FC = () => {
                 >
                     <HoziontalScrollList
                         padding='10px'
+                        limitElement={5}
+                        totalElement={10}
                     >
                         <Book
                             width='calc(100%/5 - 8px)'

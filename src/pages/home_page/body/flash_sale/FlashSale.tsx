@@ -30,7 +30,10 @@ const FlashSale: React.FC = () => {
                         </a>
                     </div>
                 </div>
-                <HoziontalScrollList>
+                <HoziontalScrollList
+                    limitElement={5}
+                    totalElement={10}
+                >
                     <Book
                         width='calc(100%/5 - 8px)'
                         borderRadius='5px'

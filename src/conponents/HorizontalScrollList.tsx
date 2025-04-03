@@ -6,6 +6,8 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 interface HoziontalScrollListProps {
     children: React.ReactNode;
     padding?: string;
+    totalElement: number;
+    limitElement: number;
 }
 
 const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
@@ -15,12 +17,13 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
     const wrapItemsRef = useRef<HTMLDivElement | null>(null);
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [indexPage, setIndexPage] = useState(0);
+    const totalPage = props.totalElement / props.limitElement + (props.totalElement % props.limitElement === 0 ? 0 : 1)
 
     useEffect(() => {
         if (!itemsRef.current) return;
-        if (indexPage === 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - 10px))`;
         if (indexPage === 0) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100%))`;
-    }, [indexPage])
+        if (indexPage <= totalPage - 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - (10px * ${indexPage})))`;
+    }, [indexPage, totalPage])
 
     useEffect(() => {
         if (wrapItemsRef.current) {
@@ -54,14 +57,14 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
         const movementX = event.clientX - start;
         const threshold = itemsRef.current.clientWidth * 0.5;
 
-        if (movementX < -threshold && indexPage < 1) {
+        if (movementX < -threshold && indexPage < totalPage - 1) {
             setIndexPage((preVal) => preVal + 1);
-            itemsRef.current.style.transform = `translateX(calc(${indexPage + 1} * -100% - 10px))`;
+            itemsRef.current.style.transform = `translateX(calc(${indexPage + 1} * -100% - (10px * ${indexPage})))`;
         } else if (movementX > threshold && indexPage > 0) {
             setIndexPage((preVal) => preVal - 1);
             itemsRef.current.style.transform = `translateX(calc(${indexPage - 1} * -100%))`;
         } else {
-            if (indexPage === 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - 10px))`;
+            if (indexPage === totalPage - 1) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100% - (10px * ${indexPage})))`;
             if (indexPage === 0) itemsRef.current.style.transform = `translateX(calc(${indexPage} * -100%))`;
         }
     }
@@ -71,7 +74,7 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
     }
 
     function handleButtonRight() {
-        if (indexPage < 1) setIndexPage(indexPage + 1);
+        if (indexPage < totalPage) setIndexPage(indexPage + 1);
     }
 
     return (
@@ -95,13 +98,13 @@ const HoziontalScrollList: React.FC<HoziontalScrollListProps> = (props) => {
             </div>
             <button
                 onClick={handleButtonLeft}
-                className={`${styles.buttonLeft} ${indexPage === 0 && styles.isHidden}`}
+                className={`${styles.buttonLeft} ${(indexPage === 0 || props.totalElement <= props.limitElement) && styles.isHidden}`}
             >
                 <FontAwesomeIcon icon={faChevronLeft} size='xl' color='gray' />
             </button>
             <button
                 onClick={handleButtonRight}
-                className={`${styles.buttonRight} ${indexPage === 1 && styles.isHidden}`}
+                className={`${styles.buttonRight} ${(indexPage === totalPage - 1 || props.totalElement <= props.limitElement) && styles.isHidden}`}
             >
                 <FontAwesomeIcon icon={faChevronRight} size='xl' color='gray' />
             </button>

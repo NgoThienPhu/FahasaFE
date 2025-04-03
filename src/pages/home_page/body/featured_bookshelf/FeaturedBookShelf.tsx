@@ -11,7 +11,10 @@ const FeaturedBookShelf: React.FC = () => {
                     iconUrl='https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/category/ico_sachtrongnuoc.svg'
                     lable='Tủ Sách Nổi Bật'
                 />
-                <HoziontalScrollList>
+                <HoziontalScrollList
+                    limitElement={8}
+                    totalElement={8}
+                >
                     <BookType
                         width='calc((100%/8) - 8px)'
                         image='https://cdn0.fahasa.com/media/catalog/product/9/7/9786043519112_1_1.jpg'
@@ -51,11 +54,6 @@ const FeaturedBookShelf: React.FC = () => {
                         width='calc((100%/8) - 8px)'
                         image='https://cdn0.fahasa.com/media/catalog/product/8/9/8936225390010.jpg'
                         name='Tư duy siêu việt'
-                    />
-                    <BookType
-                        width='calc((100%/8) - 8px)'
-                        image='https://cdn0.fahasa.com/media/catalog/product/9/7/9786043519112_1_1.jpg'
-                        name='Ôn Luyện THPT'
                     />
                 </HoziontalScrollList>
             </div>
