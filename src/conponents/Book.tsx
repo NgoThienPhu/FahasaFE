@@ -1,16 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { VNDCurrencyFormatting } from '../util/PublicMethod';
 import styles from './book.module.css';
 
 interface ProductProps {
     width?: string;
     borderRadius?: string;
+    isHover?: boolean;
     bookImage: string;
     bookName: string;
 }
 
 const Book: React.FC<ProductProps> = (props) => {
 
+    const [isHover, setIsHover] = useState(false);
     const productRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -21,8 +23,21 @@ const Book: React.FC<ProductProps> = (props) => {
         }
     }, [props.width, props.borderRadius])
 
+    function handleMouseMove() {
+        if (props.isHover) setIsHover(true);
+    }
+
+    function handleMouseLeave() {
+        if (props.isHover) setIsHover(false);
+    }
+
     return (
-        <div ref={productRef} className={styles.productContainer}>
+        <div
+            ref={productRef}
+            className={`${styles.productContainer} ${isHover && styles.isHover}`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+        >
             <div className={styles.productImage}>
                 <img src={props.bookImage} alt='product-image' draggable="false" />
             </div>

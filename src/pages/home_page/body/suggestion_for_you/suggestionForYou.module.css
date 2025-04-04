@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.suggestionForYouContainer {
+    width: 1200px;
+    height: auto;
+    background-image: url('https://cdn1.fahasa.com/skin/frontend/ma_vanese/fahasa/images/banner_personalization.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}

@@ -9,6 +9,7 @@ import Overlay from './overlay/Overlay';
 import PartnerBrandsList from './partner_brands_list/PartnerBrandsList';
 import ProductCatalog from './product_catalog/ProductCatalog';
 import ShoppingTrends from './shopping_trends/ShoppingTrends';
+import SuggestionForYou from './suggestion_for_you/SuggestionForYou';
 import TopOrders from './top_orders/TopOrders';
 
 interface BodyProps {
@@ -28,6 +29,7 @@ const Body: React.FC<BodyProps> = ({ isOverlay }) => {
             <OutStandingBrand />
             <ComboTrending />
             <PartnerBrandsList />
+            <SuggestionForYou />
             {isOverlay && <Overlay />}
         </div>
     )
