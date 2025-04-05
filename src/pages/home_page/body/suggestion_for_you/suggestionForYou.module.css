@@ -4,6 +4,9 @@
 }
 
 .suggestionForYouContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     width: 1200px;
     height: auto;
     background-image: url('https://cdn1.fahasa.com/skin/frontend/ma_vanese/fahasa/images/banner_personalization.png');

@@ -1,0 +1,100 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container img {
+    width: 100%;
+}
+
+.footerContainer {
+    display: flex;
+    width: 1200px;
+    padding: 20px 15px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.descriptionContainer {
+    background-color: #ffffff;
+    width: 1200px;
+    padding: 15px 0;
+}
+
+.descriptionContainer p {
+    font-size: 14px;
+    color: gray;
+    text-align: center;
+}
+
+.footerLeft {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 1px solid rgb(192, 192, 192);
+}
+
+.footerLeft .logoApp {
+    width: 300px;
+}
+
+.footerLeft .logoMOIT {
+    width: 100px;
+}
+
+.footerLeft .address,
+.footerLeft .description {
+    font-size: 14px;
+    color: gray;
+}
+
+.footerLeft .socialNetWork {
+    display: flex;
+    gap: 15px;
+}
+
+.footerLeft .downloadApp {
+    display: flex;
+    gap: 15px;
+}
+
+.footerLeft .downloadApp .app {
+    width: 100px;
+}
+
+.footerRight {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 2;
+    padding: 0 25px;
+}
+
+.footerRight .footerLinks {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footerRight .contact {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.footerRight .information {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footerRight .brands {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footerRight .brands .brand {
+    width: 150px;
+    padding: 15px;
+}

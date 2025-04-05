@@ -2,6 +2,7 @@ import styles from './homePage.module.css';
 import Header from './header/Header';
 import Body from './body/Body';
 import { useState } from 'react';
+import Footer from './footer/Footer';
 
 const HomePage: React.FC = () => {
 
@@ -11,9 +12,7 @@ const HomePage: React.FC = () => {
         <div className={styles.container}>
             <Header setIsOverlayBody={setIsOverlayBody} />
             <Body isOverlay={isOverlayBody} />
-            <div className={styles.footer}>
-
-            </div>
+            <Footer />
         </div>
     )
 }

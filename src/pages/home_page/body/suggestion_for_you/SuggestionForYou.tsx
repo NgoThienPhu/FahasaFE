@@ -1,5 +1,6 @@
 import Book from '../../../../conponents/Book';
 import Books from '../../../../conponents/Books';
+import ButtonViewMore from '../../../../conponents/ButtonViewMore';
 import styles from './suggestionForYou.module.css';
 
 const SuggestionForYou: React.FC = () => {
@@ -133,6 +134,7 @@ const SuggestionForYou: React.FC = () => {
                         bookName='Kể Chuyện Sứ Thần Việt Nam (Tái Bản 2024)'
                     />
                 </Books>
+                <ButtonViewMore margin='15px 0' />
             </div>
         </div>
     )
