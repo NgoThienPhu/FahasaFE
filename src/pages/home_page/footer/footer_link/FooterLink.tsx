@@ -5,8 +5,12 @@ interface FooterLinkProps {
 }
 
 const FooterLink: React.FC<FooterLinkProps> = (props) => {
+
     return (
-        <p className={styles.text}>{props.text}</p>
+        <p
+            className={styles.text}>
+            {props.text}
+        </p>
     )
 }
 
