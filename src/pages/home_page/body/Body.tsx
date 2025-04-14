@@ -11,6 +11,7 @@ import ProductCatalog from './product_catalog/ProductCatalog';
 import ShoppingTrends from './shopping_trends/ShoppingTrends';
 import SuggestionForYou from './suggestion_for_you/SuggestionForYou';
 import TopOrders from './top_orders/TopOrders';
+import WeeklyBestSellers from './weekly_best_sellers/WeeklyBestSellers';
 
 interface BodyProps {
     isOverlay: boolean;
@@ -25,6 +26,7 @@ const Body: React.FC<BodyProps> = ({ isOverlay }) => {
             <TopOrders />
             <ShoppingTrends />
             <FeaturedBookShelf />
+            <WeeklyBestSellers />
             <FeaturedCollections />
             <OutStandingBrand />
             <ComboTrending />

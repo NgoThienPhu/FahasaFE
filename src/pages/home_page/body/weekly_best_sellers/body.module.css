@@ -1,0 +1,65 @@
+.bodyContainer {
+    display: flex;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.bodyLeft {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-right: 1px solid rgb(190, 190, 190);
+}
+
+.bodyRight {
+    display: flex;
+    flex-direction: row;
+    flex: 1.5;
+}
+
+.bodyRight .currentBookImage {
+    flex: 1;
+}
+
+.bodyRight .currentBookImage img {
+    width: 100%;
+}
+
+.bodyRight .currentBookDescription {
+    flex: 2;
+}
+
+.bodyRight .currentBookDescription .currentBookName,
+.bodyRight .currentBookDescription .currentBookPrice {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bodyRight .currentBookDescription .currentBookAuthor,
+.bodyRight .currentBookDescription .currentBookPublisher {
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.bodyRight .currentBookDescription .currentBookPrice {
+    padding: 15px 0;
+}
+
+.bodyRight .currentBookDescription .currentBookDiscount {
+    text-decoration: line-through;
+    font-size: 14px;
+    color: gray;
+}
+
+.bodyRight .currentBookDescription .currentBookDiscount .discount {
+    display: inline-block;
+    padding: 5px;
+    color: #F39801;
+    background-color: #f0c591;
+    font-weight: bold;
+    border-radius: 10%;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 15px;
+}

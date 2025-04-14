@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.weeklyBestSellers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1200px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.header {
+    width: 100%;
+    background-color: #0d0e0f;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 20px 15px;
+}

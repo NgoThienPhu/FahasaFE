@@ -1,0 +1,56 @@
+.book {
+    display: flex;
+    color: rgb(65, 65, 65);
+    gap: 20px;
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.book.isHover {
+    border-right: 2px solid #f7941e;
+}
+
+.book .icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.book .icon p {
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.book .bookImage {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.book .bookImage img {
+    width: 100%;
+}
+
+.book .bookDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.book .bookName {
+    font-size: 15px;
+}
+
+.book .author,
+.book .point {
+    font-size: 13px;
+}
+
+.book .point {
+    color: #2489f4;
+}
