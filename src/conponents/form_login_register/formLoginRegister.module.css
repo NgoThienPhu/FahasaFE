@@ -1,0 +1,99 @@
+.container {
+    width: 450px;
+    background-color: #ffffff;
+    padding: 20px 35px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: rgb(70, 68, 68);
+    transition: all 0.5s ease;
+    opacity: 1;
+    transform: translateY(0%);
+}
+
+.container.fromVisible {
+    opacity: 1;
+    transform: translateY(0%);
+}
+
+.container.fromHidden {
+    opacity: 0;
+    transform: translateY(-80%);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    text-align: center;
+    user-select: none;
+}
+
+.body .inputGroup {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.body .inputGroup input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    color: gray;
+}
+
+.body .inputGroup input:focus {
+    outline: none;
+    border: 1px solid #80bdff;
+    box-shadow: 0 0 4px rgba(112, 165, 223, 1);
+}
+
+.description p {
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.2rem;
+    height: 1.2rem;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.buttonGroup button {
+    width: 250px;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.buttonGroup button.register {
+    color: #636363;
+    background-color: #f0f0f0;
+    border: none;
+}
+
+.buttonGroup button.cancel {
+    color: #c92127;
+    border: 1px solid #c92127;
+    background-color: #ffffff;
+}
+
+.description p .hideLine {
+    color: #2489F4;
+}
+
+@keyframes translateFormLogin {
+    0% {}
+
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}

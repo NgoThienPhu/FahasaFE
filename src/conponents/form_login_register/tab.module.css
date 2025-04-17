@@ -1,0 +1,27 @@
+.tab {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    width: 50%;
+    cursor: pointer;
+}
+
+.tab.isHover {
+    color: #c12530;
+}
+
+.tab .tabUnderLine {
+    opacity: 0;
+    height: 2px;
+    background-color: #c92127;
+    width: 20%;
+    transition: width 0.5s ease, opacity 0.5s ease;
+}
+
+.tab.isHover .tabUnderLine {
+    opacity: 1;
+    width: 100%;
+}

@@ -4,8 +4,10 @@ import { faCaretDown, faCartShopping, faSearch } from '@fortawesome/free-solid-s
 import styles from './header.module.css'
 import { useState } from 'react';
 import ModalMenu from './modal_menu/ModalMenu';
-import ModelNotification from './ModalNotification';
-import ModalAccount from './ModalAccount';
+import ModelNotification from './modal_notification/ModalNotification';
+import ModalAccount from './modal_account/ModalAccount';
+import Overlay from '../../../conponents/Overlay';
+import FormLoginRegister from '../../../conponents/form_login_register/FormLoginRegister';
 
 interface HeaderProps {
     setIsOverlayBody: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +18,17 @@ const Header: React.FC<HeaderProps> = ({ setIsOverlayBody }) => {
     const [showModalMenu, setShowModalMenu] = useState(false);
     const [showModalNotification, setShowNotification] = useState(false);
     const [showModalAccount, setShowModalAccount] = useState(false);
+    const [isShowFormModal, setIsShowFormModal] = useState<{ isShow: boolean, typeForm: "Login" | "Register" }>({
+        isShow: false,
+        typeForm: "Register"
+    });
+
+    function handleOnClickOverlayForm() {
+        setIsShowFormModal({
+            ...isShowFormModal,
+            isShow: false
+        })
+    }
 
     return (
         <div className={styles.container}>
@@ -55,6 +68,7 @@ const Header: React.FC<HeaderProps> = ({ setIsOverlayBody }) => {
                         <p>Thông báo</p>
                         <ModelNotification
                             showModalNotification={showModalNotification}
+                            showForm={setIsShowFormModal}
                         />
                     </div>
                     <div className={styles.cart}>
@@ -69,10 +83,23 @@ const Header: React.FC<HeaderProps> = ({ setIsOverlayBody }) => {
                         <p>Tài khoản</p>
                         <ModalAccount
                             showModalAccount={showModalAccount}
+                            showForm={setIsShowFormModal}
                         />
                     </div>
                 </div>
             </div>
+            {
+                isShowFormModal.isShow &&
+                <Overlay
+                    handleOnClick={handleOnClickOverlayForm}
+                >
+                    <FormLoginRegister
+                        isShowForm={isShowFormModal}
+                        typeForm={isShowFormModal.typeForm}
+                        showForm={setIsShowFormModal}
+                    />
+                </Overlay>
+            }
         </div>
     )
 }
