@@ -1,0 +1,65 @@
+/* ===== GLOBAL STYLES ===== */
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    line-height: var(--line-height-normal);
+    color: var(--color-gray-800);
+    background-color: var(--color-gray-50);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+p {
+    margin-bottom: var(--spacing-4);
+}
+
+/* ===== LINKS ===== */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ===== IMAGES ===== */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ===== LISTS ===== */
+ul,
+ol {
+    list-style: none;
+}
+
+/* ===== FORM ELEMENTS ===== */
+input,
+textarea,
+select {
+    font-family: inherit;
+}
