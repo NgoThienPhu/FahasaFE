@@ -1,0 +1,219 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--background-border);
+    background-color: #ffffff;
+    min-width: 100vw;
+    max-width: 100vw;
+}
+
+.header-container {
+    width: 1200px;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.header-logo {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: translateY(-2px);
+}
+
+.header-logo .header-logo-text {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.header-logo .header-logo-dot {
+    color: var(--text-secondary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-center {
+    flex: 1;
+}
+
+.header-menu-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    list-style-type: none;
+    font-size: 12px;
+    text-align: center;
+}
+
+.header-menu-list .header-menu-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 800;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 100px;
+    position: relative;
+}
+
+.header-menu-list .header-menu-link.active {
+    color: var(--primary-color);
+}
+
+.header-menu-list .header-menu-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.header-menu-list .header-menu-link.active::after {
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.header-menu-list .header-menu-link:hover {
+    color: var(--primary-color);
+}
+
+.header-menu-list .header-menu-link:hover::after {
+    width: 100%;
+}
+
+.header-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: var(--primary-color);
+}
+
+.header-right .cart,
+.header-right .user {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.header-right .cart:hover {
+    transform: translateY(-2px);
+}
+
+.header-right .cart .cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--secondary-color);
+    color: var(--text-white);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 0px 2px;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-right .user:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-right .user .user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-white);
+}
+
+/* Mobile phones (0px - 767px) */
+@media (max-width: 767px) {
+    .header {
+        padding: 10px 0;
+    }
+
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-center {
+        order: 3;
+        width: 100%;
+    }
+
+    .header-menu-list {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header-menu-list .header-menu-link {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .header-logo .header-logo-text {
+        font-size: 20px;
+    }
+
+    .header-logo .header-logo-dot {
+        font-size: 16px;
+    }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .header-menu-list {
+        gap: 30px;
+    }
+
+    .header-menu-list .header-menu-link {
+        font-size: 13px;
+    }
+}
+
+/* Small desktops (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .header-menu-list {
+        gap: 40px;
+    }
+}
+
+/* Large desktops (1200px and up) */
+@media (min-width: 1200px) {
+    .header-menu-list {
+        gap: 50px;
+    }
+}
+
+/* Extra large desktops (1400px and up) */
+@media (min-width: 1400px) {
+    .header-menu-list {
+        gap: 60px;
+    }
+}
