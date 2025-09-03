@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { Login } from './pages';
 
 
 const App: React.FC = () => {
@@ -10,6 +11,7 @@ const App: React.FC = () => {
         <Header />
         <div className='content'>
           <Routes>
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
         <Footer />

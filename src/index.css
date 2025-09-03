@@ -1,3 +1,7 @@
 /* Base */
 @import './styles/base/_reset.css';
 @import './styles/base/_variables.css';
+
+.content {
+    background-color: #f0f0f0;
+}
