@@ -1,7 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { Login } from './pages';
+import { Login, Register } from './pages';
 
 
 const App: React.FC = () => {
@@ -12,6 +12,7 @@ const App: React.FC = () => {
         <div className='content'>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
         <Footer />

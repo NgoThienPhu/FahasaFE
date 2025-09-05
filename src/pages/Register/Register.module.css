@@ -1,0 +1,284 @@
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.registerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    min-height: 500px;
+    background-color: var(--background-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 40px 20px;
+}
+
+.registerForm {
+    width: 100%;
+    max-width: 350px;
+}
+
+.registerForm h1 {
+    color: var(--primary-color);
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 800;
+}
+
+.registerFormGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.registerFormGroup label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.registerFormInput {
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--background-border);
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.registerFormInput::placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.registerFormInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.emailOtpContainer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.emailOtpContainer .emailInput {
+    flex: 1;
+    min-width: 0;
+}
+
+.emailOtpRow {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.emailOtpRow .registerFormGroup {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.emailGroup {
+    flex: 2;
+}
+
+.otpGroup {
+    flex: 1;
+}
+
+.passwordRow .registerFormGroup {
+    flex: 1;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.otpButton {
+    padding: 12px 16px;
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 80px;
+}
+
+.otpButton:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.otpButton:disabled {
+    background-color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.otpButton.otpSent {
+    background-color: var(--success-color);
+}
+
+.otpButton.otpSent:hover:not(:disabled) {
+    background-color: var(--accent-color);
+}
+
+.registerFormSubmit {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.registerFormSubmit:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.registerFormSubmit:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+.registerFormSubmit:active {
+    transform: translateY(0);
+}
+
+/* Login Link */
+.loginLink {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: var(--text-secondary);
+}
+
+.loginLink a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.loginLink a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* OTP Field Animation */
+.registerFormGroup {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure proper spacing for all form groups */
+.registerForm .registerFormGroup:not(.emailGroup):not(.otpGroup) {
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register {
+        padding: 10px;
+    }
+
+    .registerContainer {
+        padding: 30px 15px;
+        max-width: 100%;
+    }
+
+    .registerForm {
+        max-width: 100%;
+    }
+
+    .registerForm h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .emailOtpRow {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .emailOtpRow .registerFormGroup {
+        margin-bottom: 20px;
+        flex: none;
+    }
+
+    .emailGroup,
+    .otpGroup {
+        flex: none;
+    }
+
+    .passwordRow {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .passwordRow .registerFormGroup {
+        margin-bottom: 20px;
+        flex: none;
+    }
+
+    .emailOtpContainer {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .otpButton {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .registerContainer {
+        padding: 20px 10px;
+    }
+
+    .registerForm h1 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .registerFormGroup {
+        margin-bottom: 15px;
+    }
+}

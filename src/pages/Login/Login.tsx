@@ -1,28 +1,28 @@
 import { Link } from 'react-router-dom';
-import './Login.css'
+import styles from './Login.module.css';
 
 const Login: React.FC = () => {
     return (
-        <div className="login">
-            <div className='login-container'>
-                <form className="login-form">
+        <div className={styles.login}>
+            <div className={styles.loginContainer}>
+                <form className={styles.loginForm}>
                     <h1>Đăng nhập</h1>
-                    <div className="login-form-group">
+                    <div className={styles.loginFormGroup}>
                         <label htmlFor="username">Tài khoản</label>
-                        <input className='login-form-input' type="text" id="username" name="username" placeholder='Tên tài khoản...' />
+                        <input className={styles.loginFormInput} type="text" id="username" name="username" placeholder='Tên tài khoản...' />
                     </div>
-                    <div className="login-form-group">
+                    <div className={styles.loginFormGroup}>
                         <label htmlFor="password">Mật khẩu</label>
-                        <input className='login-form-input' type="password" id="password" name="password" placeholder='Mật khẩu...' />
+                        <input className={styles.loginFormInput} type="password" id="password" name="password" placeholder='Mật khẩu...' />
                     </div>
-                    <div className="login-form-group">
-                        <button className='login-form-submit' type="submit">Đăng nhập</button>
+                    <div className={styles.loginFormGroup}>
+                        <button className={styles.loginFormSubmit} type="submit">Đăng nhập</button>
                     </div>
-                    <div className='forgot-password'>
+                    <div className={styles.forgotPassword}>
                         <Link to="/forgot-password">Quên mật khẩu?</Link>
                     </div>
-                    <div className='register'>
-                        <span>Bạn chưa có tài khoản <Link to="/register">đăng ký ngay</Link></span>
+                    <div className={styles.register}>
+                        <span>Bạn chưa có tài khoản <Link to="/register">Đăng ký</Link></span>
                     </div>
                 </form>
             </div>
