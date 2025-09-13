@@ -93,6 +93,7 @@ export const useAuth = () => {
 
     const sendOtp = async (email: string) => {
         try {
+            setLoading(true);
             setError(null);
             const response = await authApi.sendOtp({ email });
             return { success: response.success, message: response.message };
@@ -103,6 +104,8 @@ export const useAuth = () => {
             }
             setError(errorMessage);
             return { success: false, error: errorMessage };
+        } finally {
+            setLoading(false);
         }
     };
 
