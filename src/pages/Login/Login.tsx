@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../services/hooks/useAuth';
 import styles from './Login.module.css';
 
@@ -9,9 +9,18 @@ const Login: React.FC = () => {
         password: ''
     });
     const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+    const [successMessage, setSuccessMessage] = useState<string>('');
 
     const { login, loading, error } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.message) {
+            setSuccessMessage(location.state.message);
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -64,6 +73,12 @@ const Login: React.FC = () => {
             <div className={styles.loginContainer}>
                 <form className={styles.loginForm} onSubmit={handleSubmit}>
                     <h1>Đăng nhập</h1>
+
+                    {successMessage && (
+                        <div className={styles.successMessage}>
+                            {successMessage}
+                        </div>
+                    )}
 
                     {error && (
                         <div className={styles.errorMessage}>

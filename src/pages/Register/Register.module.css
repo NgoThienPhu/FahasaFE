@@ -66,6 +66,16 @@
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
+.registerFormInput.error {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.registerFormInput.error:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
 .emailOtpContainer {
     display: flex;
     gap: 8px;
@@ -168,6 +178,38 @@
 
 .registerFormSubmit:active {
     transform: translateY(0);
+}
+
+.registerFormSubmit:disabled {
+    background-color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.registerFormSubmit:disabled:hover {
+    background-color: var(--text-muted);
+    transform: none;
+}
+
+/* Error Messages */
+.errorMessage {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.fieldError {
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 4px;
+    display: block;
 }
 
 /* Login Link */

@@ -14,7 +14,7 @@ export const authApi = {
     },
 
     sendOtp: async (data: OtpRequest): Promise<ApiResponse<{ message: string }>> => {
-        const response = await api.post<ApiResponse<{ message: string }>>('/auth/send-otp', data);
+        const response = await api.post<ApiResponse<{ message: string }>>(`/auth/send-otp?toEmail=${data.email}`);
         return response.data;
     },
 

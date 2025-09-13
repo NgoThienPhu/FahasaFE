@@ -5,11 +5,11 @@ export interface LoginRequest {
 
 export interface RegisterRequest {
     username: string;
-    email: string;
-    phoneNumber: string;
     password: string;
-    confirmPassword: string;
+    fullName: string;
+    email: string;
     otpCode: string;
+    phoneNumber: string;
 }
 
 export interface OtpRequest {
