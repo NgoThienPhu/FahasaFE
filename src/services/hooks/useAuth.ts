@@ -5,12 +5,13 @@ import axios from 'axios';
 
 export const useAuth = () => {
     const [user, setUser] = useState<UserProfile | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
+                setLoading(true);
                 const token = localStorage.getItem('accessToken');
                 if (token) {
                     const response = await authApi.getProfile();
@@ -40,11 +41,11 @@ export const useAuth = () => {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 return { success: true };
             } else {
-                setError(response.message || 'Login failed');
+                setError(response.message || 'Đăng nhập thất bại');
                 return { success: false, error: response.message };
             }
         } catch (err: unknown) {
-            let errorMessage = 'Login failed';
+            let errorMessage = 'Đăng nhập thất bại';
             if (axios.isAxiosError(err)) {
                 errorMessage = (err.response?.data as { message?: string })?.message || errorMessage;
             }
@@ -65,11 +66,11 @@ export const useAuth = () => {
             if (response.success) {
                 return { success: true };
             } else {
-                setError(response.message || 'Registration failed');
+                setError(response.message || 'Đăng kí thất bại');
                 return { success: false, error: response.message };
             }
         } catch (err: unknown) {
-            let errorMessage = 'Registration failed';
+            let errorMessage = 'Đăng kí thất bại';
             if (axios.isAxiosError(err)) {
                 errorMessage = (err.response?.data as { message?: string })?.message || errorMessage;
             }
@@ -82,12 +83,14 @@ export const useAuth = () => {
 
     const logout = async () => {
         try {
+            setLoading(true);
             await authApi.logout();
         } catch (err) {
-            console.error('Logout error:', err);
+            console.error('Lỗi đăng xuất:', err);
         } finally {
             localStorage.removeItem('accessToken');
             setUser(null);
+            setLoading(false);
         }
     };
 
@@ -98,7 +101,7 @@ export const useAuth = () => {
             const response = await authApi.sendOtp({ email });
             return { success: response.success, message: response.message };
         } catch (err: unknown) {
-            let errorMessage = 'Failed to send OTP';
+            let errorMessage = 'Lỗi gửi mã OTP';
             if (axios.isAxiosError(err)) {
                 errorMessage = (err.response?.data as { message?: string })?.message || errorMessage;
             }

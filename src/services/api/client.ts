@@ -1,6 +1,19 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from "axios";
-import { jwtDecode } from "jwt-decode";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
+let isRefreshing = false;
+let failedQueue: Array<{ resolve: (value?: unknown) => void, reject: (error?: unknown) => void }> = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
+    failedQueue.forEach((prom) => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+}
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -19,7 +32,7 @@ apiClient.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.error('❌ Request Error:', error);
+        console.error('Yêu cầu thất bại:', error);
         return Promise.reject(error);
     }
 );
@@ -28,28 +41,73 @@ apiClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response;
     },
-    (error) => {
-        if (error.response?.status === 401) {
-            const accessToken = localStorage.getItem('accessToken');
-            if (accessToken) {
-                const decodedToken = jwtDecode(accessToken);
-                if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
-                    localStorage.removeItem('accessToken');
-                    window.location.href = '/login';
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (originalRequest.url.includes("/auth/login")) {
+            return Promise.reject(error);
+        }
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({
+                        resolve: (token: unknown) => {
+                            if (typeof token === "string" && originalRequest.headers) {
+                                originalRequest.headers["Authorization"] = "Bearer " + token;
+                            }
+                            resolve(apiClient(originalRequest));
+                        },
+                        reject: (err) => reject(err),
+                    });
+                });
+            }
+
+            isRefreshing = true;
+            const refreshToken = localStorage.getItem("refreshToken");
+
+            if (!refreshToken) {
+                localStorage.clear();
+                window.location.href = "/login";
+                return Promise.reject(error);
+            }
+
+            try {
+                const res = await axios.post(`${API_BASE_URL}/auth/refresh`, null, { withCredentials: true });
+                const newAccessToken = res.data.accessToken;
+
+                localStorage.setItem("accessToken", newAccessToken);
+                apiClient.defaults.headers.common["Authorization"] = "Bearer " + newAccessToken;
+
+                processQueue(null, newAccessToken);
+
+                if (originalRequest.headers) {
+                    originalRequest.headers["Authorization"] = "Bearer " + newAccessToken;
                 }
+
+                return apiClient(originalRequest);
+            } catch (err) {
+                processQueue(err, null);
+                localStorage.clear();
+                window.location.href = "/login";
+                return Promise.reject(err);
+            } finally {
+                isRefreshing = false;
             }
         }
 
         if (error.response?.status === 403) {
-            console.error('🚫 Access denied');
+            console.error('Yêu cầu bị từ chối');
         }
 
         if (error.response?.status >= 500) {
-            console.error('🔥 Server error:', error.response.data);
+            console.error('Lỗi hệ thống:', error.response.data);
         }
 
         if (import.meta.env.DEV) {
-            console.error('❌ API Error:', error.response?.status, error.response?.data);
+            console.error('Lỗi API:', error.response?.status, error.response?.data);
         }
         return Promise.reject(error);
     }
