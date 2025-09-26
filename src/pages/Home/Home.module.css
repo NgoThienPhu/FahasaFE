@@ -156,6 +156,78 @@
     background: #f8f9fa;
 }
 
+/* Best Sellers Section */
+.bestSellers {
+    padding: 80px 0;
+    background: white;
+}
+
+.booksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.bookCard {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bookCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.bookCover {
+    height: 160px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.bookTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 4px 0 4px 0;
+}
+
+.bookAuthor {
+    margin: 0 0 12px 0;
+    color: #6c757d;
+}
+
+.bookMeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.bookPrice {
+    color: #e63946;
+    font-weight: 700;
+}
+
+.bookRating {
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.addToCart {
+    width: 100%;
+    justify-content: center;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -287,6 +359,68 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 80px 0;
+}
+
+/* History Section */
+.history {
+    background: #f8f9fa;
+    padding: 80px 0;
+}
+
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-left: 24px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #667eea, #764ba2);
+    opacity: 0.3;
+}
+
+.timelineItem {
+    position: relative;
+    margin-bottom: 32px;
+    padding-left: 24px;
+}
+
+.timelineDot {
+    position: absolute;
+    left: -2px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+}
+
+.timelineContent {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.timelineYear {
+    margin: 0 0 6px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.timelineText {
+    margin: 0;
+    color: #6c757d;
+    line-height: 1.6;
 }
 
 .newsletterContent {
