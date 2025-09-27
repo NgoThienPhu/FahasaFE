@@ -23,6 +23,8 @@ const Products: React.FC = () => {
     const [priceRange, setPriceRange] = useState('all')
     const [category, setCategory] = useState('all')
     const [showFilters, setShowFilters] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [itemsPerPage] = useState(12)
 
     const books: Book[] = [
         { id: 1, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: 89000, originalPrice: 120000, rating: 4.7, cover: '🌟', category: 'Văn học', description: 'Câu chuyện về hành trình tìm kiếm kho báu của cậu bé chăn cừu Santiago', inStock: true },
@@ -121,6 +123,59 @@ const Products: React.FC = () => {
 
         return filtered
     }, [searchTerm, sortByName, sortByPrice, sortByRating, priceRange, category])
+
+    // Tính toán phân trang
+    const totalItems = filteredAndSortedBooks.length
+    const totalPages = Math.ceil(totalItems / itemsPerPage)
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    const currentBooks = filteredAndSortedBooks.slice(startIndex, endIndex)
+
+    // Reset về trang 1 khi filter thay đổi
+    React.useEffect(() => {
+        setCurrentPage(1)
+    }, [searchTerm, sortByName, sortByPrice, sortByRating, priceRange, category])
+
+    // Hàm xử lý chuyển trang
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    // Hàm tạo array số trang để hiển thị
+    const getPageNumbers = () => {
+        const pages = []
+        const maxVisiblePages = 5
+        
+        if (totalPages <= maxVisiblePages) {
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i)
+            }
+        } else {
+            const startPage = Math.max(1, currentPage - 2)
+            const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+            
+            if (startPage > 1) {
+                pages.push(1)
+                if (startPage > 2) {
+                    pages.push('...')
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i)
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pages.push('...')
+                }
+                pages.push(totalPages)
+            }
+        }
+        
+        return pages
+    }
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -242,13 +297,16 @@ const Products: React.FC = () => {
                 {/* Results Info */}
                 <div className={styles.resultsInfo}>
                     <span className={styles.resultsCount}>
-                        Hiển thị {filteredAndSortedBooks.length} sản phẩm
+                        Hiển thị {startIndex + 1}-{Math.min(endIndex, totalItems)} trong {totalItems} sản phẩm
+                    </span>
+                    <span className={styles.pageInfo}>
+                        Trang {currentPage} / {totalPages}
                     </span>
                 </div>
 
                 {/* Books Grid */}
                 <div className={styles.booksGrid}>
-                    {filteredAndSortedBooks.map((book) => (
+                    {currentBooks.map((book) => (
                         <div key={book.id} className={styles.bookCard}>
                             <div className={styles.bookCover}>
                                 <div className={styles.coverIcon}>{book.cover}</div>
@@ -306,6 +364,43 @@ const Products: React.FC = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className={styles.pagination}>
+                        <button
+                            className={`${styles.paginationBtn} ${currentPage === 1 ? styles.disabled : ''}`}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            ← Trước
+                        </button>
+
+                        <div className={styles.pageNumbers}>
+                            {getPageNumbers().map((page, index) => (
+                                page === '...' ? (
+                                    <span key={`ellipsis-${index}`} className={styles.ellipsis}>...</span>
+                                ) : (
+                                    <button
+                                        key={page}
+                                        className={`${styles.pageBtn} ${currentPage === page ? styles.active : ''}`}
+                                        onClick={() => handlePageChange(page as number)}
+                                    >
+                                        {page}
+                                    </button>
+                                )
+                            ))}
+                        </div>
+
+                        <button
+                            className={`${styles.paginationBtn} ${currentPage === totalPages ? styles.disabled : ''}`}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            Sau →
+                        </button>
+                    </div>
+                )}
 
                 {/* No Results */}
                 {filteredAndSortedBooks.length === 0 && (
