@@ -41,10 +41,10 @@
 }
 
 .filterRow {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
     gap: 16px;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .searchContainer {
@@ -403,6 +403,24 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .filterRow {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .searchContainer {
+        grid-column: 1 / -1;
+    }
+
+    .booksGrid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        gap: 10px;
+        grid-auto-rows: minmax(400px, auto);
+    }
+}
+
 @media (max-width: 768px) {
     .products {
         padding: 20px 0;
@@ -413,8 +431,8 @@
     }
 
     .filterRow {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .searchContainer {

@@ -17,7 +17,9 @@ interface Book {
 
 const Products: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('')
-    const [sortBy, setSortBy] = useState('name-asc')
+    const [sortByName, setSortByName] = useState('name-asc')
+    const [sortByPrice, setSortByPrice] = useState('price-none')
+    const [sortByRating, setSortByRating] = useState('rating-none')
     const [priceRange, setPriceRange] = useState('all')
     const [category, setCategory] = useState('all')
     const [showFilters, setShowFilters] = useState(false)
@@ -81,28 +83,44 @@ const Products: React.FC = () => {
             }
         }
 
-        // Sắp xếp
-        filtered.sort((a, b) => {
-            switch (sortBy) {
-                case 'name-asc':
+        // Sắp xếp theo tên
+        if (sortByName !== 'name-none') {
+            filtered.sort((a, b) => {
+                if (sortByName === 'name-asc') {
                     return a.title.localeCompare(b.title)
-                case 'name-desc':
+                } else if (sortByName === 'name-desc') {
                     return b.title.localeCompare(a.title)
-                case 'price-asc':
+                }
+                return 0
+            })
+        }
+
+        // Sắp xếp theo giá
+        if (sortByPrice !== 'price-none') {
+            filtered.sort((a, b) => {
+                if (sortByPrice === 'price-asc') {
                     return a.price - b.price
-                case 'price-desc':
+                } else if (sortByPrice === 'price-desc') {
                     return b.price - a.price
-                case 'rating-asc':
+                }
+                return 0
+            })
+        }
+
+        // Sắp xếp theo đánh giá
+        if (sortByRating !== 'rating-none') {
+            filtered.sort((a, b) => {
+                if (sortByRating === 'rating-asc') {
                     return a.rating - b.rating
-                case 'rating-desc':
+                } else if (sortByRating === 'rating-desc') {
                     return b.rating - a.rating
-                default:
-                    return 0
-            }
-        })
+                }
+                return 0
+            })
+        }
 
         return filtered
-    }, [searchTerm, sortBy, priceRange, category])
+    }, [searchTerm, sortByName, sortByPrice, sortByRating, priceRange, category])
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -134,18 +152,43 @@ const Products: React.FC = () => {
                             />
                         </div>
 
-                        {/* Sort Select */}
+                        {/* Sort by Name */}
                         <div className={styles.selectContainer}>
                             <FaSort className={styles.selectIcon} />
                             <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
+                                value={sortByName}
+                                onChange={(e) => setSortByName(e.target.value)}
                                 className={styles.select}
                             >
+                                <option value="name-none">Sắp xếp tên</option>
                                 <option value="name-asc">Tên A-Z</option>
                                 <option value="name-desc">Tên Z-A</option>
+                            </select>
+                        </div>
+
+                        {/* Sort by Price */}
+                        <div className={styles.selectContainer}>
+                            <FaSort className={styles.selectIcon} />
+                            <select
+                                value={sortByPrice}
+                                onChange={(e) => setSortByPrice(e.target.value)}
+                                className={styles.select}
+                            >
+                                <option value="price-none">Sắp xếp giá</option>
                                 <option value="price-asc">Giá thấp đến cao</option>
                                 <option value="price-desc">Giá cao đến thấp</option>
+                            </select>
+                        </div>
+
+                        {/* Sort by Rating */}
+                        <div className={styles.selectContainer}>
+                            <FaSort className={styles.selectIcon} />
+                            <select
+                                value={sortByRating}
+                                onChange={(e) => setSortByRating(e.target.value)}
+                                className={styles.select}
+                            >
+                                <option value="rating-none">Sắp xếp đánh giá</option>
                                 <option value="rating-asc">Đánh giá thấp đến cao</option>
                                 <option value="rating-desc">Đánh giá cao đến thấp</option>
                             </select>
