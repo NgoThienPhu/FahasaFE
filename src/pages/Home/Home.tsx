@@ -15,52 +15,52 @@ const Home: React.FC = () => {
     const getBooksForTab = (tabId: string) => {
         const allBooks = [
             // Sách mới
-            { id: 1, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: '4.7', cover: '🌟', badge: 'Mới', category: 'new' },
-            { id: 2, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: '4.8', cover: '🎯', badge: 'Mới', category: 'new' },
-            { id: 3, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: '4.7', cover: '🚀', badge: 'Mới', category: 'new' },
-            { id: 4, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: '4.8', cover: '💎', badge: 'Mới', category: 'new' },
-            { id: 5, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: '4.7', cover: '⭐', badge: 'Mới', category: 'new' },
-            { id: 6, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: '4.5', cover: '🎨', badge: 'Mới', category: 'new' },
-            { id: 7, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: '4.8', cover: '📚', badge: 'Mới', category: 'new' },
-            { id: 8, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: '4.9', cover: '📖', badge: 'Mới', category: 'new' },
-            { id: 9, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: '4.6', cover: '🔥', badge: 'Mới', category: 'new' },
-            { id: 10, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: '4.6', cover: '💡', badge: 'Mới', category: 'new' },
+            { id: 1, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: 4.7, cover: '🌟', badge: 'Mới', category: 'new', bookCategory: 'Văn học' },
+            { id: 2, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: 4.8, cover: '🎯', badge: 'Mới', category: 'new', bookCategory: 'Kỹ năng sống' },
+            { id: 3, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: 4.7, cover: '🚀', badge: 'Mới', category: 'new', bookCategory: 'Khoa học' },
+            { id: 4, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: 4.8, cover: '💎', badge: 'Mới', category: 'new', bookCategory: 'Lịch sử' },
+            { id: 5, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: 4.7, cover: '⭐', badge: 'Mới', category: 'new', bookCategory: 'Kinh doanh' },
+            { id: 6, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: 4.5, cover: '🎨', badge: 'Mới', category: 'new', bookCategory: 'Kỹ năng sống' },
+            { id: 7, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: 4.8, cover: '📚', badge: 'Mới', category: 'new', bookCategory: 'Kỹ năng sống' },
+            { id: 8, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: 4.9, cover: '📖', badge: 'Mới', category: 'new', bookCategory: 'Kỹ năng sống' },
+            { id: 9, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: 4.6, cover: '🔥', badge: 'Mới', category: 'new', bookCategory: 'Tài chính' },
+            { id: 10, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: 4.6, cover: '💡', badge: 'Mới', category: 'new', bookCategory: 'Kỹ năng sống' },
             
             // Sách bán chạy
-            { id: 11, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: '4.8', cover: '📚', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 12, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: '4.9', cover: '📖', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 13, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: '4.6', cover: '🔥', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 14, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: '4.7', cover: '🚀', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 15, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: '4.8', cover: '💎', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 16, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: '4.8', cover: '🎯', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 17, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: '4.7', cover: '⭐', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 18, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: '4.5', cover: '🎨', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 19, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: '4.6', cover: '💡', badge: 'Bán chạy', category: 'bestseller' },
-            { id: 20, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: '4.7', cover: '🌟', badge: 'Bán chạy', category: 'bestseller' },
+            { id: 11, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: 4.8, cover: '📚', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kỹ năng sống' },
+            { id: 12, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: 4.9, cover: '📖', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kỹ năng sống' },
+            { id: 13, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: 4.6, cover: '🔥', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Tài chính' },
+            { id: 14, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: 4.7, cover: '🚀', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Khoa học' },
+            { id: 15, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: 4.8, cover: '💎', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Lịch sử' },
+            { id: 16, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: 4.8, cover: '🎯', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kỹ năng sống' },
+            { id: 17, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: 4.7, cover: '⭐', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kinh doanh' },
+            { id: 18, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: 4.5, cover: '🎨', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kỹ năng sống' },
+            { id: 19, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: 4.6, cover: '💡', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Kỹ năng sống' },
+            { id: 20, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: 4.7, cover: '🌟', badge: 'Bán chạy', category: 'bestseller', bookCategory: 'Văn học' },
             
             // Sách hot
-            { id: 21, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: '4.9', cover: '📖', badge: 'Hot', category: 'hot' },
-            { id: 22, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: '4.6', cover: '🔥', badge: 'Hot', category: 'hot' },
-            { id: 23, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: '4.8', cover: '💎', badge: 'Hot', category: 'hot' },
-            { id: 24, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: '4.7', cover: '🚀', badge: 'Hot', category: 'hot' },
-            { id: 25, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: '4.8', cover: '🎯', badge: 'Hot', category: 'hot' },
-            { id: 26, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: '4.8', cover: '📚', badge: 'Hot', category: 'hot' },
-            { id: 27, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: '4.7', cover: '⭐', badge: 'Hot', category: 'hot' },
-            { id: 28, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: '4.5', cover: '🎨', badge: 'Hot', category: 'hot' },
-            { id: 29, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: '4.6', cover: '💡', badge: 'Hot', category: 'hot' },
-            { id: 30, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: '4.7', cover: '🌟', badge: 'Hot', category: 'hot' },
+            { id: 21, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: 4.9, cover: '📖', badge: 'Hot', category: 'hot', bookCategory: 'Kỹ năng sống' },
+            { id: 22, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: 4.6, cover: '🔥', badge: 'Hot', category: 'hot', bookCategory: 'Tài chính' },
+            { id: 23, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: 4.8, cover: '💎', badge: 'Hot', category: 'hot', bookCategory: 'Lịch sử' },
+            { id: 24, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: 4.7, cover: '🚀', badge: 'Hot', category: 'hot', bookCategory: 'Khoa học' },
+            { id: 25, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: 4.8, cover: '🎯', badge: 'Hot', category: 'hot', bookCategory: 'Kỹ năng sống' },
+            { id: 26, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: 4.8, cover: '📚', badge: 'Hot', category: 'hot', bookCategory: 'Kỹ năng sống' },
+            { id: 27, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: 4.7, cover: '⭐', badge: 'Hot', category: 'hot', bookCategory: 'Kinh doanh' },
+            { id: 28, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: 4.5, cover: '🎨', badge: 'Hot', category: 'hot', bookCategory: 'Kỹ năng sống' },
+            { id: 29, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: 4.6, cover: '💡', badge: 'Hot', category: 'hot', bookCategory: 'Kỹ năng sống' },
+            { id: 30, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: 4.7, cover: '🌟', badge: 'Hot', category: 'hot', bookCategory: 'Văn học' },
             
             // Khuyến mãi
-            { id: 31, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: '4.6', cover: '💡', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 32, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: '4.8', cover: '💎', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 33, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: '4.7', cover: '🚀', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 34, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: '4.8', cover: '🎯', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 35, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: '4.6', cover: '🔥', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 36, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: '4.9', cover: '📖', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 37, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: '4.8', cover: '📚', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 38, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: '4.7', cover: '⭐', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 39, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: '4.5', cover: '🎨', badge: 'Khuyến mãi', category: 'sale' },
-            { id: 40, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: '4.7', cover: '🌟', badge: 'Khuyến mãi', category: 'sale' }
+            { id: 31, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', price: '75.000₫', rating: 4.6, cover: '💡', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kỹ năng sống' },
+            { id: 32, title: 'Sapiens', author: 'Yuval Noah Harari', price: '140.000₫', rating: 4.8, cover: '💎', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Lịch sử' },
+            { id: 33, title: 'Tư Duy Nhanh Và Chậm', author: 'Daniel Kahneman', price: '130.000₫', rating: 4.7, cover: '🚀', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Khoa học' },
+            { id: 34, title: '7 Thói Quen Của Người Thành Đạt', author: 'Stephen Covey', price: '110.000₫', rating: 4.8, cover: '🎯', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kỹ năng sống' },
+            { id: 35, title: 'Rich Dad Poor Dad', author: 'Robert Kiyosaki', price: '100.000₫', rating: 4.6, cover: '🔥', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Tài chính' },
+            { id: 36, title: 'Atomic Habits', author: 'James Clear', price: '120.000₫', rating: 4.9, cover: '📖', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kỹ năng sống' },
+            { id: 37, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', price: '95.000₫', rating: 4.8, cover: '📚', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kỹ năng sống' },
+            { id: 38, title: 'Từ Tốt Đến Vĩ Đại', author: 'Jim Collins', price: '125.000₫', rating: 4.7, cover: '⭐', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kinh doanh' },
+            { id: 39, title: 'Nghệ Thuật Tinh Tế Của Việc Đếch Quan Tâm', author: 'Mark Manson', price: '85.000₫', rating: 4.5, cover: '🎨', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Kỹ năng sống' },
+            { id: 40, title: 'Nhà Giả Kim', author: 'Paulo Coelho', price: '89.000₫', rating: 4.7, cover: '🌟', badge: 'Khuyến mãi', category: 'sale', bookCategory: 'Văn học' }
         ]
         
         return allBooks.filter(book => book.category === tabId).slice(0, 8)
@@ -123,14 +123,25 @@ const Home: React.FC = () => {
                     <div className={styles.booksGrid}>
                         {getBooksForTab(activeTab).map((book) => (
                             <div key={book.id} className={styles.bookCard}>
-                                <div className={styles.bookCover}>{book.cover}</div>
-                                <div className={styles.bookBadge}>{book.badge}</div>
+                                <div className={styles.bookCover}>
+                                    <div className={styles.coverIcon}>{book.cover}</div>
+                                    <div className={styles.bookBadge}>{book.badge}</div>
+                                </div>
                                 <div className={styles.bookContent}>
                                     <h3 className={styles.bookTitle}>{book.title}</h3>
                                     <p className={styles.bookAuthor}>{book.author}</p>
+                                    <p className={styles.bookCategory}>{book.bookCategory}</p>
+                                    
+                                    <div className={styles.bookRating}>
+                                        <span className={styles.stars}>
+                                            {'★'.repeat(Math.floor(book.rating))}
+                                            {'☆'.repeat(5 - Math.floor(book.rating))}
+                                        </span>
+                                        <span className={styles.ratingNumber}>({book.rating})</span>
+                                    </div>
+
                                     <div className={styles.bookMeta}>
                                         <span className={styles.bookPrice}>{book.price}</span>
-                                        <span className={styles.bookRating}>★ {book.rating}</span>
                                     </div>
                                     <button className={`${styles.btn} ${styles.btnPrimary} ${styles.addToCart}`}>
                                         <FaShoppingCart className={styles.btnIcon} /> Thêm vào giỏ
