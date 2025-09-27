@@ -299,101 +299,175 @@
 .booksGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    grid-auto-rows: minmax(300px, auto);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    grid-auto-rows: minmax(460px, auto);
 }
 
 .bookCard {
     background: white;
     border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 420px;
+    overflow: hidden;
 }
 
 .bookCard:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .bookCover {
-    height: 120px;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    height: 200px;
+    border-radius: 16px 16px 0 0;
+    margin-bottom: 0;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 4.5rem;
     position: relative;
+    flex-shrink: 0;
 }
 
 .bookBadge {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 12px;
+    right: 12px;
     background: #ff6b6b;
     color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
+    z-index: 2;
+}
+
+.bookContent {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .bookTitle {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #2c3e50;
-    margin: 0 0 8px 0;
-    line-height: 1.3;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 2.8em;
 }
 
 .bookAuthor {
-    margin: 0 0 12px 0;
+    margin: 0 0 16px 0;
     color: #6c757d;
-    font-size: 0.9rem;
+    font-size: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-weight: 500;
 }
 
 .bookMeta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     margin-top: auto;
 }
 
 .bookPrice {
     color: #e63946;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
 }
 
 .bookRating {
     color: #f59e0b;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .addToCart {
     width: 100%;
     justify-content: center;
-    padding: 10px 16px;
-    font-size: 0.9rem;
-    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.categoryViewMore {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.categoryViewMoreLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 12px 24px;
+    border-radius: 25px;
+    border: 2px solid #667eea;
+    background: rgba(102, 126, 234, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.categoryViewMoreLink::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.categoryViewMoreLink:hover::before {
+    left: 100%;
+}
+
+.categoryViewMoreLink:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    border-color: #5a67d8;
+}
+
+.categoryViewMoreLink .arrowIcon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.categoryViewMoreLink:hover .arrowIcon {
+    transform: translateX(4px);
 }
 
 .container {
@@ -702,8 +776,10 @@
     }
 
     .booksGrid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: minmax(280px, auto);
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        gap: 10px;
+        grid-auto-rows: minmax(420px, auto);
     }
 
     .featuresGrid,
@@ -722,11 +798,25 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .booksGrid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        gap: 10px;
+        grid-auto-rows: minmax(400px, auto);
+    }
+}
+
 @media (max-width: 768px) {
     .booksGrid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        grid-auto-rows: minmax(260px, auto);
+        grid-template-rows: auto;
+        gap: 8px;
+        grid-auto-rows: minmax(400px, auto);
+    }
+
+    .bookContent {
+        padding: 18px;
     }
 }
 
@@ -748,18 +838,40 @@
     }
 
     .booksGrid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        grid-auto-rows: minmax(240px, auto);
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        gap: 8px;
+        grid-auto-rows: minmax(360px, auto);
     }
 
     .bookCard {
-        padding: 16px;
+        min-height: 360px;
     }
 
     .bookCover {
-        height: 100px;
-        font-size: 2rem;
+        height: 160px;
+        font-size: 3.5rem;
+    }
+
+    .bookContent {
+        padding: 16px;
+    }
+
+    .bookTitle {
+        font-size: 1.1rem;
+    }
+
+    .bookAuthor {
+        font-size: 0.95rem;
+    }
+
+    .bookPrice {
+        font-size: 1.2rem;
+    }
+
+    .addToCart {
+        padding: 12px 16px;
+        font-size: 0.95rem;
     }
 
     .sectionTitle {
@@ -782,5 +894,15 @@
 
     .tabIcon {
         font-size: 1rem;
+    }
+
+    .categoryViewMore {
+        margin-top: 30px;
+        padding-top: 20px;
+    }
+
+    .categoryViewMoreLink {
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 }

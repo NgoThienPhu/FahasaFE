@@ -29,12 +29,6 @@ const Header: React.FC = () => {
                             <li className='header-menu-item'>
                                 <Link to={"/products"} className={`header-menu-link ${isActive("/products") ? "active" : ""}`}>Sản phẩm</Link>
                             </li>
-                            <li className='header-menu-item'>
-                                <Link to={"/news"} className={`header-menu-link ${isActive("/news") ? "active" : ""}`}>Tin tức</Link>
-                            </li>
-                            <li className='header-menu-item'>
-                                <Link to={"/about"} className={`header-menu-link ${isActive("/about") ? "active" : ""}`}>Giới thiệu</Link>
-                            </li>
                         </ul>
                     </div>
                 </div>
