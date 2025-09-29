@@ -24,7 +24,7 @@ export const authApi = {
     },
 
     getProfile: async (): Promise<ApiResponse<UserProfile>> => {
-        const response = await api.get<ApiResponse<UserProfile>>('/auth/profile');
+        const response = await api.get<ApiResponse<UserProfile>>('/accounts/me');
         return response.data;
     },
 

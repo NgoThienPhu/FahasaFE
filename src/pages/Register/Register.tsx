@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../../services/hooks/useAuth';
+import { useRegistration } from '../../services/hooks/useRegistration';
 import styles from './Register.module.css';
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
-    const { register, sendOtp, loading } = useAuth();
+    const { register, sendOtp, loading } = useRegistration();
 
     const [formData, setFormData] = useState({
         fullName: '',

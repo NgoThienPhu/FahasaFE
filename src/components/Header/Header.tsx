@@ -2,10 +2,12 @@ import React from 'react'
 import './Header.css'
 import { FaShoppingCart, FaUser } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 const Header: React.FC = () => {
 
     const location = useLocation();
+    const { isAuthenticated } = useAuth();
 
     const isActive = (path: string) => {
         return location.pathname == path;
@@ -37,9 +39,9 @@ const Header: React.FC = () => {
                         <FaShoppingCart />
                         <span className='cart-count'>0</span>
                     </div>
-                    <div className='user'>
+                    <Link to={isAuthenticated ? '/profile' : '/login'} className='user'>
                         <FaUser />
-                    </div>
+                    </Link>
                 </div>
             </div>
         </header>
