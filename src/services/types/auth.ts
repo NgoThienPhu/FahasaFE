@@ -23,7 +23,19 @@ export interface AuthResponse {
 export interface UserProfile {
     id: string;
     username: string;
-    email: string;
-    phoneNumber: string;
-    isVerified: boolean;
+    email: {
+        id: string;
+        email: string;
+        isVerify: boolean;
+    };
+    phoneNumber: {
+        id: string;
+        phoneNumber: string;
+        isVerify: boolean;
+    };
+    fullName: string;
+    gender: string;
+    dateOfBirth: string;
+    isActived: boolean;
+    isDeleted: boolean;
 }

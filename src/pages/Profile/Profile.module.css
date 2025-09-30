@@ -8,12 +8,86 @@
     padding: 0 16px;
 }
 
+.layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.sidebar {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    color: #333;
+    font-weight: 600;
+}
+
+.userMeta {}
+.userName { font-weight: 600; }
+.userEmail { color: #666; font-size: 12px; }
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menuItem {
+    text-align: left;
+    background: transparent;
+    border: 1px solid #eee;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.active {
+    background: #f6f9ff;
+    border-color: #cfe0ff;
+}
+
+.sidebarFooter { margin-top: auto; }
+.logoutBtn {
+    width: 100%;
+    background: #ffefef;
+    border: 1px solid #ffd3d3;
+    color: #b20000;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.content {}
+.sectionTitle { margin-bottom: 8px; }
+
 .card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid #eee;
     padding: 16px;
-    margin-top: 12px;
 }
 
 .row {
@@ -34,6 +108,39 @@
 .value {
     color: #111;
     font-weight: 500;
+}
+
+.valueGroup {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.empty { color: #666; }
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.badgeSuccess {
+    background: #eaffea;
+    color: #0f7a0f;
+    border: 1px solid #c3f1c3;
+}
+
+.badgeWarning {
+    background: #fff6e6;
+    color: #9a6b00;
+    border: 1px solid #ffe1b3;
+}
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 
