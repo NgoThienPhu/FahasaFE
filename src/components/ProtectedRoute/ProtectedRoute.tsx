@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
@@ -15,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     const { isAuthenticated, loading } = useAuth();
 
     if (loading) {
-        return <div>Đang kiểm tra...</div>;
+        return <LoadingSpinner message="Đang kiểm tra xác thực..." size="medium" />;
     }
 
     if (!requireAuth && isAuthenticated) {

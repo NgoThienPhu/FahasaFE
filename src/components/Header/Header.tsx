@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext'
 const Header: React.FC = () => {
 
     const location = useLocation();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
 
     const isActive = (path: string) => {
         return location.pathname == path;
@@ -40,7 +40,12 @@ const Header: React.FC = () => {
                         <span className='cart-count'>0</span>
                     </div>
                     <Link to={isAuthenticated ? '/profile' : '/login'} className='user'>
-                        <FaUser />
+                        <div className='user-icon'>
+                            <FaUser />
+                        </div>
+                        {isAuthenticated && user && (
+                            <span className='user-name'>{user.fullName}</span>
+                        )}
                     </Link>
                 </div>
             </div>

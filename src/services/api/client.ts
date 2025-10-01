@@ -91,7 +91,6 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest);
             } catch (err) {
                 processQueue(err, null);
-                localStorage.removeItem("accessToken");
                 window.location.href = "/login";
                 return Promise.reject(err);
             } finally {
