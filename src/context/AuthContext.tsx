@@ -19,13 +19,12 @@ type AuthProviderProps = { children: React.ReactNode };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<UserProfile | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                setLoading(true);
                 const token = localStorage.getItem('accessToken');
                 if (token) {
                     const response = await authApi.getProfile();
@@ -35,7 +34,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 }
             } catch (err) {
                 console.error('Auth check failed:', err);
-                localStorage.removeItem('accessToken');
             } finally {
                 setLoading(false);
             }

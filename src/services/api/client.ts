@@ -42,9 +42,16 @@ apiClient.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const originalRequest = error.config;
 
-        if (originalRequest.url.includes("/auth/login")) {
+        const originalRequest = error.config || {};
+
+        if (originalRequest.url && originalRequest.url.includes("/auth/login")) {
+            return Promise.reject(error);
+        }
+
+        if (originalRequest.url && originalRequest.url.includes("/auth/refresh")) {
+            localStorage.removeItem("accessToken");
+            window.location.href = "/login";
             return Promise.reject(error);
         }
 
@@ -66,17 +73,11 @@ apiClient.interceptors.response.use(
             }
 
             isRefreshing = true;
-            const refreshToken = localStorage.getItem("refreshToken");
-
-            if (!refreshToken) {
-                localStorage.clear();
-                window.location.href = "/login";
-                return Promise.reject(error);
-            }
-
+            
             try {
+
                 const res = await axios.post(`${API_BASE_URL}/auth/refresh`, null, { withCredentials: true });
-                const newAccessToken = res.data.accessToken;
+                const newAccessToken = res.data.data.accessToken;
 
                 localStorage.setItem("accessToken", newAccessToken);
                 apiClient.defaults.headers.common["Authorization"] = "Bearer " + newAccessToken;
@@ -90,7 +91,7 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest);
             } catch (err) {
                 processQueue(err, null);
-                localStorage.clear();
+                localStorage.removeItem("accessToken");
                 window.location.href = "/login";
                 return Promise.reject(err);
             } finally {
