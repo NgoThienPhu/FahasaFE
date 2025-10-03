@@ -1,5 +1,5 @@
 import type { ApiResponse } from '../types/api';
-import type { AuthResponse, LoginRequest, OtpRequest, RegisterRequest, UserProfile } from '../types/auth';
+import type { AuthResponse, LoginRequest, OtpRequest, RegisterRequest } from '../types/auth';
 import { api } from './client';
 
 export const authApi = {
@@ -20,11 +20,6 @@ export const authApi = {
 
     verifyOtp: async (data: { email: string; otpCode: string }): Promise<ApiResponse<{ verified: boolean }>> => {
         const response = await api.post<ApiResponse<{ verified: boolean }>>('/auth/verify-otp', data);
-        return response.data;
-    },
-
-    getProfile: async (): Promise<ApiResponse<UserProfile>> => {
-        const response = await api.get<ApiResponse<UserProfile>>('/accounts/me');
         return response.data;
     },
 

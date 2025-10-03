@@ -1,10 +1,25 @@
 import React, { useState } from 'react'
 import styles from './Profile.module.css'
 import { useAuth } from '../../context/AuthContext'
+import EditProfileForm from '../../components/EditProfileForm'
 
 const Profile: React.FC = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, refreshProfile } = useAuth();
     const [activeTab, setActiveTab] = useState<'account' | 'cart' | 'orders' | 'addresses'>('account');
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+    };
+
+    const handleEditSuccess = async () => {
+        setIsEditing(false);
+        await refreshProfile(); // Refresh user data after successful update
+    };
 
     if (!user) {
         return null;
@@ -56,51 +71,71 @@ const Profile: React.FC = () => {
                     <main className={styles.content}>
                         {activeTab === 'account' && (
                             <div className={styles.card}>
-                                <h2 className={styles.sectionTitle}>Thông tin tài khoản</h2>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Họ và tên</span>
-                                    <span className={styles.value}>{user.fullName || '—'}</span>
+                                <div className={styles.sectionHeader}>
+                                    <h2 className={styles.sectionTitle}>Thông tin tài khoản</h2>
+                                    {!isEditing && (
+                                        <button 
+                                            className={styles.editButton}
+                                            onClick={handleEditClick}
+                                        >
+                                            Chỉnh sửa
+                                        </button>
+                                    )}
                                 </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Tài khoản</span>
-                                    <span className={styles.value}>{user.username}</span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Email</span>
-                                    <span className={styles.valueGroup}>
-                                        <span className={styles.value}>{user.email?.email || '—'}</span>
-                                        <span className={`${styles.badge} ${user.email?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
-                                            {user.email?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
-                                        </span>
-                                    </span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Số điện thoại</span>
-                                    <span className={styles.valueGroup}>
-                                        <span className={styles.value}>{user.phoneNumber?.phoneNumber || '—'}</span>
-                                        <span className={`${styles.badge} ${user.phoneNumber?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
-                                            {user.phoneNumber?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
-                                        </span>
-                                    </span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Giới tính</span>
-                                    <span className={styles.value}>{user.gender || '—'}</span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Ngày sinh</span>
-                                    <span className={styles.value}>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : '—'}</span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>Trạng thái</span>
-                                    <span className={`${styles.badge} ${user.isActived ? styles.badgeSuccess : styles.badgeWarning}`}>
-                                        {user.isActived ? 'Đang hoạt động' : 'Không hoạt động'}
-                                    </span>
-                                </div>
-                                <div className={styles.row}>
-                                    <span className={styles.label}>ID người dùng</span>
-                                    <span className={styles.value}>{user.id}</span>
-                                </div>
+                                
+                                {isEditing ? (
+                                    <EditProfileForm 
+                                        onCancel={handleCancelEdit}
+                                        onSuccess={handleEditSuccess}
+                                    />
+                                ) : (
+                                    <>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Họ và tên</span>
+                                            <span className={styles.value}>{user.fullName || '—'}</span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Tài khoản</span>
+                                            <span className={styles.value}>{user.username}</span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Email</span>
+                                            <span className={styles.valueGroup}>
+                                                <span className={styles.value}>{user.email?.email || '—'}</span>
+                                                <span className={`${styles.badge} ${user.email?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
+                                                    {user.email?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Số điện thoại</span>
+                                            <span className={styles.valueGroup}>
+                                                <span className={styles.value}>{user.phoneNumber?.phoneNumber || '—'}</span>
+                                                <span className={`${styles.badge} ${user.phoneNumber?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
+                                                    {user.phoneNumber?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Giới tính</span>
+                                            <span className={styles.value}>{user.gender == "MALE" && "Nam" || user.gender == "FEMALE" && "Nữ" || 'Chưa xác định'}</span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Ngày sinh</span>
+                                            <span className={styles.value}>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : '—'}</span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>Trạng thái</span>
+                                            <span className={`${styles.badge} ${user.isActived ? styles.badgeSuccess : styles.badgeWarning}`}>
+                                                {user.isActived ? 'Đang hoạt động' : 'Không hoạt động'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.row}>
+                                            <span className={styles.label}>ID người dùng</span>
+                                            <span className={styles.value}>{user.id}</span>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         )}
 

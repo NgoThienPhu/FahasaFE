@@ -12,6 +12,12 @@ export interface RegisterRequest {
     phoneNumber: string;
 }
 
+export interface UpdateProfileRequest {
+    fullName?: string;
+    gender?: string;
+    dateOfBirth?: string;
+}
+
 export interface OtpRequest {
     email: string;
 }

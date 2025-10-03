@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { authApi } from '../services/api/auth';
+import { userApi } from '../services/api/user';
 import type { UserProfile } from '../services/types/auth';
 import axios from 'axios';
 
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             try {
                 const token = localStorage.getItem('accessToken');
                 if (token) {
-                    const response = await authApi.getProfile();
+                    const response = await userApi.getProfile();
                     if (response.success) {
                         setUser(response.data);
                     }
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const refreshProfile = async () => {
         try {
-            const response = await authApi.getProfile();
+            const response = await userApi.getProfile();
             if (response.success) {
                 setUser(response.data);
             }
