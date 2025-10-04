@@ -8,28 +8,28 @@ export const authApi = {
         return response.data;
     },
 
-    register: async (data: RegisterRequest): Promise<ApiResponse<AuthResponse>> => {
-        const response = await api.post<ApiResponse<AuthResponse>>('/auth/register', data);
+    register: async (data: RegisterRequest): Promise<ApiResponse<void>> => {
+        const response = await api.post<ApiResponse<void>>('/auth/register', data);
         return response.data;
     },
 
-    sendOtp: async (data: OtpRequest): Promise<ApiResponse<{ message: string }>> => {
-        const response = await api.post<ApiResponse<{ message: string }>>(`/auth/send-otp?toEmail=${data.email}`);
+    sendOtp: async (data: OtpRequest): Promise<ApiResponse<void>> => {
+        const response = await api.post<ApiResponse<void>>(`/auth/send-otp?toEmail=${data.email}`);
         return response.data;
     },
 
-    verifyOtp: async (data: { email: string; otpCode: string }): Promise<ApiResponse<{ verified: boolean }>> => {
-        const response = await api.post<ApiResponse<{ verified: boolean }>>('/auth/verify-otp', data);
+    verifyOtp: async (data: { email: string; otp: string }): Promise<ApiResponse<void>> => {
+        const response = await api.post<ApiResponse<void>>('/emails/verify-otp', data);
         return response.data;
     },
 
-    refreshToken: async (): Promise<ApiResponse<{ token: string }>> => {
-        const response = await api.post<ApiResponse<{ token: string }>>('/auth/refresh');
+    refreshToken: async (): Promise<ApiResponse<{ newAccessToken: string }>> => {
+        const response = await api.post<ApiResponse<{ newAccessToken: string }>>('/auth/refresh');
         return response.data;
     },
 
-    logout: async (): Promise<ApiResponse<{ message: string }>> => {
-        const response = await api.post<ApiResponse<{ message: string }>>('/auth/logout');
+    logout: async (): Promise<ApiResponse<void>> => {
+        const response = await api.post<ApiResponse<void>>('/auth/logout');
         return response.data;
     },
 };

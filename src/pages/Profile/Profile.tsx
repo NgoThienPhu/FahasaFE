@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './Profile.module.css'
 import { useAuth } from '../../context/AuthContext'
 import EditProfileForm from '../../components/EditProfileForm'
+import EmailVerification from '../../components/EmailVerification'
 
 const Profile: React.FC = () => {
     const { user, logout, refreshProfile } = useAuth();
@@ -98,15 +99,10 @@ const Profile: React.FC = () => {
                                             <span className={styles.label}>Tài khoản</span>
                                             <span className={styles.value}>{user.username}</span>
                                         </div>
-                                        <div className={styles.row}>
-                                            <span className={styles.label}>Email</span>
-                                            <span className={styles.valueGroup}>
-                                                <span className={styles.value}>{user.email?.email || '—'}</span>
-                                                <span className={`${styles.badge} ${user.email?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
-                                                    {user.email?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
-                                                </span>
-                                            </span>
-                                        </div>
+                                        <EmailVerification 
+                                            user={user} 
+                                            onSuccess={handleEditSuccess}
+                                        />
                                         <div className={styles.row}>
                                             <span className={styles.label}>Số điện thoại</span>
                                             <span className={styles.valueGroup}>

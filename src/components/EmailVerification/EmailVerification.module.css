@@ -1,0 +1,231 @@
+.emailVerification {
+    margin-bottom: 16px;
+}
+
+.emailRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.label {
+    color: #666;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.emailContent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.value {
+    color: #111;
+    font-weight: 500;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badgeWarning {
+    background: #fff6e6;
+    color: #9a6b00;
+    border: 1px solid #ffe1b3;
+}
+
+.verifyButton {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.verifyButton:hover:not(:disabled) {
+    background: #2563eb;
+}
+
+.verifyButton:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.verificationForm {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.errorMessage {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.successMessage {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.otpForm {
+    margin-bottom: 16px;
+}
+
+.inputLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.otpInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 4px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+    font-family: 'Courier New', monospace;
+}
+
+.otpInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.submitButton {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.submitButton:hover:not(:disabled) {
+    background: #059669;
+}
+
+.submitButton:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.otpActions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.resendButton {
+    background: transparent;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.resendButton:hover:not(:disabled) {
+    background: #3b82f6;
+    color: white;
+}
+
+.resendButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cancelButton {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton:hover:not(:disabled) {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.cancelButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+    .emailRow {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .emailContent {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .inputGroup {
+        flex-direction: column;
+    }
+    
+    .submitButton {
+        width: 100%;
+    }
+    
+    .otpActions {
+        flex-direction: column;
+    }
+    
+    .resendButton,
+    .cancelButton {
+        width: 100%;
+    }
+}
