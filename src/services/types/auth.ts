@@ -22,6 +22,12 @@ export interface OtpRequest {
     email: string;
 }
 
+export interface ChangeEmailRequest {
+    newEmail: string;
+    otp: string;
+    password: string;
+}
+
 export interface AuthResponse {
     accessToken: string;
 }
