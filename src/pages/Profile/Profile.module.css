@@ -118,6 +118,58 @@
     background: #1d4ed8;
 }
 
+.editIconButton {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.editIconButton:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.editIconButton:active {
+    background: #1d4ed8;
+    transform: translateY(0);
+}
+
+.addAddressButton {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.addAddressButton:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.addAddressButton:active {
+    background: #047857;
+    transform: translateY(0);
+}
+
 .card {
     background: #fff;
     border-radius: 12px;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from './Home.module.css'
 import { FaBook, FaShoppingCart } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const Home: React.FC = () => {
     const [activeTab, setActiveTab] = useState('new')
@@ -115,10 +116,10 @@ const Home: React.FC = () => {
                                 </button>
                             ))}
                         </div>
-                        <a href="/products" className={styles.viewMoreLink}>
+                        <Link to="/products" className={styles.viewMoreLink}>
                             <span>Xem tất cả</span>
                             <div className={styles.arrowIcon}>→</div>
-                        </a>
+                        </Link>
                     </div>
                     <div className={styles.booksGrid}>
                         {getBooksForTab(activeTab).map((book) => (
@@ -151,10 +152,10 @@ const Home: React.FC = () => {
                         ))}
                     </div>
                     <div className={styles.categoryViewMore}>
-                        <a href={`/products?category=${activeTab}`} className={styles.categoryViewMoreLink}>
+                        <Link to={`/products?category=${activeTab}`} className={styles.categoryViewMoreLink}>
                             <span>Xem thêm {tabs.find(tab => tab.id === activeTab)?.label.toLowerCase()}</span>
                             <div className={styles.arrowIcon}>→</div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>

@@ -3,11 +3,14 @@ import styles from './Profile.module.css'
 import { useAuth } from '../../context/AuthContext'
 import EditProfileForm from '../../components/EditProfileForm'
 import EmailVerification from '../../components/EmailVerification'
+import AddAddressForm from '../../components/AddAddressForm'
+import { FaEdit, FaPlus } from 'react-icons/fa'
 
 const Profile: React.FC = () => {
     const { user, logout, refreshProfile } = useAuth();
     const [activeTab, setActiveTab] = useState<'account' | 'cart' | 'orders' | 'addresses'>('account');
     const [isEditing, setIsEditing] = useState(false);
+    const [isAddingAddress, setIsAddingAddress] = useState(false);
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -20,6 +23,19 @@ const Profile: React.FC = () => {
     const handleEditSuccess = async () => {
         setIsEditing(false);
         await refreshProfile(); // Refresh user data after successful update
+    };
+
+    const handleAddAddressClick = () => {
+        setIsAddingAddress(true);
+    };
+
+    const handleCancelAddAddress = () => {
+        setIsAddingAddress(false);
+    };
+
+    const handleAddAddressSuccess = async () => {
+        setIsAddingAddress(false);
+        await refreshProfile(); // Refresh user data after successful add
     };
 
     if (!user) {
@@ -76,10 +92,11 @@ const Profile: React.FC = () => {
                                     <h2 className={styles.sectionTitle}>Thông tin tài khoản</h2>
                                     {!isEditing && (
                                         <button 
-                                            className={styles.editButton}
+                                            className={styles.editIconButton}
                                             onClick={handleEditClick}
+                                            title="Chỉnh sửa thông tin"
                                         >
-                                            Chỉnh sửa
+                                            <FaEdit />
                                         </button>
                                     )}
                                 </div>
@@ -144,18 +161,39 @@ const Profile: React.FC = () => {
 
                         {activeTab === 'addresses' && (
                             <div className={styles.card}>
-                                <h2 className={styles.sectionTitle}>Địa chỉ giao hàng</h2>
-                                {Array.isArray((user as any).addresses) && (user as any).addresses.length > 0 ? (
-                                    <div>
-                                        {(user as any).addresses.map((addr: any, idx: number) => (
-                                            <div className={styles.row} key={addr.id || idx}>
-                                                <span className={styles.label}>Địa chỉ {idx + 1}</span>
-                                                <span className={styles.value}>{addr.fullAddress || addr.address || '—'}</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className={styles.sectionHeader}>
+                                    <h2 className={styles.sectionTitle}>Địa chỉ giao hàng</h2>
+                                    {!isAddingAddress && (
+                                        <button 
+                                            className={styles.addAddressButton}
+                                            onClick={handleAddAddressClick}
+                                            title="Thêm địa chỉ mới"
+                                        >
+                                            <FaPlus />
+                                        </button>
+                                    )}
+                                </div>
+                                
+                                {isAddingAddress ? (
+                                    <AddAddressForm 
+                                        onCancel={handleCancelAddAddress}
+                                        onSuccess={handleAddAddressSuccess}
+                                    />
                                 ) : (
-                                    <div className={styles.empty}>Bạn chưa có địa chỉ giao hàng.</div>
+                                    <>
+                                        {Array.isArray((user as any).addresses) && (user as any).addresses.length > 0 ? (
+                                            <div>
+                                                {(user as any).addresses.map((addr: any, idx: number) => (
+                                                    <div className={styles.row} key={addr.id || idx}>
+                                                        <span className={styles.label}>Địa chỉ {idx + 1}</span>
+                                                        <span className={styles.value}>{addr.fullAddress || addr.address || '—'}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className={styles.empty}>Bạn chưa có địa chỉ giao hàng.</div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         )}

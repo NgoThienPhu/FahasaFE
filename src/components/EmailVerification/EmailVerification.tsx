@@ -3,6 +3,7 @@ import { authApi } from '../../services/api/auth';
 import { userApi } from '../../services/api/user';
 import type { UserProfile } from '../../services/types/user';
 import axios from 'axios';
+import { FaExchangeAlt } from 'react-icons/fa';
 import styles from './EmailVerification.module.css';
 
 interface EmailVerificationProps {
@@ -195,11 +196,12 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({ user, onSuccess }
                     )}
                     {!isChangingEmail && (
                         <button 
-                            className={styles.changeEmailButton}
+                            className={styles.changeEmailIconButton}
                             onClick={handleChangeEmailClick}
                             disabled={loading}
+                            title="Đổi email"
                         >
-                            Đổi email
+                            <FaExchangeAlt />
                         </button>
                     )}
                 </div>
