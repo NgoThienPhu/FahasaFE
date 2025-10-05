@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Profile.module.css'
 import { useAuth } from '../../context/AuthContext'
 import EditProfileForm from '../../components/EditProfileForm'
 import EmailVerification from '../../components/EmailVerification'
 import AddAddressForm from '../../components/AddAddressForm'
 import { FaEdit, FaPlus } from 'react-icons/fa'
+import { userApi } from '../../services/api/user'
+import type { Address } from '../../services/types/user'
 
 const Profile: React.FC = () => {
     const { user, logout, refreshProfile } = useAuth();
     const [activeTab, setActiveTab] = useState<'account' | 'cart' | 'orders' | 'addresses'>('account');
     const [isEditing, setIsEditing] = useState(false);
     const [isAddingAddress, setIsAddingAddress] = useState(false);
+    const [addresses, setAddresses] = useState<Address[] | null>(null);
+    const [addressesLoading, setAddressesLoading] = useState(false);
+    const [addressesError, setAddressesError] = useState<string | null>(null);
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -35,8 +40,34 @@ const Profile: React.FC = () => {
 
     const handleAddAddressSuccess = async () => {
         setIsAddingAddress(false);
-        await refreshProfile(); // Refresh user data after successful add
+        await loadAddresses();
     };
+
+    const loadAddresses = async () => {
+        try {
+            setAddressesLoading(true);
+            setAddressesError(null);
+            const res = await userApi.getAddresses();
+            if (res.success) {
+                setAddresses(res.data || []);
+            } else {
+                setAddresses([]);
+                setAddressesError(res.message || 'Không thể tải địa chỉ');
+            }
+        } catch (e) {
+            setAddressesError('Không thể tải địa chỉ');
+            setAddresses([]);
+        } finally {
+            setAddressesLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'addresses' && !isAddingAddress) {
+            loadAddresses();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeTab, isAddingAddress]);
 
     if (!user) {
         return null;
@@ -181,17 +212,25 @@ const Profile: React.FC = () => {
                                     />
                                 ) : (
                                     <>
-                                        {Array.isArray((user as any).addresses) && (user as any).addresses.length > 0 ? (
-                                            <div>
-                                                {(user as any).addresses.map((addr: any, idx: number) => (
-                                                    <div className={styles.row} key={addr.id || idx}>
-                                                        <span className={styles.label}>Địa chỉ {idx + 1}</span>
-                                                        <span className={styles.value}>{addr.fullAddress || addr.address || '—'}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className={styles.empty}>Bạn chưa có địa chỉ giao hàng.</div>
+                                        {addressesLoading && (
+                                            <div className={styles.empty}>Đang tải địa chỉ...</div>
+                                        )}
+                                        {!addressesLoading && addressesError && (
+                                            <div className={styles.empty}>{addressesError}</div>
+                                        )}
+                                        {!addressesLoading && !addressesError && (
+                                            Array.isArray(addresses) && addresses.length > 0 ? (
+                                                <div>
+                                                    {addresses.map((addr, idx) => (
+                                                        <div className={styles.row} key={addr.id || idx.toString()}>
+                                                            <span className={styles.label}>Địa chỉ {idx + 1}</span>
+                                                            <span className={styles.value}>{(addr as any).fullAddress || addr.addressDetail || '—'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className={styles.empty}>Bạn chưa có địa chỉ giao hàng.</div>
+                                            )
                                         )}
                                     </>
                                 )}

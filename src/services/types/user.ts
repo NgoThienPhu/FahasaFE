@@ -29,3 +29,24 @@ export interface UserProfile {
     isActived: boolean;
     isDeleted: boolean;
 }
+
+export interface Address {
+    id: string;
+    fullName: string;
+    phoneNumber: string;
+    addressDetail: string;
+    city: string;
+    district: string;
+    ward: string;
+    isDefault: boolean;
+}
+
+export interface CreateAddressRequest {
+    fullName: string;
+    phoneNumber: string;
+    addressDetail: string;
+    city: string;
+    district: string;
+    ward: string;
+    isDefault: boolean;
+}

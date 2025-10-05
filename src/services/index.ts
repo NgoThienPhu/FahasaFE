@@ -1,7 +1,7 @@
 // Export all API services
 export * from './api/auth';
 export * from './api/user';
-export * from './api/client';
+export * from './config/config';
 
 // Export hooks
 export * from './hooks/useApi';

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import styles from './AddAddressForm.module.css';
+import { userApi } from '../../services/api/user';
+import type { CreateAddressRequest } from '../../services/types/user';
 
 interface AddAddressFormProps {
     onCancel: () => void;
@@ -10,7 +12,7 @@ interface AddAddressFormProps {
 interface AddressFormData {
     fullName: string;
     phoneNumber: string;
-    address: string;
+    addressDetail: string;
     city: string;
     district: string;
     ward: string;
@@ -21,7 +23,7 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({ onCancel, onSuccess }) 
     const [formData, setFormData] = useState<AddressFormData>({
         fullName: '',
         phoneNumber: '',
-        address: '',
+        addressDetail: '',
         city: '',
         district: '',
         ward: '',
@@ -56,8 +58,8 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({ onCancel, onSuccess }) 
             newErrors.phoneNumber = 'Số điện thoại không hợp lệ';
         }
 
-        if (!formData.address.trim()) {
-            newErrors.address = 'Địa chỉ không được để trống';
+        if (!formData.addressDetail.trim()) {
+            newErrors.addressDetail = 'Địa chỉ không được để trống';
         }
 
         if (!formData.city.trim()) {
@@ -85,12 +87,21 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({ onCancel, onSuccess }) 
 
         try {
             setLoading(true);
-            // TODO: Implement API call to add address
-            console.log('Adding address:', formData);
-            
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
+            const payload: CreateAddressRequest = {
+                fullName: formData.fullName,
+                phoneNumber: formData.phoneNumber,
+                addressDetail: formData.addressDetail,
+                city: formData.city,
+                district: formData.district,
+                ward: formData.ward,
+                isDefault: formData.isDefault,
+            };
+            const res = await userApi.addAddress(payload);
+            if (!res.success) {
+                setErrors({ general: res.message || 'Thêm địa chỉ thất bại' });
+                return;
+            }
+
             onSuccess();
         } catch (err) {
             setErrors({ general: 'Thêm địa chỉ thất bại' });
@@ -152,19 +163,19 @@ const AddAddressForm: React.FC<AddAddressFormProps> = ({ onCancel, onSuccess }) 
                 </div>
 
                 <div className={styles.formGroup}>
-                    <label htmlFor="address" className={styles.label}>
+                    <label htmlFor="addressDetail" className={styles.label}>
                         Địa chỉ chi tiết <span className={styles.required}>*</span>
                     </label>
                     <textarea
-                        id="address"
-                        name="address"
-                        value={formData.address}
+                        id="addressDetail"
+                        name="addressDetail"
+                        value={formData.addressDetail}
                         onChange={handleInputChange}
-                        className={`${styles.textarea} ${errors.address ? styles.inputError : ''}`}
+                        className={`${styles.textarea} ${errors.addressDetail ? styles.inputError : ''}`}
                         placeholder="Nhập địa chỉ chi tiết (số nhà, tên đường, tòa nhà...)"
                         rows={3}
                     />
-                    {errors.address && <span className={styles.errorText}>{errors.address}</span>}
+                    {errors.addressDetail && <span className={styles.errorText}>{errors.addressDetail}</span>}
                 </div>
 
                 <div className={styles.formRow}>
