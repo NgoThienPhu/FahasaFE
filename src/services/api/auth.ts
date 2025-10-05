@@ -1,5 +1,5 @@
 import type { ApiResponse } from '../types/api';
-import type { AuthResponse, LoginRequest, OtpRequest, RegisterRequest, ChangeEmailRequest } from '../types/auth';
+import type { AuthResponse, LoginRequest, OtpRequest, RegisterRequest } from '../types/auth';
 import { api } from './client';
 
 export const authApi = {
@@ -30,11 +30,6 @@ export const authApi = {
 
     logout: async (): Promise<ApiResponse<void>> => {
         const response = await api.post<ApiResponse<void>>('/auth/logout');
-        return response.data;
-    },
-
-    changeEmail: async (data: ChangeEmailRequest): Promise<ApiResponse<void>> => {
-        const response = await api.post<ApiResponse<void>>('/accounts/me/change-email', data);
         return response.data;
     },
 };

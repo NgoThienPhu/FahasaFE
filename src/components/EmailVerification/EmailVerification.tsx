@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { authApi } from '../../services/api/auth';
-import type { UserProfile } from '../../services/types/auth';
+import { userApi } from '../../services/api/user';
+import type { UserProfile } from '../../services/types/user';
 import axios from 'axios';
 import styles from './EmailVerification.module.css';
 
@@ -140,7 +141,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({ user, onSuccess }
             setLoading(true);
             setError('');
             
-            const response = await authApi.changeEmail({ 
+            const response = await userApi.changeEmail({ 
                 newEmail: newEmail, 
                 otp: changeEmailOtp,
                 password: password

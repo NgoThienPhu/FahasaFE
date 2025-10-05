@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { userApi } from '../../services/api/user';
-import type { UpdateProfileRequest } from '../../services/types/auth';
+import type { UpdateProfileRequest } from '../../services/types/user';
 import axios from 'axios';
 import styles from './EditProfileForm.module.css';
 

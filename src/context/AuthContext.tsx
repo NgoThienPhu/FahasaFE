@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { authApi } from '../services/api/auth';
 import { userApi } from '../services/api/user';
-import type { UserProfile } from '../services/types/auth';
+import type { UserProfile } from '../services/types/user';
 import axios from 'axios';
 
 type AuthContextValue = {

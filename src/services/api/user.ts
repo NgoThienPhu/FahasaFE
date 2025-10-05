@@ -1,5 +1,5 @@
 import type { ApiResponse } from '../types/api';
-import type { UpdateProfileRequest, UserProfile } from '../types/auth';
+import type { UpdateProfileRequest, UserProfile, ChangeEmailRequest } from '../types/user';
 import { api } from './client';
 
 export const userApi = {
@@ -10,6 +10,11 @@ export const userApi = {
 
     getProfile: async (): Promise<ApiResponse<UserProfile>> => {
         const response = await api.get<ApiResponse<UserProfile>>('/accounts/me');
+        return response.data;
+    },
+
+    changeEmail: async (data: ChangeEmailRequest): Promise<ApiResponse<void>> => {
+        const response = await api.post<ApiResponse<void>>('/accounts/me/change-email', data);
         return response.data;
     },
 };
