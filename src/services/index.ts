@@ -3,8 +3,7 @@ export * from './api/auth';
 export * from './api/user';
 export * from './api/client';
 
-// Export all hooks
-export * from './hooks/useRegistration';
+// Export hooks
 export * from './hooks/useApi';
 
 // Export all types

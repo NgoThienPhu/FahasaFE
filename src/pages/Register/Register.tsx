@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useRegistration } from '../../services/hooks/useRegistration';
+import { authApi } from '../../services/api/auth';
 import styles from './Register.module.css';
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
-    const { register, sendOtp, loading } = useRegistration();
+    const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -100,7 +100,8 @@ const Register: React.FC = () => {
         }
 
         try {
-            const result = await sendOtp(formData.email);
+            setLoading(true);
+            const result = await authApi.sendOtp({ email: formData.email });
             if (result.success) {
                 setOtpSent(true);
                 setCountdown(60);
@@ -114,11 +115,12 @@ const Register: React.FC = () => {
                     });
                 }, 1000);
             } else {
-                setFormErrors(prev => ({ ...prev, email: result.error || 'Không thể gửi OTP' }));
+                setFormErrors(prev => ({ ...prev, email: result.message || 'Không thể gửi OTP' }));
             }
         } catch {
             setFormErrors(prev => ({ ...prev, email: 'Lỗi khi gửi OTP' }));
         }
+        finally { setLoading(false); }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -131,7 +133,8 @@ const Register: React.FC = () => {
         setIsSubmitting(true);
 
         try {
-            const result = await register(formData);
+            setLoading(true);
+            const result = await authApi.register(formData);
 
             if (result.success) {
                 navigate('/login', {
@@ -142,7 +145,7 @@ const Register: React.FC = () => {
             } else {
                 setFormErrors(prev => ({
                     ...prev,
-                    general: result.error || 'Đăng ký thất bại'
+                    general: result.message || 'Đăng ký thất bại'
                 }));
             }
         } catch {
@@ -152,6 +155,7 @@ const Register: React.FC = () => {
             }));
         } finally {
             setIsSubmitting(false);
+            setLoading(false);
         }
     };
 
