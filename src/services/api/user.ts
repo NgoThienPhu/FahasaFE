@@ -32,4 +32,19 @@ export const userApi = {
         const response = await api.get(`/accounts/me/addresses/${addressId}`);
         return response.data as ApiResponse<Address>;
     },
+
+    updateAddress: async (addressId: string, data: CreateAddressRequest): Promise<ApiResponse<Address>> => {
+        const response = await api.put(`/accounts/me/addresses/${addressId}`, data);
+        return response.data as ApiResponse<Address>;
+    },
+
+    deleteAddress: async (addressId: string): Promise<ApiResponse<void>> => {
+        const response = await api.delete(`/accounts/me/addresses/${addressId}`);
+        return response.data as ApiResponse<void>;
+    },
+
+    setDefaultAddress: async (addressId: string): Promise<ApiResponse<Address>> => {
+        const response = await api.patch(`/accounts/me/addresses/${addressId}/set-default`);
+        return response.data as ApiResponse<Address>;
+    },
 };

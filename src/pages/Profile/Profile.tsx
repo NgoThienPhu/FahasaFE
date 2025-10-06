@@ -4,6 +4,8 @@ import { useAuth } from '../../context/AuthContext'
 import EditProfileForm from '../../components/EditProfileForm'
 import EmailVerification from '../../components/EmailVerification'
 import AddAddressForm from '../../components/AddAddressForm'
+import { EditAddressForm } from '../../components/EditAddressForm'
+import { AddressList } from '../../components/AddressList'
 import { FaEdit, FaPlus } from 'react-icons/fa'
 import { userApi } from '../../services/api/user'
 import type { Address } from '../../services/types/user'
@@ -13,6 +15,7 @@ const Profile: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'account' | 'cart' | 'orders' | 'addresses'>('account');
     const [isEditing, setIsEditing] = useState(false);
     const [isAddingAddress, setIsAddingAddress] = useState(false);
+    const [editingAddress, setEditingAddress] = useState<Address | null>(null);
     const [addresses, setAddresses] = useState<Address[] | null>(null);
     const [addressesLoading, setAddressesLoading] = useState(false);
     const [addressesError, setAddressesError] = useState<string | null>(null);
@@ -43,6 +46,49 @@ const Profile: React.FC = () => {
         await loadAddresses();
     };
 
+    const handleEditAddress = (address: Address) => {
+        setEditingAddress(address);
+    };
+
+    const handleCancelEditAddress = () => {
+        setEditingAddress(null);
+    };
+
+    const handleEditAddressSuccess = async () => {
+        setEditingAddress(null);
+        await loadAddresses();
+    };
+
+    const handleDeleteAddress = async (address: Address) => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) {
+            try {
+                const response = await userApi.deleteAddress(address.id);
+                if (response.success) {
+                    await loadAddresses();
+                } else {
+                    alert(response.message || 'Có lỗi xảy ra khi xóa địa chỉ');
+                }
+            } catch (error) {
+                console.error('Error deleting address:', error);
+                alert('Có lỗi xảy ra khi xóa địa chỉ');
+            }
+        }
+    };
+
+    const handleSetDefaultAddress = async (address: Address) => {
+        try {
+            const response = await userApi.setDefaultAddress(address.id);
+            if (response.success) {
+                await loadAddresses();
+            } else {
+                alert(response.message || 'Có lỗi xảy ra khi đặt địa chỉ mặc định');
+            }
+        } catch (error) {
+            console.error('Error setting default address:', error);
+            alert('Có lỗi xảy ra khi đặt địa chỉ mặc định');
+        }
+    };
+
     const loadAddresses = async () => {
         try {
             setAddressesLoading(true);
@@ -63,11 +109,11 @@ const Profile: React.FC = () => {
     };
 
     useEffect(() => {
-        if (activeTab === 'addresses' && !isAddingAddress) {
+        if (activeTab === 'addresses' && !isAddingAddress && !editingAddress) {
             loadAddresses();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab, isAddingAddress]);
+    }, [activeTab, isAddingAddress, editingAddress]);
 
     if (!user) {
         return null;
@@ -210,29 +256,21 @@ const Profile: React.FC = () => {
                                         onCancel={handleCancelAddAddress}
                                         onSuccess={handleAddAddressSuccess}
                                     />
+                                ) : editingAddress ? (
+                                    <EditAddressForm 
+                                        address={editingAddress}
+                                        onCancel={handleCancelEditAddress}
+                                        onSuccess={handleEditAddressSuccess}
+                                    />
                                 ) : (
-                                    <>
-                                        {addressesLoading && (
-                                            <div className={styles.empty}>Đang tải địa chỉ...</div>
-                                        )}
-                                        {!addressesLoading && addressesError && (
-                                            <div className={styles.empty}>{addressesError}</div>
-                                        )}
-                                        {!addressesLoading && !addressesError && (
-                                            Array.isArray(addresses) && addresses.length > 0 ? (
-                                                <div>
-                                                    {addresses.map((addr, idx) => (
-                                                        <div className={styles.row} key={addr.id || idx.toString()}>
-                                                            <span className={styles.label}>Địa chỉ {idx + 1}</span>
-                                                            <span className={styles.value}>{(addr as any).fullAddress || addr.addressDetail || '—'}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <div className={styles.empty}>Bạn chưa có địa chỉ giao hàng.</div>
-                                            )
-                                        )}
-                                    </>
+                                    <AddressList 
+                                        addresses={addresses || []}
+                                        loading={addressesLoading}
+                                        error={addressesError}
+                                        onEdit={handleEditAddress}
+                                        onDelete={handleDeleteAddress}
+                                        onSetDefault={handleSetDefaultAddress}
+                                    />
                                 )}
                             </div>
                         )}
