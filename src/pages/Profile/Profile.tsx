@@ -187,7 +187,7 @@ const Profile: React.FC = () => {
                                     <>
                                         <div className={styles.row}>
                                             <span className={styles.label}>Họ và tên</span>
-                                            <span className={styles.value}>{user.fullName || '—'}</span>
+                                            <span className={styles.value}>{user.fullName || 'Chưa xác định'}</span>
                                         </div>
                                         <div className={styles.row}>
                                             <span className={styles.label}>Tài khoản</span>
@@ -200,10 +200,12 @@ const Profile: React.FC = () => {
                                         <div className={styles.row}>
                                             <span className={styles.label}>Số điện thoại</span>
                                             <span className={styles.valueGroup}>
-                                                <span className={styles.value}>{user.phoneNumber?.phoneNumber || '—'}</span>
-                                                <span className={`${styles.badge} ${user.phoneNumber?.isVerify ? styles.badgeSuccess : styles.badgeWarning}`}>
-                                                    {user.phoneNumber?.isVerify ? 'Đã xác thực' : 'Chưa xác thực'}
-                                                </span>
+                                                <span className={styles.value}>{user.phoneNumber?.phoneNumber || 'Chưa xác định'}</span>
+                                                {!user.phoneNumber?.isVerify && user.phoneNumber?.phoneNumber && (
+                                                    <button className={styles.verifyPhoneButton}>
+                                                        Xác thực
+                                                    </button>
+                                                )}
                                             </span>
                                         </div>
                                         <div className={styles.row}>
@@ -212,7 +214,7 @@ const Profile: React.FC = () => {
                                         </div>
                                         <div className={styles.row}>
                                             <span className={styles.label}>Ngày sinh</span>
-                                            <span className={styles.value}>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : '—'}</span>
+                                            <span className={styles.value}>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Chưa xác định'}</span>
                                         </div>
                                         <div className={styles.row}>
                                             <span className={styles.label}>Trạng thái</span>

@@ -54,7 +54,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ onCancel, onSuccess }
             newErrors.fullName = 'Họ và tên không được để trống';
         }
 
-        if (!formData.gender?.trim()) {
+        if (!formData.gender || formData.gender.trim() === '') {
             newErrors.gender = 'Giới tính không được để trống';
         }
 

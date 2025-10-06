@@ -224,6 +224,22 @@
     border: 1px solid #ffe1b3;
 }
 
+/* Verify Phone Button */
+.verifyPhoneButton {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.verifyPhoneButton:hover {
+    background: #0056b3;
+}
+
 @media (max-width: 768px) {
     .layout {
         grid-template-columns: 1fr;
