@@ -1,0 +1,122 @@
+header.container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.siteBrand {
+  display: inline-block;
+  align-items: baseline;
+  font-size: 1.5rem;
+  color: var(--danger);
+  text-decoration: none;
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.siteBrand:hover {
+  color: var(--danger);
+  transform: translateY(-2px);
+}
+
+.siteBrand:focus,
+.siteBrand:focus-visible {  
+  outline: none;
+}
+
+.siteBrand .brandSuffix {
+  font-weight: 500;
+  color: orange;
+  font-size: 1rem;
+}
+
+/* --- Nav / Header layout --- */
+.headerLeft,
+.headerCenter,
+.headerRight {
+  display: flex;
+  align-items: center;
+}
+
+/* layout flex proportions */
+.headerLeft { flex: 0 0 auto; }
+.headerCenter { flex: 1 1 auto; justify-content: center; }
+.headerRight { flex: 0 0 auto; }
+
+/* nav links */
+.navLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
+.navLink {
+  padding: var(--space-md) var(--space-sm);
+  color: var(--muted);
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 100%;
+  height: 2px;
+  background: var(--danger);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+/* hover / focus / active */
+.navLink:hover,
+.navLink:focus {
+  color: var(--danger);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.navLink:hover::after,
+.navLink:focus::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.navLink:active {
+  transform: translateY(0);
+}
+
+.authActions {
+  display: flex;
+  align-items: center;
+}
+
+.authLink {
+  display: inline-block;  
+  color: var(--danger);  
+  font-weight: bold;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.3s ease;
+  font-size: 0.8rem;
+  user-select: none;
+  border: 1px solid var(--danger);
+}
+
+.authLink:hover,
+.authLink:focus {
+  color: white;
+  background: var(--danger);
+  outline: none;
+}

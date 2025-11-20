@@ -1,68 +1,145 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html, body, #root {
+  height: 100%;
+}
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Spacing / type scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --radius: 8px;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Colors (light mode defaults) */
+  --bg: #ffffff;
+  --surface: #f7f8fb;
+  --text: #102a43;
+  --muted: #6b7280;
+  --accent: #646cff;
+  --accent-hover: #535bf2;
+  --border: #e6e9ef;
+  --success: #16a34a;
+  --danger: #e11d48;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Typography */
+  --base-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --base-size: 16px;
+  --line-height: 1.5;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* Base body */
+html { 
+  font-size: var(--base-size);
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  font-family: var(--base-font);
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: var(--line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Layout helpers */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+/* Typography */
+h1, h2, h3, h4 {
+  margin: 0 0 var(--space-md) 0;
+  font-weight: 600;
+  color: var(--text);
+}
+p {
+  margin: 0 0 var(--space-md) 0;
+  color: var(--muted);
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+}
+a:hover { color: var(--accent-hover); }
+
+/* Buttons */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background 0.15s, border-color 0.15s, transform 0.06s;
 }
-button:hover {
-  border-color: #646cff;
+button:hover { border-color: var(--accent); }
+button:active { transform: translateY(1px); }
+button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button.primary:hover { background: var(--accent-hover); }
+
+/* Form controls */
+input, textarea, select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(100,108,255,0.12);
+  border-color: var(--accent);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Accessibility helpers */
+:focus-visible {
+  outline: 3px solid rgba(100,108,255,0.16);
+  outline-offset: 2px;
+}
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* Small utilities */
+.row { display:flex; gap: var(--space-md); align-items: center; }
+.col { display:flex; flex-direction: column; gap: var(--space-sm); }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  padding: var(--space-md);
+}
+
+/* Responsive typography */
+@media (min-width: 768px) {
+  h1 { font-size: 2.4rem; }
+}
+@media (max-width: 767px) {
+  .container { padding-left: var(--space-sm); padding-right: var(--space-sm); }
 }
