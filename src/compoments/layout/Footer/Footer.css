@@ -1,0 +1,26 @@
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: var(--space-md) var(--space-sm);
+  color: var(--muted);
+  width: 1200px;
+  max-width: 1200px;
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.footerLeft,
+.footerRight,
+.footerCenter {
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}

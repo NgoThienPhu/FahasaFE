@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 
 export const Header: React.FC = () => (
-  <header className="container">
+  <header>
     <div className="headerLeft">
       <a href="#" className="siteBrand">Fahasa.<span className="brandSuffix">com</span></a>
     </div>

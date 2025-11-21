@@ -46,15 +46,6 @@ body {
   min-height: 100vh;
 }
 
-/* Layout helpers */
-.container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
-}
-
 /* Typography */
 h1, h2, h3, h4 {
   margin: 0 0 var(--space-md) 0;
@@ -134,12 +125,4 @@ input:focus, textarea:focus, select:focus {
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
   padding: var(--space-md);
-}
-
-/* Responsive typography */
-@media (min-width: 768px) {
-  h1 { font-size: 2.4rem; }
-}
-@media (max-width: 767px) {
-  .container { padding-left: var(--space-sm); padding-right: var(--space-sm); }
 }
