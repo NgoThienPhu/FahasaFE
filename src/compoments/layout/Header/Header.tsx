@@ -1,21 +1,22 @@
 import React from "react";
 import "./Header.css";
+import { NavLink } from "react-router-dom";
 
 export const Header: React.FC = () => (
   <header>
     <div className="headerLeft">
-      <a href="#" className="siteBrand">Fahasa.<span className="brandSuffix">com</span></a>
+      <NavLink to={"/"} className="siteBrand">Fahasa.<span className="brandSuffix">com</span></NavLink>
     </div>
     <div className="headerCenter">
       <div className="navLinks">
-        <a href="#" className="navLink">Trang Chủ</a>
-        <a href="#" className="navLink">Giới Thiệu</a>
-        <a href="#" className="navLink">Sản Phẩm</a>
+        <NavLink to={"/"} className="navLink">Trang Chủ</NavLink>
+        <NavLink to={"/about"} className="navLink">Giới Thiệu</NavLink>
+        <NavLink to={"/products"} className="navLink">Sản Phẩm</NavLink>
       </div>
     </div>
     <div className="headerRight">
       <div className="authActions">
-        <span className="authLink">Đăng Nhập / Đăng Ký</span>
+        <NavLink to={"/auth"} className="authLink">Đăng Nhập / Đăng Ký</NavLink>
       </div>
     </div>
   </header>
