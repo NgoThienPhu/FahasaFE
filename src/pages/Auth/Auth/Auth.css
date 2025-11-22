@@ -1,0 +1,56 @@
+.authContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: var(--space-md) var(--space-md);
+}
+
+.tabs {
+    width: 350px;
+    max-width: 350px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: var(--space-lg);
+    gap: 20px;
+}
+
+.tabs .tab {
+    width: 50%;
+    position: relative;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding-bottom: var(--space-sm);
+    font-weight: bold;
+}
+
+.tabs .tab::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 80%;
+    height: 2px;
+    background: var(--danger);
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.tabs .tab.active,
+.tabs .tab:hover{
+    color: var(--danger);
+}
+
+.tabs .tab.active::after,
+.tabs .tab:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+.formContainer {
+    width: 100%;
+}

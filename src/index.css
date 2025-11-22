@@ -5,14 +5,12 @@ html, body, #root {
   height: 100%;
 }
 :root {
-  /* Spacing / type scale */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --radius: 8px;
 
-  /* Colors (light mode defaults) */
   --bg: #ffffff;
   --surface: #f7f8fb;
   --text: #102a43;
@@ -23,13 +21,11 @@ html, body, #root {
   --success: #16a34a;
   --danger: #e11d48;
 
-  /* Typography */
   --base-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --base-size: 16px;
   --line-height: 1.5;
 }
 
-/* Base body */
 html { 
   font-size: var(--base-size);
 }
@@ -46,83 +42,4 @@ body {
   min-height: 100vh;
 }
 
-/* Typography */
-h1, h2, h3, h4 {
-  margin: 0 0 var(--space-md) 0;
-  font-weight: 600;
-  color: var(--text);
-}
-p {
-  margin: 0 0 var(--space-md) 0;
-  color: var(--muted);
-}
-
-/* Links */
-a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-}
-a:hover { color: var(--accent-hover); }
-
-/* Buttons */
-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.06s;
-}
-button:hover { border-color: var(--accent); }
-button:active { transform: translateY(1px); }
-button.primary {
-  background: var(--accent);
-  color: white;
-  border-color: transparent;
-}
-button.primary:hover { background: var(--accent-hover); }
-
-/* Form controls */
-input, textarea, select {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-}
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(100,108,255,0.12);
-  border-color: var(--accent);
-}
-
-/* Accessibility helpers */
-:focus-visible {
-  outline: 3px solid rgba(100,108,255,0.16);
-  outline-offset: 2px;
-}
-.sr-only {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border: 0;
-}
-
-/* Small utilities */
-.row { display:flex; gap: var(--space-md); align-items: center; }
-.col { display:flex; flex-direction: column; gap: var(--space-sm); }
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) - 2px);
-  padding: var(--space-md);
-}
+a {text-decoration: none;}

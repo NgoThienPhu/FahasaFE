@@ -4,7 +4,7 @@ import { Layout } from './compoments/layout/Layout/Layout'
 import { Loading } from './compoments/Loading/Loading'
 
 const Home = lazy(() => import('./pages/Home/Home'))
-const Auth = lazy(() => import('./pages/Auth/Auth'))
+const Auth = lazy(() => import('./pages/Auth/Auth/Auth'))
 
 function App() {
   return (
