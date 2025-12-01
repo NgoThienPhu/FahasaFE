@@ -1,4 +1,4 @@
-.formLogin {
+.formRegister {
     width: 100%;
     margin: 0 auto;
     padding: var(--space-lg);
@@ -7,18 +7,18 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.formLogin .formGroup {
+.formRegister .formGroup {
     margin-bottom: var(--space-md);
 }
 
-.formLogin .formGroup label {
+.formRegister .formGroup label {
     display: block;
     margin-bottom: var(--space-sm);
     font-size: 0.85rem;
     color: var(--text-primary);
 }
 
-.formLogin .formGroup input {
+.formRegister .formGroup input {
     position: relative;
     width: 100%;
     padding: var(--space-sm);
@@ -28,12 +28,12 @@
     transition: border-color 0.3s;
 }
 
-.formLogin .formGroup input:focus {
+.formRegister .formGroup input:focus {
     border-color: var(--accent);
     outline: none;
 }
 
-.formLogin .btnLogin {
+.formRegister .btnRegister {
     width: 100%;
     background-color: var(--danger);
     color: white;

@@ -1,11 +1,11 @@
 import React from 'react';
-import './Loading.css';
+import styles from './Loading.module.css';
 
 export const Loading: React.FC<{notify?: string}> = ({notify}) => {
     return (
-        <div className="loading">
-            <div className="spinner"></div>
-            <p className='loadingText'>{`${notify || "Đang tải..."}`}</p>
+        <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>{`${notify || "Đang tải..."}`}</p>
         </div>
     );
 }

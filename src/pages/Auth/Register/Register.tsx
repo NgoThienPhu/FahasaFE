@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Register.css";
+import styles from "./Register.module.css";
 
 const Register: React.FC = () => {
     const [name, setName] = useState("");
@@ -15,8 +15,8 @@ const Register: React.FC = () => {
     };
 
     return (
-        <form className="formRegister" onSubmit={handleSubmit}>
-            <div className="formGroup">
+        <form className={styles.formRegister} onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
                 <label htmlFor="name">Họ và tên</label>
                 <input
                     type="text"
@@ -26,7 +26,7 @@ const Register: React.FC = () => {
                     placeholder="Nhập họ và tên..."
                 />
             </div>
-            <div className="formGroup">
+            <div className={styles.formGroup}>
                 <label htmlFor="username">Tên tài khoản</label>
                 <input
                     type="text"
@@ -36,7 +36,7 @@ const Register: React.FC = () => {
                     placeholder="Nhập tên tài khoản..."
                 />
             </div>
-            <div className="formGroup">
+            <div className={styles.formGroup}>
                 <label htmlFor="phone">Số điện thoại</label>
                 <input
                     type="text"
@@ -46,7 +46,7 @@ const Register: React.FC = () => {
                     placeholder="Nhập số điện thoại..."
                 />
             </div>
-            <div className="formGroup">
+            <div className={styles.formGroup}>
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
@@ -56,7 +56,7 @@ const Register: React.FC = () => {
                     placeholder="Nhập email..."
                 />
             </div>
-            <div className="formGroup">
+            <div className={styles.formGroup}>
                 <label htmlFor="password">Mật khẩu</label>
                 <input
                     type="password"
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
                     placeholder="Nhập mật khẩu..."
                 />
             </div>
-            <div className="formGroup">
+            <div className={styles.formGroup}>
                 <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
                 <input
                     type="password"
@@ -76,7 +76,7 @@ const Register: React.FC = () => {
                     placeholder="Xác nhận mật khẩu..."
                 />
             </div>
-            <button type="submit" className="btnRegister">Đăng ký</button>
+            <button type="submit" className={styles.btnRegister}>Đăng ký</button>
         </form>
     );
 };
