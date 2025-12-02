@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./BookCard.module.css";
+import { NavLink } from "react-router-dom";
 
 interface Book {
     id: number;
@@ -24,7 +25,7 @@ const BookCard: React.FC<Book> = (props) => {
                 <p className={styles.bookAuthor}>{props.author} · <span className={styles.bookRating}>{props.rating}★</span></p>
                 <p className={styles.bookDesc}>{props.desc}</p>
                 <div className={styles.cardActions}>
-                    <a className={`${styles.btn} ${styles.small}`} href={`/products/${props.id}`}>Xem Chi Tiết</a>
+                    <NavLink className={`${styles.btn} ${styles.small}`} to={`/products/${props.id}`}>Xem Chi Tiết</NavLink>
                     <button className={`${styles.btn} ${styles.outline} ${styles.small}`}>Thêm Vào Giỏ</button>
                 </div>
             </div>
