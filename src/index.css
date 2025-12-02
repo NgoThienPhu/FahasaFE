@@ -1,0 +1,14 @@
+:root {
+    --text: #333333;
+    --muted: #666666;
+
+    --primary-color: #e11d48;
+
+    --border: #f0f0f0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
