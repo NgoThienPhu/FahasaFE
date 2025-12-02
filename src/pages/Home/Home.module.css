@@ -59,7 +59,6 @@
     border: 1px solid var(--primary-border-color);
 }
 
-/* Hover / focus lift + shadow for hero CTAs */
 .btn {
     transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease, color 0.12s ease;
 }

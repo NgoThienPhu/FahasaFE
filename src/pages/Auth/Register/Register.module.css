@@ -1,47 +1,65 @@
 .formRegister {
     width: 100%;
     margin: 0 auto;
-    padding: var(--space-lg);
+    padding: 1rem;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--primary-border-color);
 }
 
 .formRegister .formGroup {
-    margin-bottom: var(--space-md);
+    margin-bottom: 0.75rem;
 }
 
 .formRegister .formGroup label {
     display: block;
-    margin-bottom: var(--space-sm);
-    font-size: 0.85rem;
-    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
 .formRegister .formGroup input {
-    position: relative;
     width: 100%;
-    padding: var(--space-sm);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 0.9rem;
-    transition: border-color 0.3s;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--primary-border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: #fff;
+    transition: box-shadow 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
 }
 
 .formRegister .formGroup input:focus {
-    border-color: var(--accent);
+    border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 8px 22px rgba(225,29,72,0.08);
+    transform: translateY(-1px);
 }
 
 .formRegister .btnRegister {
     width: 100%;
-    background-color: var(--danger);
-    color: white;
+    background-color: var(--primary-color);
+    color: #fff;
     border: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     cursor: pointer;
-    padding: var(--space-md);
+    padding: 0.7rem 0.9rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.formRegister .btnRegister:hover,
+.formRegister .btnRegister:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(225,29,72,0.08);
+}
+
+.formRegister .helperText {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
 }

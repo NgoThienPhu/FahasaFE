@@ -1,49 +1,47 @@
 .authContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     border-radius: 8px;
-    padding: var(--space-md) var(--space-md);
+    padding: 1rem;
+    color: var(--text);
 }
 
 .tabs {
-    width: 350px;
-    max-width: 350px;
+    width: 360px;
+    max-width: 100%;
     display: flex;
-    justify-content: space-around;
-    margin-bottom: var(--space-lg);
-    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 8px;
 }
 
 .tabs .tab {
-    width: 50%;
+    flex: 1 1 auto;
     position: relative;
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--muted);
-    padding-bottom: var(--space-sm);
-    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding: 0.4rem 0;
+    font-weight: 700;
+    text-align: center;
 }
 
 .tabs .tab::after {
     content: '';
     position: absolute;
     left: 50%;
-    bottom: -4px;
-    width: 80%;
-    height: 2px;
-    background: var(--danger);
+    bottom: -6px;
+    width: 70%;
+    height: 3px;
+    background: var(--primary-color);
     transform: translateX(-50%) scaleX(0);
     transform-origin: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.22s ease;
 }
 
 .tabs .tab.active,
 .tabs .tab:hover{
-    color: var(--danger);
+    color: var(--primary-color);
 }
 
 .tabs .tab.active::after,
@@ -51,6 +49,91 @@
     transform: translateX(-50%) scaleX(1);
 }
 
-.formContainer {
-    width: 100%;
+.form {
+    width: 360px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--primary-border-color);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.04);
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.formGroup label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--primary-border-color);
+    background: #fff;
+    font-size: 0.95rem;
+    color: var(--text);
+    transition: box-shadow 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(225,29,72,0.08);
+}
+
+.formActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btnPrimary {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btnPrimary:hover,
+.btnPrimary:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(225,29,72,0.08);
+}
+
+.btnOutline {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid rgba(225,29,72,0.12);
+    padding: 0.55rem 0.85rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.errorText {
+    color: #c92a2a;
+    font-size: 0.85rem;
+}
+
+.authNote {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
 }
