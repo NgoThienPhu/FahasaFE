@@ -29,7 +29,6 @@ header{
   font-size: 1.5rem;
 }
 
-/* --- Nav / Header layout --- */
 .headerLeft,
 .headerCenter,
 .headerRight {
@@ -37,12 +36,10 @@ header{
   align-items: center;
 }
 
-/* layout flex proportions */
 .headerLeft { flex: 0 0 auto; }
 .headerCenter { flex: 1 1 auto; justify-content: center; }
 .headerRight { flex: 0 0 auto; }
 
-/* nav links */
 .navLinks {
   display: flex;
   align-items: center;
@@ -53,7 +50,7 @@ header{
 .navLink {
   position: relative;
   padding: 1rem 1rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: bold;
   font-size: 0.8rem;
   text-decoration: none;
