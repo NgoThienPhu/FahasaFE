@@ -49,7 +49,7 @@ const Introduce: React.FC = () => {
                 </div>
             </div>
 
-            <div className={`${styles.introduceContent} container`}>
+            <div className={`${styles.introduceContent}`}>
                 {features.map((f) => (
                     <div key={f.id} className={styles.featureCard}>
                         <div className={styles.featureIcon} aria-hidden>{f.icon}</div>

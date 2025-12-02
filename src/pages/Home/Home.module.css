@@ -1,4 +1,3 @@
-/* Home page styles (accent set to Fahasa red) */
 .homeContainer {
     padding: 0;
     color: var(--primary-text);
@@ -45,6 +44,8 @@
     border: 1px solid var(--primary-border-color);
     color: var(--text);
     text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .btn.primary {
@@ -56,6 +57,21 @@
 .btn.outline {
     background: transparent;
     border: 1px solid var(--primary-border-color);
+}
+
+/* Hover / focus lift + shadow for hero CTAs */
+.btn {
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease, color 0.12s ease;
+}
+
+.btn:hover,
+.btn:focus {
+    transform: translateY(-3px);
+}
+
+.btn:focus-visible {
+    outline: 3px solid rgba(225, 29, 72, 0.10);
+    outline-offset: 3px;
 }
 
 .homeContent {
