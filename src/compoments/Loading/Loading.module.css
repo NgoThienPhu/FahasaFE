@@ -1,26 +1,23 @@
-/* center + spacing */
 .loading {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  color: var(--muted);
+  color: var(--text-muted);
   background: transparent;
 }
 
-/* spinner */
 .spinner {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: 4px solid rgba(0,0,0,0.08);
-  border-top-color: var(--danger);
+  border-top-color: var(--primary-color);
   animation: spin 0.9s linear infinite;
   box-shadow: 0 2px 6px rgba(16,42,67,0.06);
 }
 
-/* subtle pulsing text */
 .loadingText {
   font-size: 0.9rem;
   color: var(--muted);
@@ -28,7 +25,6 @@
   animation: pulse 1.6s ease-in-out infinite;
 }
 
-/* keyframes */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
