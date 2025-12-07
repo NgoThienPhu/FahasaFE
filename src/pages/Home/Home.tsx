@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Home.module.css";
-import BookCard from "../../compoments/book_card/BookCard";
+import BookCard from "../../components/book_card/BookCard";
 import { NavLink } from "react-router-dom";
 
 const books = [
