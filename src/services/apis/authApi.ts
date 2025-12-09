@@ -17,11 +17,15 @@ interface RegisterParams {
 const authApi = {
     
     login(params: LoginParams) {
-        return apiClient.post("/auth/login", params);
+        return apiClient.post("/auth/login", params, {withCredentials: true});
     },
 
     register(params: RegisterParams) {
         return apiClient.post("/auth/register", params);
+    },
+
+    refreshToken() {
+        return apiClient.post("/auth/refresh", null, {withCredentials: true});
     },
 
     getProfile() {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import authApi from "./authApi";
 
 const VITE_API_BE_SERVER_URL = import.meta.env.VITE_API_BE_SERVER_URL;
 
@@ -33,16 +34,12 @@ apiClient.interceptors.response.use(
 
     const response = error.response;
 
-    if (response.status === 401 && response.data.error === "REFRESH_TOKEN_EXPIRED" && !originalRequest._retry) {
+    if (response.status === 401 && response.data.error === "ACCESS_TOKEN_EXPIRED" && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const res = await apiClient.post(
-          '/auth/refresh',
-          null,
-          { withCredentials: true }
-        );
-
+        const { refreshToken } = authApi;
+        const res = await refreshToken();
         const newToken = res.data.data.accessToken;
 
         localStorage.setItem('accessToken', newToken);
@@ -53,7 +50,7 @@ apiClient.interceptors.response.use(
         console.error("Làm mới token thất bại:", e);
 
         localStorage.removeItem('accessToken');
-        window.location.href = '/login';
+        window.location.href = '/auth';
         return Promise.reject(e);
       }
     }

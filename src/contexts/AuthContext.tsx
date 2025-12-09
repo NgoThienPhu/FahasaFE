@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import authApi from "../services/apis/authApi";
 
 interface User {
     id: string;
@@ -20,6 +21,19 @@ export const AuthContext = React.createContext<AuthContextType | undefined>(unde
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = React.useState<User | null>(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if(accessToken) {
+      async function loadUserProfile() {
+         const myUser = await authApi.getProfile();
+         setUser(myUser.data.data);
+      }
+      loadUserProfile();
+    }
+    
+  }, []);
 
   const login = (userData: User) => {
     setUser(userData);
