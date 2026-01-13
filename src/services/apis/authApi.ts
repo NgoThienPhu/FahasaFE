@@ -1,4 +1,4 @@
-import apiClient from "./config";
+import apiClient, { type APISuccessResponse } from "./config";
 
 interface LoginParams {
     username: string;
@@ -6,29 +6,53 @@ interface LoginParams {
 }
 
 interface RegisterParams {
-    name: string;
+    fullName: string;
     username: string;
-    phone: string;
+    phoneNumber: string;
     email: string;
     password: string;
-    confirmPassword: string;
 }
 
+interface Account {
+    id: string;
+    username: string;
+    email: {
+        email: string;
+        isVerified: boolean;
+    };
+    phoneNumber: {
+        phoneNumber: string;
+        isVerified: boolean;
+    }
+    isActived: boolean;
+    fullName: string;
+    gender: string;
+    dateOfBirth: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface LoginResponse { accessToken: string; }
+
+interface RegisterResponse extends Account {}
+
+interface RefreshTokenResponse extends LoginResponse {}
+
 const authApi = {
-    
-    login(params: LoginParams) {
-        return apiClient.post("/auth/login", params, {withCredentials: true});
+
+    login(params: LoginParams): Promise<APISuccessResponse<LoginResponse>> {
+        return apiClient.post("/auth/login", params, { withCredentials: true });
     },
 
-    register(params: RegisterParams) {
+    register(params: RegisterParams): Promise<APISuccessResponse<RegisterResponse>> {
         return apiClient.post("/auth/register", params);
     },
 
-    refreshToken() {
-        return apiClient.post("/auth/refresh", null, {withCredentials: true});
+    refreshToken(): Promise<APISuccessResponse<RefreshTokenResponse>> {
+        return apiClient.post("/auth/refresh", null, { withCredentials: true });
     },
 
-    getProfile() {
+    getProfile(): Promise<APISuccessResponse<Account>> {
         return apiClient.get("/accounts/me");
     }
 

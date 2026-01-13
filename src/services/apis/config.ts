@@ -5,6 +5,31 @@ const VITE_API_BE_SERVER_URL = import.meta.env.VITE_API_BE_SERVER_URL;
 
 export const API_BE_SERVER_URL = VITE_API_BE_SERVER_URL || "http://localhost:8080/api";
 
+export interface APISuccessResponse<T> {
+  data: T;
+  message: string;
+  status: number;
+  timestamp: string;
+}
+
+export interface APIPaginationSuccessResponse<T> extends APISuccessResponse<T> {
+  pagination: {
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+  };
+}
+
+export interface APIResponseError {
+  message: string;
+  status: number;
+  timestamp: string;
+  error: string;
+  errors?: { [key: string]: string };
+  path: string;
+}
+
 const apiClient = axios.create({
   baseURL: API_BE_SERVER_URL,
   timeout: 10000,
@@ -20,7 +45,7 @@ apiClient.interceptors.request.use((config) => {
 });
 
 apiClient.interceptors.response.use(
-  (res) => res,
+  (res) => res.data,
 
   async (error) => {
     const originalRequest = error.config;
@@ -39,8 +64,8 @@ apiClient.interceptors.response.use(
 
       try {
         const { refreshToken } = authApi;
-        const res = await refreshToken();
-        const newToken = res.data.data.accessToken;
+        const response = await refreshToken();
+        const newToken = response.data.accessToken;
 
         localStorage.setItem('accessToken', newToken);
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
@@ -63,7 +88,7 @@ apiClient.interceptors.response.use(
       console.error("Lỗi server:", error.response.data);
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response.data as APIResponseError);
   }
 );
 

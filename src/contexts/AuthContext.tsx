@@ -5,9 +5,15 @@ interface User {
     id: string;
     username: string;
     fullName: string;
-    email: string;
-    phoneNumber: string;
-    isVeryfied: boolean;
+    email: {
+        email: string;
+        isVerified: boolean;
+    }
+    phoneNumber: {
+        phoneNumber: string;
+        isVerified: boolean;
+    }
+    isActived: boolean;
 }
 
 interface AuthContextType {
@@ -27,8 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if(accessToken) {
       async function loadUserProfile() {
-         const myUser = await authApi.getProfile();
-         setUser(myUser.data.data);
+         const response = await authApi.getProfile();
+         setUser({...response.data});
       }
       loadUserProfile();
     }
