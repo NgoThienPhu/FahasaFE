@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 const Login: React.FC = () => {
 
     const navigate = useNavigate();
+    const { login: loginApi } = authApi;
+    const { login: loginContext } = useAuth();
+
     const [formData, setFormData] = React.useState({
         username: "",
         password: "",
@@ -14,9 +17,6 @@ const Login: React.FC = () => {
     const [error, setError] = React.useState<string | null>(null);
     const [errors, setErrors] = React.useState<{username?: string, password?: string}>({});
     const [loading, setLoading] = React.useState(false);
-
-    const { login: loginApi } = authApi;
-    const { login: loginContext } = useAuth();
 
     const validateForm = () => {
         const newErrors: {username?: string, password?: string} = {};
@@ -48,7 +48,6 @@ const Login: React.FC = () => {
             setErrors(validationErrors);
             return;
         }
-        setErrors({});
         setLoading(true);
         try {
             const responseLogin = await loginApi(formData);

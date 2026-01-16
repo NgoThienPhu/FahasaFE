@@ -48,6 +48,7 @@ apiClient.interceptors.response.use(
   (res) => res.data,
 
   async (error) => {
+    console.log("API Error Interceptor:", error);
     const originalRequest = error.config;
 
     if (!error.response) {

@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import styles from "./Register.module.css";
 import authApi from "../../../services/apis/authApi";
 import type { APIResponseError } from "../../../services/apis/config";
+import { useNotification } from "../../../contexts/NotificationContext";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
+
+    const { register } = authApi;
+    const navigation = useNavigate();
+    const { addNotification} = useNotification();
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -13,8 +19,6 @@ const Register: React.FC = () => {
         password: "",
         confirmPassword: "",
     });
-
-    const { register } = authApi;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -89,6 +93,8 @@ const Register: React.FC = () => {
         setLoading(true);
         try {
             await register(formData);
+            navigation("/");
+            addNotification("success", "Đăng ký thành công! Vui lòng đăng nhập.");
         } catch (err: any) {
             const response = err as APIResponseError;
             if(response.errors) setErrors(response.errors);
