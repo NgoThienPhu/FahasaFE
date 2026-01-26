@@ -2,43 +2,51 @@ import React, { useEffect } from "react";
 import authApi from "../services/apis/authApi";
 
 interface User {
-    id: string;
-    username: string;
-    fullName: string;
-    email: {
-        email: string;
-        isVerified: boolean;
-    }
-    phoneNumber: {
-        phoneNumber: string;
-        isVerified: boolean;
-    }
-    isActived: boolean;
+  id: string;
+  username: string;
+  fullName: string;
+  email: {
+    email: string;
+    isVerified: boolean;
+  }
+  phoneNumber: {
+    phoneNumber: string;
+    isVerified: boolean;
+  }
+  isActived: boolean;
 }
 
 interface AuthContextType {
-    user: User | null;
-    isAuth: boolean;
-    login: (user: User) => void;
-    logout: () => void;
+  user: User | null;
+  isAuth: boolean;
+  isLoading: boolean;
+  login: (user: User) => void;
+  logout: () => void;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = React.useState<User | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const initializeAuth = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
 
-    if(accessToken) {
-      async function loadUserProfile() {
-         const response = await authApi.getProfile();
-         setUser({...response.data});
+        if (accessToken) {
+          const response = await authApi.getProfile();
+          setUser({ ...response.data });
+        }
+      } catch (error) {
+        console.error("Không thể lấy thông tin người dùng:", error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-      loadUserProfile();
-    }
-    
+    };
+    initializeAuth();
   }, []);
 
   const login = (userData: User) => {
@@ -53,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value: AuthContextType = {
     user,
     isAuth: !!user,
+    isLoading,
     login,
     logout,
   };

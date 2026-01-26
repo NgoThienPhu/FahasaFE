@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Loading.module.css';
 
-export const Loading: React.FC<{notify?: string}> = ({notify}) => {
+const Loading: React.FC<{notify?: string}> = ({notify}) => {
     return (
         <div className={styles.loading}>
             <div className={styles.spinner}></div>
@@ -9,3 +9,5 @@ export const Loading: React.FC<{notify?: string}> = ({notify}) => {
         </div>
     );
 }
+
+export default Loading;

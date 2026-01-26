@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import Loading from "../../components/Loading/Loading";
 
 interface ProtectedRouterProps {
   redirectIfAuth?: boolean;
@@ -11,15 +12,18 @@ export const ProtectedRouter: React.FC<ProtectedRouterProps> = ({
   redirectIfAuth = false,
   children,
 }) => {
-  const { isAuth } = useAuth();
+  const { isAuth, isLoading } = useAuth();
 
-  if (redirectIfAuth && isAuth) {
-    return <Navigate to="/" replace />;
+  if (isLoading) {
+    return <Loading />;
   }
 
-  if (!redirectIfAuth && !isAuth) {
+  if (isAuth) {
+    if (redirectIfAuth) return <Navigate to="/" replace />;
+    return children;
+  } else {
+    if (redirectIfAuth) return children;
     return <Navigate to="/auth" replace />;
   }
-
-  return children;
+  
 };

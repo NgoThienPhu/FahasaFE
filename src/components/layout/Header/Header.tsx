@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
         <div className={styles.authActions}>
           {(isAuth && user) ? (
             <div className={styles.userGreeting}>
-              <NavLink to={"/auth"}>{user.fullName}</NavLink>
+              <NavLink to={"/profile"}>{user.fullName}</NavLink>
               <button className={styles.logoutBtn} onClick={logout}>Đăng Xuất</button>
             </div>
           ) : (

@@ -1,9 +1,10 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/Layout/Layout'
-import { Loading } from './components/Loading/Loading'
+import Loading from './components/Loading/Loading'
 import Introduce from './pages/Introduce/Introduce'
 import { ProtectedRouter } from './components/protected_router/ProtectedRouter'
+import Profile from './pages/Profile/Profile'
 
 const Home = lazy(() => import('./pages/Home/Home'))
 const Auth = lazy(() => import('./pages/Auth/Auth/Auth'))
@@ -23,6 +24,13 @@ function App() {
           <Suspense fallback={<Loading notify='Đang tải thông tin...' />}>
             <ProtectedRouter redirectIfAuth={true}>
               <Auth />
+            </ProtectedRouter>
+          </Suspense>
+        } />
+        <Route path="profile" element={
+          <Suspense fallback={<Loading notify='Đang tải thông tin...' />}>
+            <ProtectedRouter>
+              <Profile />
             </ProtectedRouter>
           </Suspense>
         } />
