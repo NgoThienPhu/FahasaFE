@@ -5,11 +5,14 @@ const VITE_API_BE_SERVER_URL = import.meta.env.VITE_API_BE_SERVER_URL;
 
 export const API_BE_SERVER_URL = VITE_API_BE_SERVER_URL || "http://localhost:8080/api";
 
-export interface APISuccessResponse<T> {
-  data: T;
+export interface APIResponse {
   message: string;
   status: number;
   timestamp: string;
+}
+
+export interface APISuccessResponse<T> extends APIResponse {
+  data: T;
 }
 
 export interface APIPaginationSuccessResponse<T> extends APISuccessResponse<T> {
@@ -21,10 +24,7 @@ export interface APIPaginationSuccessResponse<T> extends APISuccessResponse<T> {
   };
 }
 
-export interface APIResponseError {
-  message: string;
-  status: number;
-  timestamp: string;
+export interface APIResponseError extends APIResponse {
   error: string;
   errors?: { [key: string]: string };
   path: string;
@@ -75,7 +75,7 @@ apiClient.interceptors.response.use(
       } catch (e) {
         console.error("Làm mới token thất bại:", e);
 
-        localStorage.removeItem('accessToken');
+        // localStorage.removeItem('accessToken');
         window.location.href = '/auth';
         return Promise.reject(e);
       }

@@ -5,7 +5,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 export const Header: React.FC = () => {
 
-  const { user, isAuth, logout } = useAuth();
+  const { user, isAuth, logout, isLoading } = useAuth();
 
   return (
     <header>
@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
           {(isAuth && user) ? (
             <div className={styles.userGreeting}>
               <NavLink to={"/profile"}>{user.fullName}</NavLink>
-              <button className={styles.logoutBtn} onClick={logout}>Đăng Xuất</button>
+              <button className={styles.logoutBtn} onClick={logout}>{`${isLoading ? "Đang xử lý..." : "Đăng Xuất"}`}</button>
             </div>
           ) : (
             <NavLink to={"/auth"} className={styles.authLink}>Đăng Nhập / Đăng Ký</NavLink>

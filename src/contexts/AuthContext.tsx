@@ -7,11 +7,11 @@ interface User {
   fullName: string;
   email: {
     email: string;
-    isVerified: boolean;
+    isVerify: boolean;
   }
   phoneNumber: {
     phoneNumber: string;
-    isVerified: boolean;
+    isVerify: boolean;
   }
   isActived: boolean;
 }
@@ -22,6 +22,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (user: User) => void;
   logout: () => void;
+  reload: () => void;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -30,32 +31,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = React.useState<User | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (accessToken) {
-          const response = await authApi.getProfile();
-          setUser({ ...response.data });
-        }
-      } catch (error) {
-        console.error("Không thể lấy thông tin người dùng:", error);
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initializeAuth();
-  }, []);
+  useEffect(() => {reload()}, []);
 
   const login = (userData: User) => {
     setUser(userData);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("accessToken");
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      await authApi.logout();
+      setUser(null);
+      localStorage.removeItem("accessToken");
+    } catch (error) {
+      console.error("Lỗi khi đăng xuất:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const reload = async () => {
+    try {
+      setIsLoading(true);
+      const response = await authApi.getProfile();
+      setUser({ ...response.data });
+    } catch (error) {
+      console.error("Không thể lấy thông tin người dùng:", error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const value: AuthContextType = {
@@ -64,6 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isLoading,
     login,
     logout,
+    reload
   };
 
   return (

@@ -8,7 +8,7 @@ const Login: React.FC = () => {
 
     const navigate = useNavigate();
     const { login: loginApi } = authApi;
-    const { login: loginContext } = useAuth();
+    const { login: updateUser } = useAuth();
 
     const [formData, setFormData] = React.useState({
         username: "",
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
             const responseGetProfile = await authApi.getProfile();
             const userProfile = responseGetProfile;
 
-            loginContext({...userProfile.data});
+            updateUser({...userProfile.data});
 
             navigate("/", { replace: true });
         } catch (err: any) {

@@ -1,4 +1,4 @@
-import apiClient, { type APISuccessResponse } from "./config";
+import apiClient, { type APIResponse, type APISuccessResponse } from "./config";
 
 interface LoginParams {
     username: string;
@@ -18,16 +18,14 @@ interface Account {
     username: string;
     email: {
         email: string;
-        isVerified: boolean;
+        isVerify: boolean;
     };
     phoneNumber: {
         phoneNumber: string;
-        isVerified: boolean;
+        isVerify: boolean;
     }
     isActived: boolean;
     fullName: string;
-    gender: string;
-    dateOfBirth: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -42,6 +40,10 @@ const authApi = {
 
     login(params: LoginParams): Promise<APISuccessResponse<LoginResponse>> {
         return apiClient.post("/auth/login", params, { withCredentials: true });
+    },
+
+    logout(): Promise<APISuccessResponse<APIResponse>> {
+        return apiClient.post("/auth/logout", null, { withCredentials: true });
     },
 
     register(params: RegisterParams): Promise<APISuccessResponse<RegisterResponse>> {
