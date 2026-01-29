@@ -56,8 +56,8 @@ const authApi = {
 
     getProfile(): Promise<APISuccessResponse<Account>> {
         return apiClient.get("/accounts/me");
-    }
+    },
 
-}
+};
 
 export default authApi;

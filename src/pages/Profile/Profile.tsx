@@ -4,20 +4,38 @@ import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Profile.module.css";
 import emailApi from "../../services/apis/emailApi";
 import { useNotification } from "../../contexts/NotificationContext";
+import ProfileInfo from "./components/ProfileInfo";
+import ProfileOrders from "./components/ProfileOrders";
+import ProfileCart from "./components/ProfileCart";
+import userApi from "../../services/apis/userApi";
 
 type ActiveTab = "info" | "orders" | "cart";
 type VerificationType = "email" | "phone" | null;
+type EditMode = "email" | "phone" | null;
+type ChangeStep = "password-input" | "otp-input" | null;
 
 const Profile: React.FC = () => {
-    const { user, reload: reloadUser } = useAuth();
+    const { user, reload } = useAuth();
     const { addNotification } = useNotification();
 
     const [activeTab, setActiveTab] = useState<ActiveTab>("info");
     const [verificationModal, setVerificationModal] = useState<VerificationType>(null);
+    const [changeStep, setChangeStep] = useState<ChangeStep>(null);
     const [verificationCode, setVerificationCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+
+    // Edit mode states
+    const [editMode, setEditMode] = useState<EditMode>(null);
+    const [editValues, setEditValues] = useState({
+        email: user?.email.email || "",
+        phone: user?.phoneNumber.phoneNumber || "",
+    });
+
+    // Password confirmation states
+    const [password, setPassword] = useState("");
+    const [pendingEdit, setPendingEdit] = useState<EditMode>(null);
 
     const handleSendCode = async (type: "email" | "phone") => {
         setIsLoading(true);
@@ -31,6 +49,7 @@ const Profile: React.FC = () => {
                 return;
             }
             setVerificationModal(type);
+            setChangeStep("otp-input");
             setSuccess(`Mã xác thực đã được gửi tới ${type === "email" ? "email" : "số điện thoại"} của bạn`);
         } catch (err: any) {
             setError(err.response?.data?.message || "Gửi mã xác thực thất bại");
@@ -54,11 +73,13 @@ const Profile: React.FC = () => {
                     email: user!.email.email,
                 });
                 addNotification("success", "Email xác thực thành công!");
-                reloadUser();
+                await reload();
             } else {
                 // Phone verification logic here
-                setSuccess("Số điện thoại xác thực thành công!");
+                addNotification("success", "Số điện thoại xác thực thành công!");
+                await reload();
             }
+            setChangeStep(null);
             setVerificationModal(null);
             setVerificationCode("");
         } catch (err: any) {
@@ -68,97 +89,118 @@ const Profile: React.FC = () => {
         }
     };
 
+    const handleEditSave = async () => {
+        if (!editMode) return;
+
+        // Nếu đổi email hoặc phone, cần xác nhận mật khẩu trước
+        if ((editMode === "email" && editValues.email !== user?.email.email) ||
+            (editMode === "phone" && editValues.phone !== user?.phoneNumber.phoneNumber)) {
+            setPendingEdit(editMode);
+            setVerificationModal(editMode);
+            setChangeStep("password-input");
+            return;
+        }
+
+        // Other edits (email/phone) are handled earlier; if nothing to do, reset edit mode
+        setEditMode(null);
+    };
+
+    const handlePasswordConfirm = async () => {
+        if (!password.trim()) {
+            setError("Vui lòng nhập mật khẩu");
+            return;
+        }
+
+        setIsLoading(true);
+        setError("");
+        try {
+            if (pendingEdit === "email") {
+                await userApi.changeEmail({ newEmail: editValues.email, password });
+                await emailApi.sendOTP(editValues.email);
+            } else if (pendingEdit === "phone") {
+                // Nếu backend hỗ trợ, update số điện thoại và gửi OTP
+                addNotification("error", "Chức năng xác thực OTP qua số điện thoại hiện chưa được hỗ trợ");
+                setChangeStep(null);
+                setPassword("");
+                setIsLoading(false);
+                return;
+            }
+            setChangeStep("otp-input");
+            setSuccess(`Mã xác thực đã được gửi tới ${pendingEdit === "email" ? "email" : "số điện thoại"} mới của bạn`);
+            setPassword("");
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Gửi mã xác thực thất bại");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleVerifyAndUpdate = async () => {
+        if (!verificationCode.trim()) {
+            setError("Vui lòng nhập mã xác thực");
+            return;
+        }
+        setIsLoading(true);
+        setError("");
+        try {
+            if (pendingEdit === "email") {
+                await emailApi.verifyOTP({
+                    otp: verificationCode,
+                    email: editValues.email,
+                });
+            } else if (pendingEdit === "phone") {
+                addNotification("error", "Xác thực số điện thoại chưa được hỗ trợ");
+                setIsLoading(false);
+                return;
+            }
+            addNotification("success", "Cập nhật thông tin thành công!");
+            await reload();
+            setChangeStep(null);
+            setVerificationModal(null);
+            setVerificationCode("");
+            setEditMode(null);
+            setPendingEdit(null);
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Cập nhật thất bại");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const renderContent = () => {
+        if (!user) return null;
+
         switch (activeTab) {
             case "info":
                 return (
-                    <div className={styles.tabContent}>
-                        <div className={styles.section}>
-                            <h2>Thông tin cơ bản</h2>
-
-                            <div className={styles.infoGroup}>
-                                <label className={styles.label}>ID tài khoản</label>
-                                <p className={styles.value}>{user!.id}</p>
-                            </div>
-
-                            <div className={styles.infoGroup}>
-                                <label className={styles.label}>Tên đầy đủ</label>
-                                <p className={styles.value}>{user!.fullName}</p>
-                            </div>
-
-                            <div className={styles.infoGroup}>
-                                <label className={styles.label}>Tên tài khoản</label>
-                                <p className={styles.value}>{user!.username}</p>
-                            </div>
-                        </div>
-
-                        <div className={styles.section}>
-                            <h2>Email</h2>
-                            <div className={styles.infoGroup}>
-                                <label className={styles.label}>Địa chỉ email</label>
-                                <div className={styles.verificationGroup}>
-                                    <div className={styles.valueWithBadge}>
-                                        <p className={styles.value}>{user!.email.email}</p>
-                                        <span className={`${styles.badge} ${user!.email.isVerify ? styles.verified : styles.unverified}`}>
-                                            {user!.email.isVerify ? "✓ Xác nhận" : "⚠ Chưa xác nhận"}
-                                        </span>
-                                    </div>
-                                    {!user!.email.isVerify && (
-                                        <button
-                                            className={styles.verifyBtn}
-                                            onClick={() => handleSendCode("email")}
-                                            disabled={isLoading}
-                                        >
-                                            Xác thực ngay
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={styles.section}>
-                            <h2>Số điện thoại</h2>
-                            <div className={styles.infoGroup}>
-                                <label className={styles.label}>Số điện thoại</label>
-                                <div className={styles.verificationGroup}>
-                                    <div className={styles.valueWithBadge}>
-                                        <p className={styles.value}>{user!.phoneNumber.phoneNumber}</p>
-                                        <span className={`${styles.badge} ${user!.phoneNumber.isVerify ? styles.verified : styles.unverified}`}>
-                                            {user!.phoneNumber.isVerify ? "✓ Xác nhận" : "⚠ Chưa xác nhận"}
-                                        </span>
-                                    </div>
-                                    {!user!.phoneNumber.isVerify && (
-                                        <button
-                                            className={styles.verifyBtn}
-                                            onClick={() => handleSendCode("phone")}
-                                            disabled={isLoading}
-                                        >
-                                            Xác thực ngay
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ProfileInfo
+                        user={{
+                            id: user.id,
+                            username: user.username,
+                            fullName: user.fullName,
+                            email: {
+                                email: user.email.email,
+                                isVerify: user.email.isVerify,
+                            },
+                            phoneNumber: {
+                                phoneNumber: user.phoneNumber.phoneNumber,
+                                isVerify: user.phoneNumber.isVerify,
+                            },
+                            isActived: user.isActived,
+                        }}
+                        editMode={editMode}
+                        editValues={editValues}
+                        isLoading={isLoading}
+                        onEditModeChange={setEditMode}
+                        onEditValuesChange={setEditValues}
+                        onEditSave={handleEditSave}
+                        onSendCode={handleSendCode}
+                    />
                 );
             case "orders":
-                return (
-                    <div className={styles.tabContent}>
-                        <div className={styles.emptyState}>
-                            <h2>Đơn hàng của bạn</h2>
-                            <p>Bạn chưa có đơn hàng nào</p>
-                        </div>
-                    </div>
-                );
+                return <ProfileOrders />;
             case "cart":
-                return (
-                    <div className={styles.tabContent}>
-                        <div className={styles.emptyState}>
-                            <h2>Giỏ hàng</h2>
-                            <p>Giỏ hàng của bạn đang trống</p>
-                        </div>
-                    </div>
-                );
+                return <ProfileCart />;
             default:
                 return null;
         }
@@ -212,13 +254,34 @@ const Profile: React.FC = () => {
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
                         <div className={styles.modalHeader}>
-                            <h2>Xác thực {verificationModal === "email" ? "Email" : "Số điện thoại"}</h2>
+                            <h2>
+                                {changeStep === "password-input"
+                                    ? `Đổi ${pendingEdit === "email" ? "Email" : "Số điện thoại"}`
+                                    : `Xác thực ${verificationModal === "email" ? "Email" : "Số điện thoại"}`
+                                }
+                            </h2>
                             <button
                                 className={styles.closeBtn}
-                                onClick={() => {
+                                onClick={async () => {
+                                    if (changeStep === "otp-input" && pendingEdit) {
+                                        setIsLoading(true);
+                                        try {
+                                            await reload();
+                                            addNotification("warning", `${pendingEdit === "email" ? "Email" : "Số điện thoại"} chưa được xác nhận`);
+                                        } catch (err: any) {
+                                            console.error("Lỗi trong quá trình lấy thông tin user", err);
+                                        } finally {
+                                            setIsLoading(false);
+                                        }
+                                    }
+                                    setChangeStep(null);
                                     setVerificationModal(null);
                                     setVerificationCode("");
+                                    setPassword("");
                                     setError("");
+                                    setSuccess("");
+                                    setPendingEdit(null);
+                                    setEditMode(null);
                                 }}
                             >
                                 ✕
@@ -229,29 +292,87 @@ const Profile: React.FC = () => {
                             {success && <div className={styles.successMessage}>{success}</div>}
                             {error && <div className={styles.errorMessage}>{error}</div>}
 
-                            <p className={styles.modalText}>
-                                Vui lòng nhập mã xác thực được gửi tới {verificationModal === "email" ? "email" : "số điện thoại"} của bạn
-                            </p>
+                            {changeStep === "password-input" ? (
+                                <>
+                                    <p className={styles.modalText}>
+                                        Nhập {pendingEdit === "email" ? "email mới" : "số điện thoại mới"} và mật khẩu để tiếp tục
+                                    </p>
 
-                            <input
-                                type="text"
-                                placeholder="Nhập mã xác thực (6 chữ số)"
-                                className={styles.verificationInput}
-                                value={verificationCode}
-                                onChange={(e) => setVerificationCode(e.target.value)}
-                                disabled={isLoading}
-                                maxLength={6}
-                            />
+                                    <div style={{ marginBottom: "15px" }}>
+                                        <input
+                                            type={pendingEdit === "email" ? "email" : "tel"}
+                                            placeholder={pendingEdit === "email" ? "Email mới" : "Số điện thoại mới"}
+                                            className={styles.verificationInput}
+                                            value={pendingEdit === "email" ? editValues.email : editValues.phone}
+                                            onChange={(e) => {
+                                                if (pendingEdit === "email") {
+                                                    setEditValues({ ...editValues, email: e.target.value });
+                                                } else {
+                                                    setEditValues({ ...editValues, phone: e.target.value });
+                                                }
+                                            }}
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+
+                                    <input
+                                        type="password"
+                                        placeholder="Mật khẩu hiện tại"
+                                        className={styles.verificationInput}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        disabled={isLoading}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <p className={styles.modalText}>
+                                        Vui lòng nhập mã xác thực được gửi tới {pendingEdit ? "địa chỉ mới" : verificationModal === "email" ? "email" : "số điện thoại"} của bạn
+                                    </p>
+
+                                    {pendingEdit && (
+                                        <div className={styles.warningMessage}>
+                                            ⚠️ {pendingEdit === "email" ? "Email" : "Số điện thoại"} sẽ không được xác nhận nếu bạn không hoàn thành bước này
+                                        </div>
+                                    )}
+
+                                    <input
+                                        type="text"
+                                        placeholder="Nhập mã xác thực (6 chữ số)"
+                                        className={styles.verificationInput}
+                                        value={verificationCode}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVerificationCode(e.target.value)}
+                                        disabled={isLoading}
+                                        maxLength={6}
+                                    />
+                                </>
+                            )}
                         </div>
 
                         <div className={styles.modalFooter}>
                             <button
                                 className={styles.btnCancel}
-                                onClick={() => {
+                                onClick={async () => {
+                                    // Nếu đang ở bước OTP verification và bỏ qua, cần reload user
+                                    if (changeStep === "otp-input" && pendingEdit) {
+                                        setIsLoading(true);
+                                        try {
+                                            await reload();
+                                            addNotification("warning", `${pendingEdit === "email" ? "Email" : "Số điện thoại"} sẽ không được xác nhận nếu bạn bỏ qua bước này`);
+                                        } catch (err: any) {
+                                            console.error("Failed to reload user:", err);
+                                        } finally {
+                                            setIsLoading(false);
+                                        }
+                                    }
+                                    setChangeStep(null);
                                     setVerificationModal(null);
                                     setVerificationCode("");
+                                    setPassword("");
                                     setError("");
                                     setSuccess("");
+                                    setPendingEdit(null);
+                                    setEditMode(null);
                                 }}
                                 disabled={isLoading}
                             >
@@ -259,10 +380,13 @@ const Profile: React.FC = () => {
                             </button>
                             <button
                                 className={styles.btnSubmit}
-                                onClick={handleVerify}
-                                disabled={isLoading || !verificationCode.trim()}
+                                onClick={changeStep === "password-input" ? handlePasswordConfirm : (pendingEdit ? handleVerifyAndUpdate : handleVerify)}
+                                disabled={isLoading || (changeStep === "password-input" ? !password.trim() : !verificationCode.trim())}
                             >
-                                {isLoading ? "Đang xác thực..." : "Xác thực"}
+                                {isLoading
+                                    ? (changeStep === "password-input" ? "Đang gửi..." : "Đang xác thực...")
+                                    : (changeStep === "password-input" ? "Tiếp tục" : "Xác thực")
+                                }
                             </button>
                         </div>
                     </div>

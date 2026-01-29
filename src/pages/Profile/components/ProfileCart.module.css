@@ -1,0 +1,62 @@
+.tabContent {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.emptyState {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.emptyState h2 {
+    font-size: 1.2rem;
+    color: var(--text);
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+.emptyState p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .emptyState {
+        padding: 40px 20px;
+    }
+
+    .emptyState h2 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+
+    .emptyState p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .emptyState {
+        padding: 30px 15px;
+    }
+
+    .emptyState h2 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .emptyState p {
+        font-size: 0.8rem;
+    }
+}
