@@ -4,7 +4,7 @@ import { Footer } from "../Footer/Footer";
 import { Header } from "../Header/Header";
 import { Outlet } from "react-router-dom";
 
-export const Layout: React.FC<{children?: React.ReactNode}> = ({ children }) => (
+export const Layout: React.FC = () => (
   <div className={styles.appLayout}>
     <Header />
     <div className={styles.layoutContent}>

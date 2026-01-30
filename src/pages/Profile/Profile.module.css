@@ -1,23 +1,22 @@
 .profileContainer {
     width: 100%;
     min-height: calc(100vh - 200px);
-    padding: 30px 20px;
-    background: #f8f8f8;
+    padding: 32px 24px 48px;
+    background: #fafafa;
 }
 
 .profileWrapper {
     display: flex;
-    gap: 30px;
-    max-width: 1200px;
+    gap: 24px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .sidebar {
-    flex: 0 0 280px;
-    background: white;
+    flex: 0 0 260px;
+    background: #fff;
     border-radius: 8px;
-    padding: 30px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 24px 20px;
     height: fit-content;
     border: 1px solid var(--primary-border-color);
 }
@@ -32,18 +31,17 @@
 }
 
 .userAvatar {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background: var(--primary-color);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+    margin-bottom: 12px;
 }
 
 .userInfo {
@@ -106,19 +104,18 @@
     flex: 1;
 }
 
-/* Main Content Styles */
 .mainContent {
     flex: 1;
-    background: white;
+    background: #fff;
     border-radius: 8px;
-    padding: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 32px 36px 40px;
     border: 1px solid var(--primary-border-color);
+    min-width: 450px;
+    max-width: 640px;
 }
 
 .tabContent {
-    min-width: 500px;
-    animation: fadeIn 0.3s ease;
+    min-width: 0;
 }
 
 @keyframes fadeIn {

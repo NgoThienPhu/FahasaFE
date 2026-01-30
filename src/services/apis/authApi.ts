@@ -13,26 +13,26 @@ interface RegisterParams {
     password: string;
 }
 
-interface Account {
-    id: string;
-    username: string;
-    email: {
-        email: string;
-        isVerify: boolean;
-    };
-    phoneNumber: {
-        phoneNumber: string;
-        isVerify: boolean;
-    }
-    isActived: boolean;
-    fullName: string;
-    createdAt: string;
-    updatedAt: string;
+export interface User {
+  id: string;
+  username: string;
+  fullName: string;
+  dateOfBirth: string | null;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  email: {
+    email: string;
+    isVerify: boolean;
+  }
+  phoneNumber: {
+    phoneNumber: string;
+    isVerify: boolean;
+  }
+  isActived: boolean;
 }
 
 interface LoginResponse { accessToken: string; }
 
-interface RegisterResponse extends Account {}
+interface RegisterResponse extends User {}
 
 interface RefreshTokenResponse extends LoginResponse {}
 
@@ -54,7 +54,7 @@ const authApi = {
         return apiClient.post("/auth/refresh", null, { withCredentials: true });
     },
 
-    getProfile(): Promise<APISuccessResponse<Account>> {
+    getProfile(): Promise<APISuccessResponse<User>> {
         return apiClient.get("/accounts/me");
     },
 

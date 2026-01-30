@@ -1,20 +1,5 @@
 import React, { useEffect } from "react";
-import authApi from "../services/apis/authApi";
-
-interface User {
-  id: string;
-  username: string;
-  fullName: string;
-  email: {
-    email: string;
-    isVerify: boolean;
-  }
-  phoneNumber: {
-    phoneNumber: string;
-    isVerify: boolean;
-  }
-  isActived: boolean;
-}
+import authApi, { type User } from "../services/apis/authApi";
 
 interface AuthContextType {
   user: User | null;

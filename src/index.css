@@ -5,12 +5,15 @@
 }
 
 :root {
-    --text: #333333;
-    --text-muted: #666666;
-
+    --text: #333;
+    --text-muted: #666;
     --primary-color: #e11d48;
-
-    --primary-border-color: #f0f0f0;
+    --primary-light: rgba(225, 29, 72, 0.08);
+    --primary-border-color: #eee;
+    --accent-amber: #d97706;
+    --accent-amber-bg: rgba(217, 119, 6, 0.1);
+    --accent-teal: #0d9488;
+    --accent-teal-bg: rgba(13, 148, 136, 0.1);
 }
 
 body {

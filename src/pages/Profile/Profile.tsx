@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaBox, FaShoppingCart } from "react-icons/fa";
+import { FaUser, FaBox, FaShoppingCart, FaMapMarkerAlt } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Profile.module.css";
 import emailApi from "../../services/apis/emailApi";
@@ -7,11 +7,12 @@ import { useNotification } from "../../contexts/NotificationContext";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileOrders from "./components/ProfileOrders";
 import ProfileCart from "./components/ProfileCart";
+import ProfileAddresses from "./components/ProfileAddresses";
 import userApi from "../../services/apis/userApi";
 
-type ActiveTab = "info" | "orders" | "cart";
+type ActiveTab = "info" | "orders" | "cart" | "addresses";
 type VerificationType = "email" | "phone" | null;
-type EditMode = "email" | "phone" | null;
+type EditMode = "email" | "phone" | "basicInfo" | null;
 type ChangeStep = "password-input" | "otp-input" | null;
 
 const Profile: React.FC = () => {
@@ -26,14 +27,15 @@ const Profile: React.FC = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
-    // Edit mode states
     const [editMode, setEditMode] = useState<EditMode>(null);
     const [editValues, setEditValues] = useState({
         email: user?.email.email || "",
         phone: user?.phoneNumber.phoneNumber || "",
+        fullName: user?.fullName || "",
+        dateOfBirth: user?.dateOfBirth || "",
+        gender: user?.gender || "OTHER",
     });
 
-    // Password confirmation states
     const [password, setPassword] = useState("");
     const [pendingEdit, setPendingEdit] = useState<EditMode>(null);
 
@@ -91,6 +93,27 @@ const Profile: React.FC = () => {
 
     const handleEditSave = async () => {
         if (!editMode) return;
+
+        // Xử lý chỉnh sửa thông tin cơ bản
+        if (editMode === "basicInfo") {
+            setIsLoading(true);
+            setError("");
+            try {
+                await userApi.changeInfo({
+                    fullName: editValues.fullName,
+                    dateOfBirth: editValues.dateOfBirth,
+                    gender: editValues.gender,
+                });
+                addNotification("success", "Cập nhật thông tin cơ bản thành công!");
+                await reload();
+                setEditMode(null);
+            } catch (err: any) {
+                setError(err.response?.data?.message || "Cập nhật thất bại");
+            } finally {
+                setIsLoading(false);
+            }
+            return;
+        }
 
         // Nếu đổi email hoặc phone, cần xác nhận mật khẩu trước
         if ((editMode === "email" && editValues.email !== user?.email.email) ||
@@ -178,6 +201,8 @@ const Profile: React.FC = () => {
                             id: user.id,
                             username: user.username,
                             fullName: user.fullName,
+                            dateOfBirth: user.dateOfBirth,
+                            gender: user.gender,
                             email: {
                                 email: user.email.email,
                                 isVerify: user.email.isVerify,
@@ -201,6 +226,8 @@ const Profile: React.FC = () => {
                 return <ProfileOrders />;
             case "cart":
                 return <ProfileCart />;
+            case "addresses":
+                return <ProfileAddresses />;
             default:
                 return null;
         }
@@ -241,6 +268,13 @@ const Profile: React.FC = () => {
                         >
                             <span className={styles.icon}><FaShoppingCart /></span>
                             <span className={styles.label}>Giỏ hàng</span>
+                        </button>
+                        <button
+                            className={`${styles.navItem} ${activeTab === "addresses" ? styles.active : ""}`}
+                            onClick={() => setActiveTab("addresses")}
+                        >
+                            <span className={styles.icon}><FaMapMarkerAlt /></span>
+                            <span className={styles.label}>Địa chỉ</span>
                         </button>
                     </div>
                 </div>
