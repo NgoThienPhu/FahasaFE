@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./ProfileAddresses.module.css";
 import { useNotification } from "../../../contexts/NotificationContext";
 import userApi, { type CreateAddressRequestDTO } from "../../../services/apis/userApi";
+import addressApi from "../../../services/apis/addressApi";
 import { FiMapPin, FiPhone, FiEdit2, FiTrash2, FiHome, FiPlus, FiArrowLeft } from "react-icons/fi";
 
 const ProfileAddresses: React.FC = () => {
@@ -22,14 +23,33 @@ const ProfileAddresses: React.FC = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
-    const validate = () => {
-        if (!form.fullName.trim()) return "Vui lòng nhập họ và tên";
-        if (!form.phoneNumber.trim()) return "Vui lòng nhập số điện thoại";
-        if (!form.addressDetail.trim()) return "Vui lòng nhập chi tiết địa chỉ";
-        if (!form.city.trim()) return "Vui lòng chọn thành phố";
-        if (!form.district.trim()) return "Vui lòng chọn quận/huyện";
-        if (!form.ward.trim()) return "Vui lòng chọn phường/xã";
+    const validate = (): string | null => {
+        const fullName = form.fullName.trim();
+        const phoneNumber = form.phoneNumber.trim().replace(/\s/g, "");
+        const addressDetail = form.addressDetail.trim();
+        const city = form.city.trim();
+        const district = form.district.trim();
+        const ward = form.ward.trim();
+
+        if (!fullName) return "Vui lòng nhập họ và tên";
+        if (fullName.length < 2) return "Họ và tên phải có ít nhất 2 ký tự";
+
+        if (!phoneNumber) return "Vui lòng nhập số điện thoại";
+        const phoneNormalized = phoneNumber.replace(/^\+84/, "0");
+        const phoneRegex = /^0[35789][0-9]{8}$/;
+        if (!phoneRegex.test(phoneNormalized)) return "Số điện thoại không hợp lệ (10 số, VD: 0912345678)";
+
+        if (!addressDetail) return "Vui lòng nhập chi tiết địa chỉ";
+        if (addressDetail.length < 5) return "Chi tiết địa chỉ phải có ít nhất 5 ký tự";
+
+        if (!city) return "Vui lòng nhập tỉnh/thành phố";
+        if (!district) return "Vui lòng nhập quận/huyện";
+        if (!ward) return "Vui lòng nhập phường/xã";
+
         return null;
     };
 
@@ -44,8 +64,22 @@ const ProfileAddresses: React.FC = () => {
         setIsSubmitting(true);
         setError("");
         try {
-            await userApi.createAddress(form);
-            addNotification("success", "Thêm địa chỉ thành công");
+            if (editingId) {
+                await addressApi.updateAddress(editingId, {
+                    fullName: form.fullName,
+                    phoneNumber: form.phoneNumber,
+                    addressDetail: form.addressDetail,
+                    city: form.city,
+                    district: form.district,
+                    ward: form.ward,
+                    isDefault: form.isDefault ?? false,
+                });
+                addNotification("success", "Đã cập nhật địa chỉ");
+                setEditingId(null);
+            } else {
+                await userApi.createAddress(form);
+                addNotification("success", "Thêm địa chỉ thành công");
+            }
             setShowForm(false);
             setForm({
                 fullName: "",
@@ -59,7 +93,7 @@ const ProfileAddresses: React.FC = () => {
             const res = await userApi.getAddresses();
             setAddresses(res.data || []);
         } catch (err: any) {
-            setError(err?.message || "Thêm địa chỉ thất bại");
+            setError(err?.message ?? (editingId ? "Cập nhật địa chỉ thất bại" : "Thêm địa chỉ thất bại"));
         } finally {
             setIsSubmitting(false);
         }
@@ -82,34 +116,69 @@ const ProfileAddresses: React.FC = () => {
         return () => { mounted = false; };
     }, []);
 
+    const openDeleteConfirm = (addressId: string) => {
+        if (addressId) setConfirmDeleteId(addressId);
+    };
+
+    const closeDeleteConfirm = () => setConfirmDeleteId(null);
+
+    const handleDeleteAddress = async () => {
+        const addressId = confirmDeleteId;
+        if (!addressId) return;
+        setDeletingId(addressId);
+        try {
+            await addressApi.deleteAddress(addressId);
+            addNotification("success", "Đã xóa địa chỉ");
+            const res = await userApi.getAddresses();
+            setAddresses(res.data || []);
+            setConfirmDeleteId(null);
+        } catch (err: any) {
+            addNotification("error", err?.message || "Xóa địa chỉ thất bại");
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2>Địa chỉ</h2>
-                <button
-                    type="button"
-                    className={styles.addBtnHeader}
-                    onClick={() => {
-                        setError("");
-                        setShowForm((prev) => !prev);
-                    }}
-                    disabled={isSubmitting}
-                >
-                    {showForm ? (
-                        <>
-                            <FiArrowLeft size={18} />
-                            Quay lại danh sách
-                        </>
-                    ) : (
-                        <>
-                            <FiPlus size={18} />
-                            Thêm địa chỉ
-                        </>
-                    )}
-                </button>
+                {(showForm || editingId !== null || addresses.length < 3) && (
+                    <button
+                        type="button"
+                        className={styles.addBtnHeader}
+                        onClick={() => {
+                            setError("");
+                            setEditingId(null);
+                            setForm({
+                                fullName: "",
+                                phoneNumber: "",
+                                addressDetail: "",
+                                city: "",
+                                district: "",
+                                ward: "",
+                                isDefault: false,
+                            });
+                            setShowForm((prev) => !prev);
+                        }}
+                        disabled={isSubmitting}
+                    >
+                        {showForm || editingId ? (
+                            <>
+                                <FiArrowLeft size={18} />
+                                Quay lại danh sách
+                            </>
+                        ) : (
+                            <>
+                                <FiPlus size={18} />
+                                Thêm địa chỉ
+                            </>
+                        )}
+                    </button>
+                )}
             </div>
 
-            {!showForm && (
+            {!showForm && !editingId && (
                 <>
                     {isLoading ? (
                         <div className={styles.empty}>Đang tải địa chỉ...</div>
@@ -123,9 +192,9 @@ const ProfileAddresses: React.FC = () => {
                         </div>
                     ) : (
                         <div className={styles.listContainer}>
-                            {addresses.map((a: any, idx: number) => (
+                            {addresses.map((a: any) => (
                                 <div
-                                    key={idx}
+                                    key={a.id}
                                     className={`${styles.addressCard} ${a.isDefault ? styles.defaultCard : ""}`}
                                 >
                                     {a.isDefault && (
@@ -160,10 +229,32 @@ const ProfileAddresses: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className={styles.actionBtns}>
-                                            <button className={styles.editBtn} title="Chỉnh sửa">
+                                            <button
+                                                className={styles.editBtn}
+                                                title="Chỉnh sửa"
+                                                onClick={() => {
+                                                    setEditingId(a.id);
+                                                    setForm({
+                                                        fullName: a.fullName ?? "",
+                                                        phoneNumber: a.phoneNumber ?? "",
+                                                        addressDetail: a.addressDetail ?? "",
+                                                        city: a.city ?? "",
+                                                        district: a.district ?? "",
+                                                        ward: a.ward ?? "",
+                                                        isDefault: !!a.isDefault,
+                                                    });
+                                                    setShowForm(true);
+                                                    setError("");
+                                                }}
+                                            >
                                                 <FiEdit2 />
                                             </button>
-                                            <button className={styles.deleteBtn} title="Xóa">
+                                            <button
+                                                className={styles.deleteBtn}
+                                                title="Xóa"
+                                                onClick={() => openDeleteConfirm(a.id)}
+                                                disabled={deletingId === a.id}
+                                            >
                                                 <FiTrash2 />
                                             </button>
                                         </div>
@@ -175,11 +266,15 @@ const ProfileAddresses: React.FC = () => {
                 </>
             )}
 
-            {showForm && (
+            {(showForm || editingId) && (
                 <div className={styles.formCard}>
-                    <h3 className={styles.formTitle}>Thêm địa chỉ mới</h3>
+                    <h3 className={styles.formTitle}>
+                        {editingId ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"}
+                    </h3>
                     <p className={styles.formDescription}>
-                        Vui lòng nhập đầy đủ thông tin bên dưới để lưu địa chỉ giao hàng của bạn.
+                        {editingId
+                            ? "Cập nhật thông tin địa chỉ bên dưới và bấm lưu."
+                            : "Vui lòng nhập đầy đủ thông tin bên dưới để lưu địa chỉ giao hàng của bạn."}
                     </p>
                     <form className={styles.form} onSubmit={handleSubmit}>
                         {error && <div className={styles.formError}>{error}</div>}
@@ -251,8 +346,12 @@ const ProfileAddresses: React.FC = () => {
                                 type="checkbox"
                                 checked={!!form.isDefault}
                                 onChange={(e) => setForm({ ...form, isDefault: e.target.checked })}
+                                disabled={!!editingId && !!form.isDefault}
                             />{" "}
                             Đặt làm địa chỉ mặc định
+                            {!!editingId && !!form.isDefault && (
+                                <span className={styles.checkboxHint}>(đã là địa chỉ mặc định)</span>
+                            )}
                         </label>
 
                         <div className={styles.formActions}>
@@ -261,17 +360,67 @@ const ProfileAddresses: React.FC = () => {
                                 className={styles.btnCancel}
                                 onClick={() => {
                                     setShowForm(false);
+                                    setEditingId(null);
                                     setError("");
+                                    setForm({
+                                        fullName: "",
+                                        phoneNumber: "",
+                                        addressDetail: "",
+                                        city: "",
+                                        district: "",
+                                        ward: "",
+                                        isDefault: false,
+                                    });
                                 }}
                                 disabled={isSubmitting}
                             >
                                 Hủy
                             </button>
                             <button type="submit" className={styles.btnSave} disabled={isSubmitting}>
-                                {isSubmitting ? "Đang lưu..." : "Lưu địa chỉ"}
+                                {isSubmitting
+                                    ? "Đang lưu..."
+                                    : editingId
+                                      ? "Cập nhật địa chỉ"
+                                      : "Lưu địa chỉ"}
                             </button>
                         </div>
                     </form>
+                </div>
+            )}
+
+            {confirmDeleteId && (
+                <div className={styles.deleteOverlay} onClick={closeDeleteConfirm} aria-hidden>
+                    <div
+                        className={styles.deleteModal}
+                        onClick={(e) => e.stopPropagation()}
+                        role="dialog"
+                        aria-labelledby="delete-modal-title"
+                        aria-modal="true"
+                    >
+                        <h3 id="delete-modal-title" className={styles.deleteModalTitle}>
+                            Xóa địa chỉ
+                        </h3>
+                        <p className={styles.deleteModalText}>
+                            Bạn có chắc muốn xóa địa chỉ này? Hành động này không thể hoàn tác.
+                        </p>
+                        <div className={styles.deleteModalActions}>
+                            <button
+                                type="button"
+                                className={styles.deleteModalCancel}
+                                onClick={closeDeleteConfirm}
+                            >
+                                Hủy
+                            </button>
+                            <button
+                                type="button"
+                                className={styles.deleteModalConfirm}
+                                onClick={handleDeleteAddress}
+                                disabled={!!deletingId}
+                            >
+                                {deletingId ? "Đang xóa..." : "Xóa địa chỉ"}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 
