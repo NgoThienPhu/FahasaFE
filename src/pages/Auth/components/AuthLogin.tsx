@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "./Login.module.css";
+import styles from "./AuthLogin.module.css";
 import authApi from "../../../services/apis/authApi";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Login: React.FC = () => {
+const AuthLogin: React.FC = () => {
 
     const navigate = useNavigate();
     const { login: loginApi } = authApi;
@@ -75,12 +75,26 @@ const Login: React.FC = () => {
             )}
             <div className={styles.formGroup}>
                 <label htmlFor="username">Tên đăng nhập</label>
-                <input onChange={handleChange} id="username" name="username" type="text" placeholder="Nhập tên đăng nhập..." />
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="Nhập tên đăng nhập..."
+                />
                 {errors.username && <p className={styles.fieldError}>{errors.username}</p>}
             </div>
             <div className={styles.formGroup}>
                 <label htmlFor="password">Mật khẩu</label>
-                <input onChange={handleChange} id="password" name="password" type="password" placeholder="Nhập mật khẩu..." />
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Nhập mật khẩu..."
+                />
                 {errors.password && <p className={styles.fieldError}>{errors.password}</p>}
             </div>
             <button disabled={loading} type="submit" className={styles.btnLogin}>
@@ -90,4 +104,4 @@ const Login: React.FC = () => {
     );
 }
 
-export default Login;
+export default AuthLogin;

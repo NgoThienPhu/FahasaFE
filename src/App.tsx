@@ -7,7 +7,8 @@ import { ProtectedRouter } from './components/protected_router/ProtectedRouter'
 import Profile from './pages/Profile/Profile'
 
 const Home = lazy(() => import('./pages/Home/Home'))
-const Auth = lazy(() => import('./pages/Auth/Auth/Auth'))
+const Auth = lazy(() => import('./pages/Auth/Auth'))
+const Products = lazy(() => import('./pages/Products/Products'))
 
 function App() {
   return (
@@ -19,7 +20,11 @@ function App() {
           </Suspense>
         } />
         <Route path="about" element={<Introduce />} />
-        <Route path="products" element={<>Đây là trang sản phẩm</>} />
+        <Route path="products" element={
+          <Suspense fallback={<Loading notify='Đang tải sản phẩm...' />}>
+            <Products />
+          </Suspense>
+        } />
         <Route path="auth" element={
           <Suspense fallback={<Loading notify='Đang tải thông tin...' />}>
             <ProtectedRouter redirectIfAuth={true}>

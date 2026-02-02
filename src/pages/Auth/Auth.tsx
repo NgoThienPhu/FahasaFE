@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Auth.module.css";
-import Login from "../Login/Login";
-import Register from "../Register/Register";
+import AuthLogin from "./components/AuthLogin";
+import AuthRegister from "./components/AuthRegister";
 
 const Auth: React.FC = () => {
     const [tab, setTab] = React.useState<"login" | "register">("login");
@@ -22,10 +22,10 @@ const Auth: React.FC = () => {
                 </button>
             </div>
             <div className={styles.formContainer}>
-                {tab === "login" ? <Login /> : <Register />}
+                {tab === "login" ? <AuthLogin /> : <AuthRegister />}
             </div>
         </div>
     );
-}
+};
 
 export default Auth;

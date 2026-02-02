@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import styles from "./Register.module.css";
+import styles from "./AuthRegister.module.css";
 import authApi from "../../../services/apis/authApi";
 import type { APIResponseError } from "../../../services/apis/config";
 import { useNotification } from "../../../contexts/NotificationContext";
 import { useNavigate } from "react-router-dom";
 
-const Register: React.FC = () => {
+const AuthRegister: React.FC = () => {
 
     const { register } = authApi;
     const navigation = useNavigate();
@@ -189,4 +189,4 @@ const Register: React.FC = () => {
     );
 };
 
-export default Register;
+export default AuthRegister;
