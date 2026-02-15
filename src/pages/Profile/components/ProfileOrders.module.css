@@ -30,33 +30,3 @@
     color: var(--text-muted);
     margin: 0;
 }
-
-@media (max-width: 768px) {
-    .emptyState {
-        padding: 40px 20px;
-    }
-
-    .emptyState h2 {
-        font-size: 1.1rem;
-        margin-bottom: 12px;
-    }
-
-    .emptyState p {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .emptyState {
-        padding: 30px 15px;
-    }
-
-    .emptyState h2 {
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-
-    .emptyState p {
-        font-size: 0.8rem;
-    }
-}

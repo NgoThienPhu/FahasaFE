@@ -239,7 +239,7 @@ const Profile: React.FC = () => {
                 <div className={styles.sidebar}>
                     <div className={styles.userCard}>
                         <div className={styles.userAvatar}>
-                            {user?.fullName.charAt(0).toUpperCase()}
+                            {(user?.fullName?.charAt(0) ?? "?").toUpperCase()}
                         </div>
                         <div className={styles.userInfo}>
                             <h3 className={styles.userName}>{user?.fullName}</h3>
