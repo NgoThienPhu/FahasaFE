@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import authApi, { type User } from "../services/apis/authApi";
+import authApi from "../services/apis/authApi";
+import type { User } from "../services/entities/User";
 
 interface AuthContextType {
   user: User | null;
@@ -16,7 +17,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = React.useState<User | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  useEffect(() => {reload()}, []);
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) reload(); else setIsLoading(false);
+  }, []);
 
   const login = (userData: User) => {
     setUser(userData);

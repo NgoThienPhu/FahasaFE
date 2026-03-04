@@ -1,15 +1,6 @@
 import apiClient, { type APIResponse, type APISuccessResponse } from "./config";
+import type { Address } from "../entities/Address";
 
-export interface Address {
-    id: string;
-    fullName: string;
-    phoneNumber: string;
-    addressDetail: string;
-    city: string;
-    district: string;
-    ward: string;
-    isDefault?: boolean;
-}
 
 interface CreateAddressParams extends Omit<Address, "id"> {}
 

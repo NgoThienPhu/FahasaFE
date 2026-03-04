@@ -1,4 +1,5 @@
 import apiClient, { type APIResponse, type APISuccessResponse } from "./config";
+import type { User } from "../entities/User";
 
 interface LoginParams {
     username: string;
@@ -13,28 +14,24 @@ interface RegisterParams {
     password: string;
 }
 
-export interface User {
-  id: string;
-  username: string;
-  fullName: string;
-  dateOfBirth: string | null;
-  gender: "MALE" | "FEMALE" | "OTHER";
-  email: {
-    email: string;
-    isVerify: boolean;
-  }
-  phoneNumber: {
-    phoneNumber: string;
-    isVerify: boolean;
-  }
-  isActived: boolean;
-}
-
 interface LoginResponse { accessToken: string; }
 
 interface RegisterResponse extends User {}
 
 interface RefreshTokenResponse extends LoginResponse {}
+
+interface VerifyResetTokenResponse {
+    valid: boolean;
+}
+
+interface ResetPasswordParams {
+    ressetPasswordToken: string;
+    newPassword: string;
+}
+
+interface VerifyResetPasswordTokenParams {
+    ressetPasswordToken: string;
+}
 
 const authApi = {
 
@@ -56,6 +53,14 @@ const authApi = {
 
     getProfile(): Promise<APISuccessResponse<User>> {
         return apiClient.get("/accounts/me");
+    },
+
+    verifyResetPasswordToken(resetPasswordToken: VerifyResetPasswordTokenParams): Promise<APISuccessResponse<VerifyResetTokenResponse>> {
+        return apiClient.post("/auth/resset-password/verify", resetPasswordToken);
+    },
+
+    ressetPassword(params: ResetPasswordParams): Promise<APIResponse> {
+        return apiClient.post("/auth/resset-password", params);
     },
 
 };

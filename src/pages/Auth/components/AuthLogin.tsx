@@ -3,12 +3,15 @@ import styles from "./AuthLogin.module.css";
 import authApi from "../../../services/apis/authApi";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../../contexts/NotificationContext";
+import type { APIResponseError } from "../../../services/apis/config";
 
 const AuthLogin: React.FC = () => {
 
     const navigate = useNavigate();
     const { login: loginApi } = authApi;
     const { login: updateUser } = useAuth();
+    const { addNotification } = useNotification();
 
     const [formData, setFormData] = React.useState({
         username: "",
@@ -57,12 +60,23 @@ const AuthLogin: React.FC = () => {
             const responseGetProfile = await authApi.getProfile();
             const userProfile = responseGetProfile;
 
-            updateUser({...userProfile.data});
-
+            updateUser({ ...userProfile.data });
             navigate("/", { replace: true });
         } catch (err: any) {
             console.error("Đăng nhập thất bại:", err);
-            setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
+            const apiError = err as APIResponseError;
+
+            // Sai tài khoản / mật khẩu: hiển thị ngay trên giao diện
+            if (apiError.status === 400 || apiError.status === 401) {
+                setError("Tên đăng nhập hoặc mật khẩu không đúng.");
+                return;
+            }
+
+            // Lỗi hệ thống khác: dùng notification toàn cục
+            addNotification(
+                "error",
+                apiError.message || "Đăng nhập thất bại. Vui lòng thử lại sau."
+            );
         } finally {
             setLoading(false);
         }

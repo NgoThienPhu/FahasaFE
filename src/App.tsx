@@ -9,6 +9,7 @@ import Profile from './pages/Profile/Profile'
 const Home = lazy(() => import('./pages/Home/Home'))
 const Auth = lazy(() => import('./pages/Auth/Auth'))
 const Products = lazy(() => import('./pages/Products/Products'))
+const ResetPassword = lazy(() => import('./pages/Auth/components/ResetPassword'))
 
 function App() {
   return (
@@ -30,6 +31,11 @@ function App() {
             <ProtectedRouter redirectIfAuth={true}>
               <Auth />
             </ProtectedRouter>
+          </Suspense>
+        } />
+        <Route path="auth/resset-password" element={
+          <Suspense fallback={<Loading notify='Đang tải trang đặt lại mật khẩu...' />}>
+            <ResetPassword />
           </Suspense>
         } />
         <Route path="profile" element={

@@ -1,4 +1,4 @@
-import type { User } from "./authApi";
+import type { User } from "../entities/User";
 import apiClient, { type APIResponse, type APISuccessResponse } from "./config";
 
 interface changeEmailParams {

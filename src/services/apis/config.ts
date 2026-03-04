@@ -60,7 +60,10 @@ apiClient.interceptors.response.use(
 
     const response = error.response;
 
-    if (response.status === 401 && response.data.error === "ACCESS_TOKEN_EXPIRED" && !originalRequest._retry) {
+    const isRefreshEndpoint =
+      typeof originalRequest.url === 'string' && originalRequest.url.includes('/auth/refresh');
+
+    if (response.status === 401 && !originalRequest._retry && !isRefreshEndpoint) {
       originalRequest._retry = true;
 
       try {
@@ -73,9 +76,7 @@ apiClient.interceptors.response.use(
 
         return apiClient(originalRequest);
       } catch (e) {
-        console.error("Làm mới token thất bại:", e);
-
-        // localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessToken');
         window.location.href = '/auth';
         return Promise.reject(e);
       }
