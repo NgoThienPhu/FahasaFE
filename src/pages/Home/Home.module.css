@@ -132,8 +132,8 @@
 
 .bookGrid > * {
     flex: 0 0 auto;
-    width: 240px;
-    min-width: 240px;
+    width: 260px;
+    min-width: 260px;
     scroll-snap-align: start;
 }
 
@@ -180,8 +180,8 @@
     }
 
     .bookGrid > * {
-        width: 200px;
-        min-width: 200px;
+        width: 220px;
+        min-width: 220px;
     }
 }
 

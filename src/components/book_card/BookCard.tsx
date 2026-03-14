@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./BookCard.module.css";
 import { NavLink } from "react-router-dom";
-import { FiEye, FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart } from "react-icons/fi";
+import LazyImage from "../lazy_image/LazyImage";
 import type { Book } from "../../services/entities/Book";
 
 function formatPrice(price: number): string {
@@ -21,15 +22,31 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     if (!book) return null;
     const title = book.title ?? "";
     const author = book.author ?? "";
-    const description = book.description ?? "";
+    const summary = book.summary ?? "";
     const priceValue = typeof (book as any).price === "number" ? (book as any).price : (book.price?.price ?? 0);
     const categoryName = book.category?.name ?? "";
     const id = book.id != null ? String(book.id) : "";
+    const imageUrl = book.primaryImage?.url;
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // TODO: gọi action thêm vào giỏ
+    };
 
     return (
-        <div className={styles.bookCard}>
+        <NavLink to={`/products/${id}`} className={styles.bookCard}>
             <div className={styles.bookCover} aria-hidden>
-                <span>{coverPlaceholder(title)}</span>
+                {imageUrl ? (
+                    <LazyImage
+                        src={imageUrl}
+                        alt=""
+                        className={styles.coverImg}
+                        placeholder={<span>{coverPlaceholder(title)}</span>}
+                    />
+                ) : (
+                    <span>{coverPlaceholder(title)}</span>
+                )}
             </div>
             <div className={styles.bookBody}>
                 <div className={styles.bookMeta}>
@@ -40,25 +57,18 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                     {author}
                     {categoryName ? ` · ${categoryName}` : ""}
                 </p>
-                <p className={styles.bookDesc}>{description}</p>
-                <div className={styles.cardActions}>
-                    <NavLink
-                        className={`${styles.btn} ${styles.btnText}`}
-                        to={`/products/${id}`}
-                    >
-                        <FiEye size={16} />
-                        Xem chi tiết
-                    </NavLink>
-                    <button
-                        type="button"
-                        className={`${styles.btn} ${styles.outline} ${styles.btnIcon}`}
-                        title="Thêm vào giỏ"
-                    >
-                        <FiShoppingCart size={18} />
-                    </button>
-                </div>
+                <p className={styles.bookDesc}>{summary}</p>
+                <button
+                    type="button"
+                    className={styles.addToCartBtn}
+                    onClick={handleAddToCart}
+                    title="Thêm vào giỏ hàng"
+                >
+                    <FiShoppingCart size={18} />
+                    Thêm vào giỏ
+                </button>
             </div>
-        </div>
+        </NavLink>
     );
 };
 
