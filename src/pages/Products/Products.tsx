@@ -1,69 +1,72 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./Products.module.css";
 import BookCard from "../../components/book_card/BookCard";
-import productApi, { type Product, type Category } from "../../services/apis/productApi";
+import productApi, { type Category } from "../../services/apis/productApi";
+import bookApi, { type GetBooksParams } from "../../services/apis/bookApi";
+import type { Book } from "../../services/entities/Book";
 import { FiFilter, FiX } from "react-icons/fi";
 
-const LIMIT = 12;
-const PAGINATION_SPREAD = 2; // số trang hiển thị hai bên trang hiện tại
+const PAGE_SIZE = 10;
+const PAGINATION_SPREAD = 2;
 
 const SORT_OPTIONS = [
-    { value: "name_asc", label: "Tên A → Z", sortBy: "name" as const, order: "asc" as const },
-    { value: "name_desc", label: "Tên Z → A", sortBy: "name" as const, order: "desc" as const },
-    { value: "price_asc", label: "Giá thấp → cao", sortBy: "price" as const, order: "asc" as const },
-    { value: "price_desc", label: "Giá cao → thấp", sortBy: "price" as const, order: "desc" as const },
-    { value: "rating_desc", label: "Đánh giá cao", sortBy: "rating" as const, order: "desc" as const },
-    { value: "sold_desc", label: "Bán chạy", sortBy: "sold" as const, order: "desc" as const },
+    { value: "title_asc", label: "Tên A → Z", sortBy: "title" as const, orderBy: "asc" as const },
+    { value: "title_desc", label: "Tên Z → A", sortBy: "title" as const, orderBy: "desc" as const },
+    { value: "author_asc", label: "Tác giả A → Z", sortBy: "author" as const, orderBy: "asc" as const },
+    { value: "author_desc", label: "Tác giả Z → A", sortBy: "author" as const, orderBy: "desc" as const },
+    { value: "publishDate_desc", label: "Mới nhất", sortBy: "publishDate" as const, orderBy: "desc" as const },
+    { value: "publishDate_asc", label: "Cũ nhất", sortBy: "publishDate" as const, orderBy: "asc" as const },
+    { value: "createdAt_desc", label: "Mới thêm", sortBy: "createdAt" as const, orderBy: "desc" as const },
 ];
 
-function formatPrice(price: number): string {
-    return new Intl.NumberFormat("vi-VN", {
-        style: "decimal",
-        minimumFractionDigits: 0,
-    }).format(price) + "₫";
-}
-
 const Products: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
     const [pagination, setPagination] = useState({ page: 1, totalPages: 1, totalItems: 0 });
     const [loading, setLoading] = useState(true);
 
+    const [categories, setCategories] = useState<Category[]>([]);
     const [categoryIds, setCategoryIds] = useState<string[]>([]);
-    const [minPrice, setMinPrice] = useState<string>("");
-    const [maxPrice, setMaxPrice] = useState<string>("");
-    const [sortValue, setSortValue] = useState("name_asc");
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+    const [sortValue, setSortValue] = useState("title_asc");
+
     const [showFilters, setShowFilters] = useState(false);
 
-    const loadProducts = useCallback(
-        (page: number = 1) => {
+    const loadBooks = useCallback(
+        (pageOneBased: number = 1) => {
             setLoading(true);
-            const opt = SORT_OPTIONS.find((o) => o.value === sortValue) || SORT_OPTIONS[0];
-            const min = minPrice.trim() ? Number(minPrice.replace(/\D/g, "")) : undefined;
-            const max = maxPrice.trim() ? Number(maxPrice.replace(/\D/g, "")) : undefined;
 
-            productApi
-                .getProducts({
-                    categoryIds: categoryIds.length > 0 ? categoryIds : undefined,
-                    minPrice: min && !isNaN(min) ? min : undefined,
-                    maxPrice: max && !isNaN(max) ? max : undefined,
-                    sortBy: opt.sortBy,
-                    order: opt.order,
-                    page,
-                    limit: LIMIT,
-                })
+            const sortOption = SORT_OPTIONS.find((o) => o.value === sortValue) ?? SORT_OPTIONS[0];
+            const params: GetBooksParams = {
+                page: pageOneBased - 1,
+                size: PAGE_SIZE,
+                sortBy: sortOption.sortBy,
+                orderBy: sortOption.orderBy,
+            };
+            if (categoryIds.length > 0) params.categoryId = categoryIds[0];
+
+            bookApi
+                .getBooks(params)
                 .then((res) => {
-                    setProducts(res.data);
+                    const list = Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : []);
+                    setBooks(list as Book[]);
+                    const p = res.pagination || res;
+                    const page0 = p.page || 0;
+                    const totalPages = p.totalPages || 1;
+                    const totalItems = p.totalItems || list.length;
                     setPagination({
-                        page: res.pagination.page,
-                        totalPages: res.pagination.totalPages,
-                        totalItems: res.pagination.totalItems,
+                        page: page0 + 1,
+                        totalPages,
+                        totalItems,
                     });
                 })
-                .catch(() => setProducts([]))
+                .catch(() => {
+                    setBooks([]);
+                    setPagination((prev) => ({ ...prev, page: 1, totalPages: 1, totalItems: 0 }));
+                })
                 .finally(() => setLoading(false));
         },
-        [categoryIds, minPrice, maxPrice, sortValue]
+        [categoryIds, sortValue]
     );
 
     useEffect(() => {
@@ -71,44 +74,37 @@ const Products: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        loadProducts(1);
-    }, [loadProducts]);
+        loadBooks(1);
+    }, [loadBooks]);
 
     const toggleCategory = (id: string) => {
-        setCategoryIds((prev) =>
-            prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
-        );
+        setCategoryIds((prev) => (prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]));
     };
 
     const clearFilters = () => {
         setCategoryIds([]);
         setMinPrice("");
         setMaxPrice("");
-        setSortValue("name_asc");
+        setSortValue("title_asc");
     };
 
-    const hasActiveFilters =
-        categoryIds.length > 0 || minPrice.trim() !== "" || maxPrice.trim() !== "";
+    const hasActiveFilters = categoryIds.length > 0 || minPrice.trim() !== "" || maxPrice.trim() !== "";
 
     const getPageNumbers = (): (number | "ellipsis")[] => {
-        const total = pagination.totalPages;
-        const current = pagination.page;
-        if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-        const pages: (number | "ellipsis")[] = [];
+        const { totalPages, page: current } = pagination;
+        if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
+
         const left = Math.max(1, current - PAGINATION_SPREAD);
-        const right = Math.min(total, current + PAGINATION_SPREAD);
-        if (left > 2) {
-            pages.push(1, "ellipsis");
-        } else if (left === 2) {
-            pages.push(1);
-        }
-        for (let i = left; i <= right; i++) pages.push(i);
-        if (right < total - 1) {
-            pages.push("ellipsis", total);
-        } else if (right === total - 1) {
-            pages.push(total);
-        }
-        return pages;
+        const right = Math.min(totalPages, current + PAGINATION_SPREAD);
+        const result: (number | "ellipsis")[] = [];
+
+        if (left > 2) result.push(1, "ellipsis");
+        else if (left === 2) result.push(1);
+        for (let i = left; i <= right; i++) result.push(i);
+        if (right < totalPages - 1) result.push("ellipsis", totalPages);
+        else if (right === totalPages - 1) result.push(totalPages);
+
+        return result;
     };
 
     return (
@@ -137,8 +133,9 @@ const Products: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className={styles.filterBlock}>
+                    <div className={styles.filterBlock} aria-disabled="true">
                         <h3 className={styles.filterLabel}>Thể loại</h3>
+                        <p className={styles.filterNote}>Sẽ bổ sung sau</p>
                         <div className={styles.categoryList}>
                             {categories.map((c) => (
                                 <label key={c.id} className={styles.checkboxRow}>
@@ -146,6 +143,8 @@ const Products: React.FC = () => {
                                         type="checkbox"
                                         checked={categoryIds.includes(c.id)}
                                         onChange={() => toggleCategory(c.id)}
+                                        disabled
+                                        aria-disabled="true"
                                     />
                                     <span>{c.name}</span>
                                 </label>
@@ -176,11 +175,7 @@ const Products: React.FC = () => {
 
                     <div className={styles.filterActions}>
                         {hasActiveFilters && (
-                            <button
-                                type="button"
-                                className={styles.btnClear}
-                                onClick={clearFilters}
-                            >
+                            <button type="button" className={styles.btnClear} onClick={clearFilters}>
                                 Xóa bộ lọc
                             </button>
                         )}
@@ -188,7 +183,7 @@ const Products: React.FC = () => {
                             type="button"
                             className={styles.btnApply}
                             onClick={() => {
-                                loadProducts(1);
+                                loadBooks(1);
                                 setShowFilters(false);
                             }}
                         >
@@ -229,62 +224,51 @@ const Products: React.FC = () => {
 
                     {loading ? (
                         <div className={styles.loading}>Đang tải sản phẩm...</div>
-                    ) : products.length === 0 ? (
+                    ) : !Array.isArray(books) || books.length === 0 ? (
                         <div className={styles.empty}>
                             <p>Không tìm thấy sản phẩm nào.</p>
-                            <button
-                                type="button"
-                                className={styles.btnClear}
-                                onClick={clearFilters}
-                            >
+                            <button type="button" className={styles.btnClear} onClick={clearFilters}>
                                 Xóa bộ lọc
                             </button>
                         </div>
                     ) : (
                         <>
                             <p className={styles.resultCount}>
-                                Hiển thị {products.length} / {pagination.totalItems} sản phẩm
+                                Hiển thị {books.length} / {pagination.totalItems} sản phẩm
                             </p>
                             <div className={styles.grid}>
-                                {products.map((p) => (
-                                    <BookCard
-                                        key={p.id}
-                                        id={p.id}
-                                        title={p.name}
-                                        author={p.author}
-                                        desc={p.description}
-                                        price={formatPrice(p.price)}
-                                        rating={p.rating}
-                                    />
+                                {books.map((book) => (
+                                    <BookCard key={String(book.id)} book={book} />
                                 ))}
                             </div>
+
                             {pagination.totalPages > 1 && (
                                 <div className={styles.pagination}>
                                     <button
                                         type="button"
                                         className={styles.pageBtn}
                                         disabled={pagination.page <= 1}
-                                        onClick={() => loadProducts(pagination.page - 1)}
+                                        onClick={() => loadBooks(pagination.page - 1)}
                                         aria-label="Trang trước"
                                     >
                                         Trước
                                     </button>
                                     <div className={styles.pageNumbers} role="navigation" aria-label="Phân trang">
-                                        {getPageNumbers().map((p, i) =>
-                                            p === "ellipsis" ? (
+                                        {getPageNumbers().map((item, i) =>
+                                            item === "ellipsis" ? (
                                                 <span key={`ellipsis-${i}`} className={styles.pageEllipsis} aria-hidden>
                                                     …
                                                 </span>
                                             ) : (
                                                 <button
-                                                    key={p}
+                                                    key={item}
                                                     type="button"
-                                                    className={pagination.page === p ? styles.pageNumActive : styles.pageNum}
-                                                    onClick={() => loadProducts(p)}
-                                                    aria-label={`Trang ${p}`}
-                                                    aria-current={pagination.page === p ? "page" : undefined}
+                                                    className={pagination.page === item ? styles.pageNumActive : styles.pageNum}
+                                                    onClick={() => loadBooks(item)}
+                                                    aria-label={`Trang ${item}`}
+                                                    aria-current={pagination.page === item ? "page" : undefined}
                                                 >
-                                                    {p}
+                                                    {item}
                                                 </button>
                                             )
                                         )}
@@ -293,16 +277,14 @@ const Products: React.FC = () => {
                                         type="button"
                                         className={styles.pageBtn}
                                         disabled={pagination.page >= pagination.totalPages}
-                                        onClick={() => loadProducts(pagination.page + 1)}
+                                        onClick={() => loadBooks(pagination.page + 1)}
                                         aria-label="Trang sau"
                                     >
                                         Sau
                                     </button>
                                     <span className={styles.pageInfo}>
                                         Trang {pagination.page} / {pagination.totalPages}
-                                        {pagination.totalItems > 0 && (
-                                            <> · {pagination.totalItems} sản phẩm</>
-                                        )}
+                                        {pagination.totalItems > 0 && <> · {pagination.totalItems} sản phẩm</>}
                                     </span>
                                 </div>
                             )}
@@ -312,11 +294,7 @@ const Products: React.FC = () => {
             </div>
 
             {showFilters && (
-                <div
-                    className={styles.overlay}
-                    onClick={() => setShowFilters(false)}
-                    aria-hidden
-                />
+                <div className={styles.overlay} onClick={() => setShowFilters(false)} aria-hidden />
             )}
         </div>
     );

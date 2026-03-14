@@ -3,12 +3,13 @@ import styles from "./Home.module.css";
 import BookCard from "../../components/book_card/BookCard";
 import { NavLink } from "react-router-dom";
 import { FiBook, FiBookOpen } from "react-icons/fi";
+import type { Book } from "../../services/entities/Book";
 
-const books = [
-    { id: 1, title: "Nhà Giả Kim", author: "Paulo Coelho", desc: "Hành trình tìm kiếm giấc mơ và bản thân.", price: "149.000₫", rating: 4.6 },
-    { id: 2, title: "Lược Sử Thời Gian", author: "Stephen Hawking", desc: "Khám phá vũ trụ và những bí ẩn của thời gian.", price: "220.000₫", rating: 4.7 },
-    { id: 3, title: "Đắc Nhân Tâm", author: "Dale Carnegie", desc: "Những nguyên tắc vàng để thành công trong cuộc sống.", price: "129.000₫", rating: 4.5 },
-    { id: 4, title: "Sapiens", author: "Yuval Noah Harari", desc: "Lịch sử loài người nhìn từ góc độ khác.", price: "195.000₫", rating: 4.8 },
+const featuredBooks: Book[] = [
+    { id: "1", title: "Nhà Giả Kim", author: "Paulo Coelho", description: "Hành trình tìm kiếm giấc mơ và bản thân.", publisher: "", isbn: "", category: { id: "", name: "Văn học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 149000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
+    { id: "2", title: "Lược Sử Thời Gian", author: "Stephen Hawking", description: "Khám phá vũ trụ và những bí ẩn của thời gian.", publisher: "", isbn: "", category: { id: "", name: "Khoa học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 220000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
+    { id: "3", title: "Đắc Nhân Tâm", author: "Dale Carnegie", description: "Những nguyên tắc vàng để thành công trong cuộc sống.", publisher: "", isbn: "", category: { id: "", name: "Kỹ năng", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 129000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
+    { id: "4", title: "Sapiens", author: "Yuval Noah Harari", description: "Lịch sử loài người nhìn từ góc độ khác.", publisher: "", isbn: "", category: { id: "", name: "Khoa học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 195000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
 ];
 
 const Home: React.FC = () => {
@@ -42,17 +43,9 @@ const Home: React.FC = () => {
                         <h2 className={styles.sectionTitle}>Sách nổi bật</h2>
                     </div>
                     <div className={styles.bookGrid}>
-                    {books.map((b) => (
-                        <BookCard
-                            key={b.id}
-                            id={b.id}
-                            title={b.title}
-                            author={b.author}
-                            desc={b.desc}
-                            price={b.price}
-                            rating={b.rating}
-                        />
-                    ))}
+                        {featuredBooks.map((book) => (
+                            <BookCard key={book.id} book={book} />
+                        ))}
                     </div>
                 </div>
             </div>

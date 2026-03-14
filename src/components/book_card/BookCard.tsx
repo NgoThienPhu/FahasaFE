@@ -2,33 +2,49 @@ import React from "react";
 import styles from "./BookCard.module.css";
 import { NavLink } from "react-router-dom";
 import { FiEye, FiShoppingCart } from "react-icons/fi";
+import type { Book } from "../../services/entities/Book";
 
-interface Book {
-    id: number;
-    title: string;
-    author: string,
-    desc: string,
-    price: string,
-    rating: number
+function formatPrice(price: number): string {
+    return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + "₫";
 }
 
-const BookCard: React.FC<Book> = (props) => {
+function coverPlaceholder(title: string): string {
+    const first = (title ?? "").trim().split(/\s+/)[0] ?? "";
+    return first.slice(0, 2).toUpperCase() || "—";
+}
+
+interface BookCardProps {
+    book: Book;
+}
+
+const BookCard: React.FC<BookCardProps> = ({ book }) => {
+    if (!book) return null;
+    const title = book.title ?? "";
+    const author = book.author ?? "";
+    const description = book.description ?? "";
+    const priceValue = typeof (book as any).price === "number" ? (book as any).price : (book.price?.price ?? 0);
+    const categoryName = book.category?.name ?? "";
+    const id = book.id != null ? String(book.id) : "";
+
     return (
         <div className={styles.bookCard}>
             <div className={styles.bookCover} aria-hidden>
-                <span>{props.title.split(" ")[0].slice(0, 2).toUpperCase()}</span>
+                <span>{coverPlaceholder(title)}</span>
             </div>
             <div className={styles.bookBody}>
                 <div className={styles.bookMeta}>
-                    <h3 className={styles.bookTitle}>{props.title}</h3>
-                    <span className={styles.bookPrice}>{props.price}</span>
+                    <h3 className={styles.bookTitle}>{title}</h3>
+                    <span className={styles.bookPrice}>{formatPrice(priceValue)}</span>
                 </div>
-                <p className={styles.bookAuthor}>{props.author} · <span className={styles.bookRating}>{props.rating}★</span></p>
-                <p className={styles.bookDesc}>{props.desc}</p>
+                <p className={styles.bookAuthor}>
+                    {author}
+                    {categoryName ? ` · ${categoryName}` : ""}
+                </p>
+                <p className={styles.bookDesc}>{description}</p>
                 <div className={styles.cardActions}>
                     <NavLink
                         className={`${styles.btn} ${styles.btnText}`}
-                        to={`/products/${props.id}`}
+                        to={`/products/${id}`}
                     >
                         <FiEye size={16} />
                         Xem chi tiết
@@ -43,7 +59,7 @@ const BookCard: React.FC<Book> = (props) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default BookCard;

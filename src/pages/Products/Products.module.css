@@ -91,6 +91,18 @@
     letter-spacing: 0.04em;
 }
 
+.filterNote {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin: -6px 0 10px 0;
+    font-style: italic;
+}
+
+.filterBlock[aria-disabled="true"] .categoryList {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .categoryList {
     display: flex;
     flex-direction: column;
