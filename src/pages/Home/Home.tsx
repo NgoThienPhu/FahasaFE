@@ -1,18 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import BookCard from "../../components/book_card/BookCard";
+import bookApi from "../../services/apis/bookApi";
 import { NavLink } from "react-router-dom";
 import { FiBook, FiBookOpen } from "react-icons/fi";
 import type { Book } from "../../services/entities/Book";
 
-const featuredBooks: Book[] = [
-    { id: "1", title: "Nhà Giả Kim", author: "Paulo Coelho", description: "Hành trình tìm kiếm giấc mơ và bản thân.", publisher: "", isbn: "", category: { id: "", name: "Văn học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 149000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
-    { id: "2", title: "Lược Sử Thời Gian", author: "Stephen Hawking", description: "Khám phá vũ trụ và những bí ẩn của thời gian.", publisher: "", isbn: "", category: { id: "", name: "Khoa học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 220000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
-    { id: "3", title: "Đắc Nhân Tâm", author: "Dale Carnegie", description: "Những nguyên tắc vàng để thành công trong cuộc sống.", publisher: "", isbn: "", category: { id: "", name: "Kỹ năng", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 129000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
-    { id: "4", title: "Sapiens", author: "Yuval Noah Harari", description: "Lịch sử loài người nhìn từ góc độ khác.", publisher: "", isbn: "", category: { id: "", name: "Khoa học", createdAt: "", updatedAt: "" }, publishDate: "", price: { id: "", price: 195000, effectiveFrom: "", effectiveTo: "", createdAt: "", updatedAt: "" }, createdAt: "", updatedAt: "" },
-];
+const FEATURED_SIZE = 4;
 
 const Home: React.FC = () => {
+    const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        bookApi
+            .getBooks({
+                page: 0,
+                size: FEATURED_SIZE,
+                sortBy: "title",
+                orderBy: "asc",
+            })
+            .then((res) => {
+                const list = Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : []);
+                setFeaturedBooks((list as Book[]) || []);
+            })
+            .catch(() => setFeaturedBooks([]))
+            .finally(() => setLoading(false));
+    }, []);
+
     return (
         <div className={styles.homeContainer}>
             <section className={styles.homeHero}>
@@ -43,9 +58,13 @@ const Home: React.FC = () => {
                         <h2 className={styles.sectionTitle}>Sách nổi bật</h2>
                     </div>
                     <div className={styles.bookGrid}>
-                        {featuredBooks.map((book) => (
-                            <BookCard key={book.id} book={book} />
-                        ))}
+                        {loading ? (
+                            <p className={styles.featuredLoading}>Đang tải...</p>
+                        ) : (
+                            featuredBooks.map((book) => (
+                                <BookCard key={String(book.id)} book={book} />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

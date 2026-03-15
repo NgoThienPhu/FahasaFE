@@ -139,6 +139,13 @@
     scroll-snap-align: start;
 }
 
+.featuredLoading {
+    margin: 0;
+    padding: 24px 16px;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
 .bookGrid::-webkit-scrollbar {
     height: 8px;
 }

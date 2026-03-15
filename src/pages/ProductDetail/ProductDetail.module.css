@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.8rem;
+    font-size: 0.9375rem;
     color: var(--text-muted);
     margin-bottom: 24px;
 }
@@ -330,7 +330,6 @@
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--text);
-    padding-bottom: 12px;
     border-bottom: 2px solid var(--primary-color);
     display: inline-block;
 }
