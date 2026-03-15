@@ -76,16 +76,31 @@ header{
   transition: transform 0.3s ease;
 }
 
-.navLink:hover,
-.navLink:focus {
+.navLink:hover {
   color: var(--primary-color);
   outline: none;
   transform: translateY(-2px);
 }
 
+.navLink:focus {
+  outline: none;
+}
+
+.navLink:focus-visible {
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
 .navLink:hover::after,
-.navLink:focus::after,
 .navLink.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.navLink:focus::after {
+  transform: translateX(-50%) scaleX(0);
+}
+
+.navLink:focus-visible::after {
   transform: translateX(-50%) scaleX(1);
 }
 

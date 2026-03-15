@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
         <div className={styles.navLinks}>
           <NavLink to={"/"} className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>Trang Chủ</NavLink>
           <NavLink to={"/about"} className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>Giới Thiệu</NavLink>
-          <NavLink to={"/products"} className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>Sản Phẩm</NavLink>
+          <NavLink to={"/products"} end className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>Sản Phẩm</NavLink>
         </div>
       </div>
       <div className={styles.headerRight}>

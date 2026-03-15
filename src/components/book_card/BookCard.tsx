@@ -62,10 +62,10 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                     type="button"
                     className={styles.addToCartBtn}
                     onClick={handleAddToCart}
-                    title="Thêm vào giỏ hàng"
+                    title="Thêm giỏ"
                 >
                     <FiShoppingCart size={18} />
-                    Thêm vào giỏ
+                    Thêm giỏ
                 </button>
             </div>
         </NavLink>

@@ -25,7 +25,7 @@ const Home: React.FC = () => {
                 <div className={styles.heroActions}>
                     <a className={styles.btnPrimary} href="#featured">
                         <FiBookOpen size={16} />
-                        Khám phá sách
+                        Sách nổi bật
                     </a>
                     <NavLink className={styles.btnSecondary} to="/products">
                         <FiBook size={16} />

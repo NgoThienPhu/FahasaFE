@@ -1,0 +1,467 @@
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 24px 56px;
+}
+
+.error {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumbSep {
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.breadcrumbCurrent {
+    color: var(--text);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Two columns */
+.main {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .main {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}
+
+/* Left column */
+.leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 24px;
+}
+
+@media (max-width: 900px) {
+    .leftCol {
+        position: static;
+    }
+}
+
+.gallery {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--primary-border-color);
+}
+
+.mainImageWrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    max-height: 300px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainImageTrigger {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.galleryNavPrev,
+.galleryNavNext {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, filter 0.2s, background 0.2s, box-shadow 0.2s;
+    z-index: 2;
+    opacity: 0.5;
+    filter: blur(1px);
+}
+
+.galleryNavPrev:hover,
+.galleryNavNext:hover {
+    opacity: 1;
+    filter: none;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.galleryNavPrev {
+    left: 0;
+}
+
+.galleryNavNext {
+    right: 0;
+}
+
+.mainImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.imgPlaceholder {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.mainImagePlaceholder {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding: 4px 0;
+}
+
+.thumb {
+    position: relative;
+    flex: 0 0 56px;
+    height: 75px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+    background: #f5f5f5;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.thumb:hover {
+    border-color: var(--primary-color);
+}
+
+.thumbActive {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.thumbMoreOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.btnCart {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btnCart:hover {
+    background: var(--primary-light);
+}
+
+.btnBuy {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnBuy:hover {
+    opacity: 0.92;
+}
+
+/* Right column */
+.rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.infoCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--primary-border-color);
+}
+
+.title {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--primary-border-color);
+}
+
+.meta span {
+    display: block;
+}
+
+@media (max-width: 500px) {
+    .meta {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+.priceRow {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.priceCurrent {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.02em;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--primary-border-color);
+}
+
+.cardTitle {
+    margin: 0 0 16px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-top: 8px;
+}
+
+.detailRow:first-child {
+    margin-top: 0;
+}
+
+.detailRow span:last-child {
+    color: var(--text-muted);
+}
+
+.detailBlock {
+    margin-top: 20px;
+}
+
+.detailBlock:first-of-type {
+    margin-top: 0;
+}
+
+.detailLabel {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.detailSummary {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+}
+
+/* Nội dung HTML từ TipTap */
+.descriptionContent {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.descriptionContent p {
+    margin: 0 0 0.75em 0;
+}
+
+.descriptionContent p:last-child {
+    margin-bottom: 0;
+}
+
+.descriptionContent h1,
+.descriptionContent h2,
+.descriptionContent h3,
+.descriptionContent h4 {
+    margin: 1.25em 0 0.5em 0;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+.descriptionContent h1 { font-size: 1.35rem; }
+.descriptionContent h2 { font-size: 1.2rem; }
+.descriptionContent h3 { font-size: 1.1rem; }
+.descriptionContent h4 { font-size: 1rem; }
+
+.descriptionContent ul,
+.descriptionContent ol {
+    margin: 0.5em 0;
+    padding-left: 1.5em;
+}
+
+.descriptionContent li {
+    margin: 0.25em 0;
+}
+
+.descriptionContent strong {
+    font-weight: 700;
+}
+
+.descriptionContent em {
+    font-style: italic;
+}
+
+.descriptionContent a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.descriptionContent a:hover {
+    text-decoration: underline;
+}
+
+.descriptionContent blockquote {
+    margin: 0.75em 0;
+    padding: 0.5em 0 0.5em 1em;
+    border-left: 4px solid var(--primary-color);
+    color: var(--text-muted);
+}
+
+.descriptionContent code {
+    font-size: 0.9em;
+    padding: 0.15em 0.4em;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.descriptionContent pre {
+    margin: 0.75em 0;
+    padding: 1em;
+    background: #f5f5f5;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9em;
+}
+
+.descriptionContent pre code {
+    padding: 0;
+    background: none;
+}
+
+.descriptionContent hr {
+    margin: 1.25em 0;
+    border: none;
+    border-top: 1px solid var(--primary-border-color);
+}

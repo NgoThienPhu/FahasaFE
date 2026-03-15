@@ -9,16 +9,6 @@ import { FiFilter, FiX } from "react-icons/fi";
 const PAGE_SIZE = 10;
 const PAGINATION_SPREAD = 2;
 
-const SORT_OPTIONS = [
-    { value: "title_asc", label: "Tên A → Z", sortBy: "title" as const, orderBy: "asc" as const },
-    { value: "title_desc", label: "Tên Z → A", sortBy: "title" as const, orderBy: "desc" as const },
-    { value: "author_asc", label: "Tác giả A → Z", sortBy: "author" as const, orderBy: "asc" as const },
-    { value: "author_desc", label: "Tác giả Z → A", sortBy: "author" as const, orderBy: "desc" as const },
-    { value: "publishDate_desc", label: "Mới nhất", sortBy: "publishDate" as const, orderBy: "desc" as const },
-    { value: "publishDate_asc", label: "Cũ nhất", sortBy: "publishDate" as const, orderBy: "asc" as const },
-    { value: "createdAt_desc", label: "Mới thêm", sortBy: "createdAt" as const, orderBy: "desc" as const },
-];
-
 const Products: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [pagination, setPagination] = useState({ page: 1, totalPages: 1, totalItems: 0 });
@@ -28,20 +18,17 @@ const Products: React.FC = () => {
     const [categoryIds, setCategoryIds] = useState<string[]>([]);
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
-    const [sortValue, setSortValue] = useState("title_asc");
-
     const [showFilters, setShowFilters] = useState(false);
 
     const loadBooks = useCallback(
         (pageOneBased: number = 1) => {
             setLoading(true);
 
-            const sortOption = SORT_OPTIONS.find((o) => o.value === sortValue) ?? SORT_OPTIONS[0];
             const params: GetBooksParams = {
                 page: pageOneBased - 1,
                 size: PAGE_SIZE,
-                sortBy: sortOption.sortBy,
-                orderBy: sortOption.orderBy,
+                sortBy: "title",
+                orderBy: "asc",
             };
             if (categoryIds.length > 0) params.categoryId = categoryIds[0];
 
@@ -66,7 +53,7 @@ const Products: React.FC = () => {
                 })
                 .finally(() => setLoading(false));
         },
-        [categoryIds, sortValue]
+        [categoryIds]
     );
 
     useEffect(() => {
@@ -85,7 +72,6 @@ const Products: React.FC = () => {
         setCategoryIds([]);
         setMinPrice("");
         setMaxPrice("");
-        setSortValue("title_asc");
     };
 
     const hasActiveFilters = categoryIds.length > 0 || minPrice.trim() !== "" || maxPrice.trim() !== "";
@@ -193,49 +179,17 @@ const Products: React.FC = () => {
                 </aside>
 
                 <main className={styles.main}>
-                    <div className={styles.toolbar}>
-                        <button
-                            type="button"
-                            className={styles.btnFilters}
-                            onClick={() => setShowFilters(true)}
-                            aria-label="Mở bộ lọc"
-                        >
-                            <FiFilter size={18} />
-                            Bộ lọc
-                        </button>
-                        <div className={styles.sortWrap}>
-                            <label htmlFor="products-sort" className={styles.sortLabel}>
-                                Sắp xếp:
-                            </label>
-                            <select
-                                id="products-sort"
-                                className={styles.sortSelect}
-                                value={sortValue}
-                                onChange={(e) => setSortValue(e.target.value)}
-                            >
-                                {SORT_OPTIONS.map((o) => (
-                                    <option key={o.value} value={o.value}>
-                                        {o.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
                     {loading ? (
-                        <div className={styles.loading}>Đang tải sản phẩm...</div>
+                        <div className={styles.loading}>Đang tải...</div>
                     ) : !Array.isArray(books) || books.length === 0 ? (
                         <div className={styles.empty}>
-                            <p>Không tìm thấy sản phẩm nào.</p>
+                            <p>Không có sản phẩm.</p>
                             <button type="button" className={styles.btnClear} onClick={clearFilters}>
                                 Xóa bộ lọc
                             </button>
                         </div>
                     ) : (
                         <>
-                            <p className={styles.resultCount}>
-                                Hiển thị {books.length} / {pagination.totalItems} sản phẩm
-                            </p>
                             <div className={styles.grid}>
                                 {books.map((book) => (
                                     <BookCard key={String(book.id)} book={book} />
@@ -284,7 +238,6 @@ const Products: React.FC = () => {
                                     </button>
                                     <span className={styles.pageInfo}>
                                         Trang {pagination.page} / {pagination.totalPages}
-                                        {pagination.totalItems > 0 && <> · {pagination.totalItems} sản phẩm</>}
                                     </span>
                                 </div>
                             )}
