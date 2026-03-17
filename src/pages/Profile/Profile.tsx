@@ -267,10 +267,18 @@ const Profile: React.FC = () => {
                             Vui lòng đăng nhập hoặc tạo tài khoản để xem <b>Thông tin</b>, <b>Đơn hàng</b> và <b>Địa chỉ</b>.
                         </p>
                         <div className={styles.loginActions}>
-                            <button type="button" className={styles.btnLoginPrimary} onClick={() => navigate("/auth")}>
+                            <button
+                                type="button"
+                                className={styles.btnLoginPrimary}
+                                onClick={() => navigate({ pathname: "/auth", search: "?tab=login" })}
+                            >
                                 Đăng nhập
                             </button>
-                            <button type="button" className={styles.btnLoginSecondary} onClick={() => navigate("/auth")}>
+                            <button
+                                type="button"
+                                className={styles.btnLoginSecondary}
+                                onClick={() => navigate({ pathname: "/auth", search: "?tab=register" })}
+                            >
                                 Đăng ký
                             </button>
                         </div>
