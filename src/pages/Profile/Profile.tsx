@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaUser, FaBox, FaShoppingCart, FaMapMarkerAlt } from "react-icons/fa";
+import { FaUser, FaBox, FaShoppingCart, FaMapMarkerAlt, FaLock } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Profile.module.css";
 import emailApi from "../../services/apis/emailApi";
@@ -9,7 +9,7 @@ import ProfileOrders from "./components/ProfileOrders";
 import ProfileCart from "./components/ProfileCart";
 import ProfileAddresses from "./components/ProfileAddresses";
 import userApi from "../../services/apis/userApi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const VALID_TABS = ["info", "orders", "cart", "addresses"] as const;
 type ActiveTab = (typeof VALID_TABS)[number];
@@ -18,18 +18,24 @@ type EditMode = "email" | "phone" | "basicInfo" | null;
 type ChangeStep = "password-input" | "otp-input" | null;
 
 const Profile: React.FC = () => {
-    const { user, reload } = useAuth();
+    const { user, reload, isAuth, isLoading: authLoading } = useAuth();
     const { addNotification } = useNotification();
     const location = useLocation();
     const navigate = useNavigate();
 
     const searchParams = new URLSearchParams(location.search);
     const tabFromUrl = searchParams.get("tab");
-    const initialTab: ActiveTab = VALID_TABS.includes(tabFromUrl as ActiveTab) ? (tabFromUrl as ActiveTab) : "info";
+    const initialTab: ActiveTab = !isAuth
+        ? "cart"
+        : (VALID_TABS.includes(tabFromUrl as ActiveTab) ? (tabFromUrl as ActiveTab) : "info");
 
     const [activeTab, setActiveTab] = useState<ActiveTab>(initialTab);
 
     const changeTab = (next: ActiveTab) => {
+        if (!isAuth && next !== "cart") {
+            navigate("/auth", { replace: true });
+            return;
+        }
         setActiveTab(next);
         const params = new URLSearchParams(location.search);
         params.set("tab", next);
@@ -43,6 +49,18 @@ const Profile: React.FC = () => {
             setActiveTab(tab as ActiveTab);
         }
     }, [location.search]);
+    
+    useEffect(() => {
+        if (authLoading) return;
+        const params = new URLSearchParams(location.search);
+        const tab = (params.get("tab") as ActiveTab) || "cart";
+        if (!isAuth && tab !== "cart") {
+            navigate("/auth", {
+                replace: true,
+                state: { redirectTo: `${location.pathname}${location.search}` } as any,
+            });
+        }
+    }, [authLoading, isAuth, location.pathname, location.search, navigate]);
     const [verificationModal, setVerificationModal] = useState<VerificationType>(null);
     const [changeStep, setChangeStep] = useState<ChangeStep>(null);
     const [verificationCode, setVerificationCode] = useState("");
@@ -234,6 +252,33 @@ const Profile: React.FC = () => {
     };
 
     const renderContent = () => {
+        if (!isAuth) {
+            if (activeTab === "cart") {
+                return <ProfileCart />;
+            }
+            return (
+                <div className={styles.loginRequired}>
+                    <div className={styles.loginCard}>
+                        <div className={styles.loginIcon} aria-hidden>
+                            <FaLock />
+                        </div>
+                        <h2 className={styles.loginTitle}>Đăng nhập để tiếp tục</h2>
+                        <p className={styles.loginDesc}>
+                            Vui lòng đăng nhập hoặc tạo tài khoản để xem <b>Thông tin</b>, <b>Đơn hàng</b> và <b>Địa chỉ</b>.
+                        </p>
+                        <div className={styles.loginActions}>
+                            <button type="button" className={styles.btnLoginPrimary} onClick={() => navigate("/auth")}>
+                                Đăng nhập
+                            </button>
+                            <button type="button" className={styles.btnLoginSecondary} onClick={() => navigate("/auth")}>
+                                Đăng ký
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         if (!user) return null;
 
         switch (activeTab) {
@@ -276,35 +321,54 @@ const Profile: React.FC = () => {
         }
     };
 
+    if (authLoading) {
+        return <div className={styles.profileContainer} />;
+    }
+
+    const tabFromQuery = (new URLSearchParams(location.search).get("tab") as ActiveTab) || "cart";
+    if (!isAuth && tabFromQuery !== "cart") {
+        return (
+            <Navigate
+                to="/auth"
+                replace
+                state={{ redirectTo: `${location.pathname}${location.search}` } as any}
+            />
+        );
+    }
+
     return (
         <div className={styles.profileContainer}>
             <div className={styles.profileWrapper}>
                 <div className={styles.sidebar}>
                     <div className={styles.userCard}>
                         <div className={styles.userAvatar}>
-                            {(user?.fullName?.charAt(0) ?? "?").toUpperCase()}
+                            {((user?.fullName?.charAt(0) ?? "?") || "?").toUpperCase()}
                         </div>
                         <div className={styles.userInfo}>
-                            <h3 className={styles.userName}>{user?.fullName}</h3>
-                            <p className={styles.userEmail}>{user?.email.email}</p>
+                            <h3 className={styles.userName}>{isAuth ? user?.fullName : "Khách"}</h3>
+                            <p className={styles.userEmail}>{isAuth ? user?.email.email : "Chưa đăng nhập"}</p>
                         </div>
                     </div>
 
                     <div className={styles.navMenu}>
-                        <button
-                            className={`${styles.navItem} ${activeTab === "info" ? styles.active : ""}`}
-                            onClick={() => changeTab("info")}
-                        >
-                            <span className={styles.icon}><FaUser /></span>
-                            <span className={styles.label}>Thông tin</span>
-                        </button>
-                        <button
-                            className={`${styles.navItem} ${activeTab === "orders" ? styles.active : ""}`}
-                            onClick={() => changeTab("orders")}
-                        >
-                            <span className={styles.icon}><FaBox /></span>
-                            <span className={styles.label}>Đơn hàng</span>
-                        </button>
+                        {isAuth && (
+                            <>
+                                <button
+                                    className={`${styles.navItem} ${activeTab === "info" ? styles.active : ""}`}
+                                    onClick={() => changeTab("info")}
+                                >
+                                    <span className={styles.icon}><FaUser /></span>
+                                    <span className={styles.label}>Thông tin</span>
+                                </button>
+                                <button
+                                    className={`${styles.navItem} ${activeTab === "orders" ? styles.active : ""}`}
+                                    onClick={() => changeTab("orders")}
+                                >
+                                    <span className={styles.icon}><FaBox /></span>
+                                    <span className={styles.label}>Đơn hàng</span>
+                                </button>
+                            </>
+                        )}
                         <button
                             className={`${styles.navItem} ${activeTab === "cart" ? styles.active : ""}`}
                             onClick={() => changeTab("cart")}
@@ -312,13 +376,15 @@ const Profile: React.FC = () => {
                             <span className={styles.icon}><FaShoppingCart /></span>
                             <span className={styles.label}>Giỏ hàng</span>
                         </button>
-                        <button
-                            className={`${styles.navItem} ${activeTab === "addresses" ? styles.active : ""}`}
-                            onClick={() => changeTab("addresses")}
-                        >
-                            <span className={styles.icon}><FaMapMarkerAlt /></span>
-                            <span className={styles.label}>Địa chỉ</span>
-                        </button>
+                        {isAuth && (
+                            <button
+                                className={`${styles.navItem} ${activeTab === "addresses" ? styles.active : ""}`}
+                                onClick={() => changeTab("addresses")}
+                            >
+                                <span className={styles.icon}><FaMapMarkerAlt /></span>
+                                <span className={styles.label}>Địa chỉ</span>
+                            </button>
+                        )}
                     </div>
                 </div>
 

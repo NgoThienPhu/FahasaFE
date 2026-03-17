@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/Layout/Layout'
 import Loading from './components/Loading/Loading'
 import Introduce from './pages/Introduce/Introduce'
-import { ProtectedRouter } from './components/protected_router/ProtectedRouter'
 import Profile from './pages/Profile/Profile'
 
 const Home = lazy(() => import('./pages/Home/Home'))
@@ -34,9 +33,7 @@ function App() {
         } />
         <Route path="auth" element={
           <Suspense fallback={<Loading notify='Đang tải...' />}>
-            <ProtectedRouter redirectIfAuth={true}>
-              <Auth />
-            </ProtectedRouter>
+            <Auth />
           </Suspense>
         } />
         <Route path="auth/resset-password" element={
@@ -46,9 +43,7 @@ function App() {
         } />
         <Route path="profile" element={
           <Suspense fallback={<Loading notify='Đang tải...' />}>
-            <ProtectedRouter>
-              <Profile />
-            </ProtectedRouter>
+            <Profile />
           </Suspense>
         } />
         <Route path="*" element={<>Trang không tồn tại</>} />
