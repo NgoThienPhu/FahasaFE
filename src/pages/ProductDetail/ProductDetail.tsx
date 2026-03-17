@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -21,6 +21,7 @@ const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { addItem } = useCart();
     const { addNotification } = useNotification();
+    const navigate = useNavigate();
     const [book, setBook] = useState<Book | null>(null);
     const [secondaryImageUrls, setSecondaryImageUrls] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
@@ -170,7 +171,8 @@ const ProductDetail: React.FC = () => {
                             onClick={() => {
                                 const productId = book.id != null ? String(book.id) : "";
                                 addItem(productId, 1);
-                                addNotification("success", "Đã thêm vào giỏ hàng, tới trang giỏ hàng để thanh toán");
+                                addNotification("success", "Đã thêm vào giỏ hàng");
+                                navigate({ pathname: "/profile", search: "?tab=cart" });
                             }}
                         >
                             Mua ngay

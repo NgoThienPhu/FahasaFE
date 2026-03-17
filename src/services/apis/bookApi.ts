@@ -23,6 +23,14 @@ const bookApi = {
     getBookById(id: string): Promise<APISuccessResponse<Book>> {
         return apiClient.get(`/books/${id}`);
     },
+
+    getBookByIds(ids: string[]): Promise<APISuccessResponse<Book[]>> {
+        return apiClient.get(`/books/ids`, {
+            params: {
+                bookIds: ids.join(","),
+            },
+        });
+    },
 };
 
 export default bookApi;
