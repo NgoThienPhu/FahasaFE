@@ -60,6 +60,14 @@ const Home: React.FC = () => {
                     <div className={styles.bookGrid}>
                         {loading ? (
                             <p className={styles.featuredLoading}>Đang tải...</p>
+                        ) : featuredBooks.length === 0 ? (
+                            <div className={styles.featuredEmpty}>
+                                <div className={styles.featuredEmptyIcon} aria-hidden>
+                                    <FiBookOpen size={20} />
+                                </div>
+                                <p className={styles.featuredEmptyTitle}>Hiện chưa có sách nổi bật</p>
+                                <p className={styles.featuredEmptyText}>Các tựa sách được đề xuất sẽ hiển thị tại đây.</p>
+                            </div>
                         ) : (
                             featuredBooks.map((book) => (
                                 <BookCard key={String(book.id)} book={book} />

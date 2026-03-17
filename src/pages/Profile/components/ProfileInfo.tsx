@@ -64,6 +64,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                 return "Ngày sinh phải trước ngày hiện tại";
             }
         }
+        if (fieldName === "email") {
+            const v = (editValues.email || "").trim();
+            if (!v) return "Vui lòng nhập email mới";
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(v)) return "Email không hợp lệ";
+        }
         return null;
     };
 
@@ -106,6 +112,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             onEditValuesChange({ ...editValues, email: user.email.email });
             return;
         }
+        if (getFieldError("email")) return;
         await onEditSave();
     };
 
@@ -262,13 +269,21 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                         <div className={styles.editGroup}>
                             <input
                                 type="email"
-                                className={styles.editInput}
+                                className={`${styles.editInput} ${getFieldError("email") ? styles.inputError : ""}`}
                                 value={editValues.email}
                                 onChange={(e) => onEditValuesChange({ ...editValues, email: e.target.value })}
                                 disabled={isLoading}
+                                placeholder="Nhập email mới"
                             />
+                            {getFieldError("email") && (
+                                <span className={styles.fieldError}>{getFieldError("email")}</span>
+                            )}
                             <div className={styles.editActions}>
-                                <button className={styles.btnSave} onClick={handleSaveEmail} disabled={isLoading}>
+                                <button
+                                    className={styles.btnSave}
+                                    onClick={handleSaveEmail}
+                                    disabled={isLoading || !!getFieldError("email")}
+                                >
                                     Lưu
                                 </button>
                                 <button

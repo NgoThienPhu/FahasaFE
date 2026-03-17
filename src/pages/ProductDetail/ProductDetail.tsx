@@ -9,7 +9,9 @@ import bookImageApi from "../../services/apis/bookImageApi";
 import type { Book } from "../../services/entities/Book";
 import Loading from "../../components/Loading/Loading";
 import LazyImage from "../../components/lazy_image/LazyImage";
-import { FiShoppingCart, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle } from "react-icons/fi";
+import { useCart } from "../../contexts/CartContext";
+import { useNotification } from "../../contexts/NotificationContext";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -17,6 +19,8 @@ function formatPrice(price: number): string {
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { addItem } = useCart();
+    const { addNotification } = useNotification();
     const [book, setBook] = useState<Book | null>(null);
     const [secondaryImageUrls, setSecondaryImageUrls] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
@@ -42,7 +46,24 @@ const ProductDetail: React.FC = () => {
     }, [id]);
 
     if (loading) return <Loading notify="Đang tải..." />;
-    if (!book) return <div className={styles.error}>Không có sách.</div>;
+    if (!book) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.notFound}>
+                    <div className={styles.notFoundIcon} aria-hidden>
+                        <FiAlertCircle size={28} />
+                    </div>
+                    <h2 className={styles.notFoundTitle}>Sách không tồn tại</h2>
+                    <p className={styles.notFoundText}>
+                        Sách bạn tìm kiếm không có hoặc đã bị gỡ. Vui lòng kiểm tra lại đường dẫn hoặc xem các sản phẩm khác.
+                    </p>
+                    <NavLink to="/products" className={styles.notFoundLink}>
+                        Xem danh sách sách
+                    </NavLink>
+                </div>
+            </div>
+        );
+    }
 
     const priceValue = typeof (book as any).price === "number" ? (book as any).price : (book.price?.price ?? 0);
     const imageUrl = book.primaryImage?.url;
@@ -52,7 +73,7 @@ const ProductDetail: React.FC = () => {
     return (
         <div className={styles.page}>
             <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-                <NavLink to="/products">Danh sách sách</NavLink>
+                <NavLink to="/products">Sản phẩm</NavLink>
                 <FiChevronRight className={styles.breadcrumbSep} aria-hidden />
                 <span className={styles.breadcrumbCurrent}>{book.title}</span>
             </nav>
@@ -131,11 +152,27 @@ const ProductDetail: React.FC = () => {
                         )}
                     </div>
                     <div className={styles.actionButtons}>
-                        <button type="button" className={styles.btnCart}>
+                        <button
+                            type="button"
+                            className={styles.btnCart}
+                            onClick={() => {
+                                const productId = book.id != null ? String(book.id) : "";
+                                addItem(productId, 1);
+                                addNotification("success", "Đã thêm vào giỏ hàng");
+                            }}
+                        >
                             <FiShoppingCart size={20} />
                             Thêm giỏ
                         </button>
-                        <button type="button" className={styles.btnBuy}>
+                        <button
+                            type="button"
+                            className={styles.btnBuy}
+                            onClick={() => {
+                                const productId = book.id != null ? String(book.id) : "";
+                                addItem(productId, 1);
+                                addNotification("success", "Đã thêm vào giỏ hàng, tới trang giỏ hàng để thanh toán");
+                            }}
+                        >
                             Mua ngay
                         </button>
                     </div>

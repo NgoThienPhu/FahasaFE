@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import LazyImage from "../lazy_image/LazyImage";
 import type { Book } from "../../services/entities/Book";
+import { useCart } from "../../contexts/CartContext";
+import { useNotification } from "../../contexts/NotificationContext";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + "₫";
@@ -19,6 +21,9 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+    const { addItem } = useCart();
+    const { addNotification } = useNotification();
+
     if (!book) return null;
     const title = book.title ?? "";
     const author = book.author ?? "";
@@ -31,7 +36,9 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        // TODO: gọi action thêm vào giỏ
+        const productId = book.id != null ? String(book.id) : "";
+        addItem(productId, 1);
+        addNotification("success", "Đã thêm vào giỏ hàng");
     };
 
     return (

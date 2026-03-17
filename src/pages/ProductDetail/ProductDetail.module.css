@@ -10,6 +10,61 @@
     color: var(--text-muted);
 }
 
+.notFound {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 24px;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px dashed var(--primary-border-color);
+    text-align: center;
+}
+
+.notFoundIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notFoundTitle {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.notFoundText {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.notFoundLink {
+    margin-top: 4px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.notFoundLink:hover {
+    opacity: 0.9;
+}
+
 /* Breadcrumb */
 .breadcrumb {
     display: flex;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUser, FaBox, FaShoppingCart, FaMapMarkerAlt } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./Profile.module.css";
@@ -9,8 +9,10 @@ import ProfileOrders from "./components/ProfileOrders";
 import ProfileCart from "./components/ProfileCart";
 import ProfileAddresses from "./components/ProfileAddresses";
 import userApi from "../../services/apis/userApi";
+import { useLocation, useNavigate } from "react-router-dom";
 
-type ActiveTab = "info" | "orders" | "cart" | "addresses";
+const VALID_TABS = ["info", "orders", "cart", "addresses"] as const;
+type ActiveTab = (typeof VALID_TABS)[number];
 type VerificationType = "email" | "phone" | null;
 type EditMode = "email" | "phone" | "basicInfo" | null;
 type ChangeStep = "password-input" | "otp-input" | null;
@@ -18,8 +20,29 @@ type ChangeStep = "password-input" | "otp-input" | null;
 const Profile: React.FC = () => {
     const { user, reload } = useAuth();
     const { addNotification } = useNotification();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const [activeTab, setActiveTab] = useState<ActiveTab>("info");
+    const searchParams = new URLSearchParams(location.search);
+    const tabFromUrl = searchParams.get("tab");
+    const initialTab: ActiveTab = VALID_TABS.includes(tabFromUrl as ActiveTab) ? (tabFromUrl as ActiveTab) : "info";
+
+    const [activeTab, setActiveTab] = useState<ActiveTab>(initialTab);
+
+    const changeTab = (next: ActiveTab) => {
+        setActiveTab(next);
+        const params = new URLSearchParams(location.search);
+        params.set("tab", next);
+        navigate({ pathname: "/profile", search: params.toString() }, { replace: true });
+    };
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const tab = params.get("tab");
+        if (tab && VALID_TABS.includes(tab as ActiveTab)) {
+            setActiveTab(tab as ActiveTab);
+        }
+    }, [location.search]);
     const [verificationModal, setVerificationModal] = useState<VerificationType>(null);
     const [changeStep, setChangeStep] = useState<ChangeStep>(null);
     const [verificationCode, setVerificationCode] = useState("");
@@ -46,7 +69,6 @@ const Profile: React.FC = () => {
             if (type === "email") {
                 await emailApi.sendOTP(user!.email.email);
             } else {
-                // Phone OTP sending logic here
                 addNotification("error", "Chức năng xác thực OTP qua số điện thoại hiện chưa được hỗ trợ");
                 return;
             }
@@ -77,7 +99,6 @@ const Profile: React.FC = () => {
                 addNotification("success", "Email xác thực thành công!");
                 await reload();
             } else {
-                // Phone verification logic here
                 addNotification("success", "Số điện thoại xác thực thành công!");
                 await reload();
             }
@@ -94,7 +115,6 @@ const Profile: React.FC = () => {
     const handleEditSave = async () => {
         if (!editMode) return;
 
-        // Xử lý chỉnh sửa thông tin cơ bản
         if (editMode === "basicInfo") {
             setIsLoading(true);
             setError("");
@@ -115,16 +135,40 @@ const Profile: React.FC = () => {
             return;
         }
 
-        // Nếu đổi email hoặc phone, cần xác nhận mật khẩu trước
-        if ((editMode === "email" && editValues.email !== user?.email.email) ||
-            (editMode === "phone" && editValues.phone !== user?.phoneNumber.phoneNumber)) {
-            setPendingEdit(editMode);
-            setVerificationModal(editMode);
+        if (editMode === "email" && editValues.email !== user?.email.email) {
+            const nextEmail = editValues.email.trim();
+            if (!nextEmail) {
+                setError("Vui lòng nhập email mới");
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(nextEmail)) {
+                setError("Email không hợp lệ");
+                return;
+            }
+            setPendingEdit("email");
+            setVerificationModal("email");
             setChangeStep("password-input");
             return;
         }
 
-        // Other edits (email/phone) are handled earlier; if nothing to do, reset edit mode
+        if (editMode === "phone" && editValues.phone !== user?.phoneNumber.phoneNumber) {
+            const nextPhone = editValues.phone.trim();
+            if (!nextPhone) {
+                setError("Vui lòng nhập số điện thoại mới");
+                return;
+            }
+            const phoneRegex = /^[0-9]{9,11}$/;
+            if (!phoneRegex.test(nextPhone)) {
+                setError("Số điện thoại không hợp lệ");
+                return;
+            }
+            setPendingEdit("phone");
+            setVerificationModal("phone");
+            setChangeStep("password-input");
+            return;
+        }
+
         setEditMode(null);
     };
 
@@ -141,7 +185,6 @@ const Profile: React.FC = () => {
                 await userApi.changeEmail({ newEmail: editValues.email, password });
                 await emailApi.sendOTP(editValues.email);
             } else if (pendingEdit === "phone") {
-                // Nếu backend hỗ trợ, update số điện thoại và gửi OTP
                 addNotification("error", "Chức năng xác thực OTP qua số điện thoại hiện chưa được hỗ trợ");
                 setChangeStep(null);
                 setPassword("");
@@ -250,28 +293,28 @@ const Profile: React.FC = () => {
                     <div className={styles.navMenu}>
                         <button
                             className={`${styles.navItem} ${activeTab === "info" ? styles.active : ""}`}
-                            onClick={() => setActiveTab("info")}
+                            onClick={() => changeTab("info")}
                         >
                             <span className={styles.icon}><FaUser /></span>
                             <span className={styles.label}>Thông tin</span>
                         </button>
                         <button
                             className={`${styles.navItem} ${activeTab === "orders" ? styles.active : ""}`}
-                            onClick={() => setActiveTab("orders")}
+                            onClick={() => changeTab("orders")}
                         >
                             <span className={styles.icon}><FaBox /></span>
                             <span className={styles.label}>Đơn hàng</span>
                         </button>
                         <button
                             className={`${styles.navItem} ${activeTab === "cart" ? styles.active : ""}`}
-                            onClick={() => setActiveTab("cart")}
+                            onClick={() => changeTab("cart")}
                         >
                             <span className={styles.icon}><FaShoppingCart /></span>
                             <span className={styles.label}>Giỏ hàng</span>
                         </button>
                         <button
                             className={`${styles.navItem} ${activeTab === "addresses" ? styles.active : ""}`}
-                            onClick={() => setActiveTab("addresses")}
+                            onClick={() => changeTab("addresses")}
                         >
                             <span className={styles.icon}><FaMapMarkerAlt /></span>
                             <span className={styles.label}>Địa chỉ</span>
@@ -316,6 +359,11 @@ const Profile: React.FC = () => {
                                     setSuccess("");
                                     setPendingEdit(null);
                                     setEditMode(null);
+                                    setEditValues((prev) => ({
+                                        ...prev,
+                                        email: user?.email?.email ?? prev.email,
+                                        phone: user?.phoneNumber?.phoneNumber ?? prev.phone,
+                                    }));
                                 }}
                             >
                                 ✕
@@ -345,7 +393,7 @@ const Profile: React.FC = () => {
                                                     setEditValues({ ...editValues, phone: e.target.value });
                                                 }
                                             }}
-                                            disabled={isLoading}
+                                            disabled
                                         />
                                     </div>
 
@@ -387,7 +435,6 @@ const Profile: React.FC = () => {
                             <button
                                 className={styles.btnCancel}
                                 onClick={async () => {
-                                    // Nếu đang ở bước OTP verification và bỏ qua, cần reload user
                                     if (changeStep === "otp-input" && pendingEdit) {
                                         setIsLoading(true);
                                         try {
@@ -407,6 +454,11 @@ const Profile: React.FC = () => {
                                     setSuccess("");
                                     setPendingEdit(null);
                                     setEditMode(null);
+                                    setEditValues((prev) => ({
+                                        ...prev,
+                                        email: user?.email?.email ?? prev.email,
+                                        phone: user?.phoneNumber?.phoneNumber ?? prev.phone,
+                                    }));
                                 }}
                                 disabled={isLoading}
                             >

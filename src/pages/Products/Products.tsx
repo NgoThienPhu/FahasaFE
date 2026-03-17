@@ -4,7 +4,7 @@ import BookCard from "../../components/book_card/BookCard";
 import productApi, { type Category } from "../../services/apis/productApi";
 import bookApi, { type GetBooksParams } from "../../services/apis/bookApi";
 import type { Book } from "../../services/entities/Book";
-import { FiFilter, FiX } from "react-icons/fi";
+import { FiFilter, FiX, FiInbox } from "react-icons/fi";
 
 const PAGE_SIZE = 10;
 const PAGINATION_SPREAD = 2;
@@ -183,10 +183,18 @@ const Products: React.FC = () => {
                         <div className={styles.loading}>Đang tải...</div>
                     ) : !Array.isArray(books) || books.length === 0 ? (
                         <div className={styles.empty}>
-                            <p>Không có sản phẩm.</p>
-                            <button type="button" className={styles.btnClear} onClick={clearFilters}>
-                                Xóa bộ lọc
-                            </button>
+                            <div className={styles.emptyIcon} aria-hidden>
+                                <FiInbox size={24} />
+                            </div>
+                            <h2 className={styles.emptyTitle}>Không tìm thấy sản phẩm</h2>
+                            <p className={styles.emptyHint}>
+                                Hãy thử thay đổi khoảng giá, danh mục hoặc xóa các bộ lọc đang áp dụng.
+                            </p>
+                            {hasActiveFilters && (
+                                <button type="button" className={styles.btnClear} onClick={clearFilters}>
+                                    Xóa tất cả bộ lọc
+                                </button>
+                            )}
                         </div>
                     ) : (
                         <>
