@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
+import { FiTrash2, FiPlus, FiMinus, FiShoppingCart } from "react-icons/fi";
 import styles from "./ProfileCart.module.css";
 import { useCart } from "../../../contexts/CartContext";
 import bookApi from "../../../services/apis/bookApi";
@@ -63,9 +63,24 @@ const ProfileCart: React.FC = () => {
     if (items.length === 0) {
         return (
             <div className={styles.tabContent}>
-                <div className={styles.emptyState}>
-                    <h2>Giỏ hàng</h2>
-                    <p>Giỏ hàng của bạn đang trống</p>
+                <div className={styles.emptyWrap}>
+                    <div className={styles.emptyCard}>
+                        <div className={styles.emptyIcon} aria-hidden>
+                            <FiShoppingCart size={28} />
+                        </div>
+                        <h2 className={styles.emptyTitle}>Giỏ hàng của bạn đang trống</h2>
+                        <p className={styles.emptyDesc}>
+                            Thêm vài cuốn sách yêu thích để bắt đầu mua sắm nhé.
+                        </p>
+                        <div className={styles.emptyActions}>
+                            <NavLink to="/products" className={styles.emptyCtaPrimary}>
+                                Khám phá sách
+                            </NavLink>
+                            <NavLink to="/products" className={styles.emptyCtaSecondary}>
+                                Xem khuyến mãi
+                            </NavLink>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
