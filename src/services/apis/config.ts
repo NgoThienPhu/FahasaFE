@@ -26,7 +26,7 @@ export interface APIPaginationSuccessResponse<T> extends APISuccessResponse<T> {
 
 export interface APIResponseError extends APIResponse {
   error: string;
-  errors?: { [key: string]: string };
+  errors?: Record<string, string>;
   path: string;
 }
 

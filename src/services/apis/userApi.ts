@@ -25,7 +25,7 @@ export interface CreateAddressRequestDTO {
 const userApi = {
 
     changeEmail(params: changeEmailParams): Promise<APIResponse> {
-        return apiClient.post(`/accounts/me/change-email`, params);
+        return apiClient.put(`/accounts/me/change-email`, params);
     },
 
     changeInfo(params: UpdateBasicInfoParams): Promise<APISuccessResponse<User>> {
