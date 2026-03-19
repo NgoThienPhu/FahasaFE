@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./BookCard.module.css";
 import { NavLink } from "react-router-dom";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiBookOpen } from "react-icons/fi";
 import LazyImage from "../lazy_image/LazyImage";
 import type { Book } from "../../services/entities/Book";
 import { useCart } from "../../contexts/CartContext";
@@ -9,11 +9,6 @@ import { useNotification } from "../../contexts/NotificationContext";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + "₫";
-}
-
-function coverPlaceholder(title: string): string {
-    const first = (title ?? "").trim().split(/\s+/)[0] ?? "";
-    return first.slice(0, 2).toUpperCase() || "—";
 }
 
 interface BookCardProps {
@@ -49,10 +44,16 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                         src={imageUrl}
                         alt=""
                         className={styles.coverImg}
-                        placeholder={<span>{coverPlaceholder(title)}</span>}
+                        placeholder={
+                            <span className={styles.coverPlaceholderIcon}>
+                                <FiBookOpen size={22} />
+                            </span>
+                        }
                     />
                 ) : (
-                    <span>{coverPlaceholder(title)}</span>
+                    <span className={styles.coverPlaceholderIcon}>
+                        <FiBookOpen size={22} />
+                    </span>
                 )}
             </div>
             <div className={styles.bookBody}>
