@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AuthRegister.module.css";
 import authApi from "../../../services/apis/authApi";
-import type { APIResponseError } from "../../../services/apis/config";
+import type { APIResponseError } from "../../../services/apis/apiConfig";
 import { useNotification } from "../../../contexts/NotificationContext";
 import { useNavigate } from "react-router-dom";
 

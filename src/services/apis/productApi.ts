@@ -1,4 +1,4 @@
-import type { APIPaginationSuccessResponse } from "./config";
+import type { APIPaginationSuccessResponse } from "./apiConfig";
 
 export interface Product {
     id: number;

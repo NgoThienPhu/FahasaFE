@@ -7,12 +7,13 @@ import styles from "./ProductDetail.module.css";
 import bookApi from "../../services/apis/bookApi";
 import bookImageApi from "../../services/apis/bookImageApi";
 import type { Book } from "../../services/entities/Book";
-import Loading from "../../components/Loading/Loading";
+import Loading from "../../components/loading/Loading";
 import LazyImage from "../../components/lazy_image/LazyImage";
-import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
+import { LuBookMarked } from "react-icons/lu";
 import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle, FiZap } from "react-icons/fi";
 import { useCart } from "../../contexts/CartContext";
 import { useNotification } from "../../contexts/NotificationContext";
+import { writeBuyNowToStorage } from "../checkout/Checkout";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -98,14 +99,14 @@ const ProductDetail: React.FC = () => {
                                         className={styles.mainImage}
                                         placeholder={
                                             <span className={styles.imgPlaceholder}>
-                                                <BookPlaceholderIcon size={46} strokeWidth={1.4} />
+                                                <LuBookMarked size={46} strokeWidth={1.4} aria-hidden />
                                             </span>
                                         }
                                     />
                                 </button>
                             ) : (
                                 <div className={styles.mainImagePlaceholder}>
-                                    <BookPlaceholderIcon size={46} strokeWidth={1.4} />
+                                    <LuBookMarked size={46} strokeWidth={1.4} aria-hidden />
                                 </div>
                             )}
                             {images.length > 1 && (
@@ -196,11 +197,15 @@ const ProductDetail: React.FC = () => {
                             <button
                                 type="button"
                                 className={styles.btnBuy}
+                                style={{
+                                    color: "#fff",
+                                    backgroundColor: "var(--primary-color)",
+                                }}
                                 onClick={() => {
                                     const productId = book.id != null ? String(book.id) : "";
-                                    addItem(productId, 1);
-                                    addNotification("success", "Đã thêm vào giỏ hàng");
-                                    navigate({ pathname: "/profile", search: "?tab=cart" });
+                                    if (!productId) return;
+                                    writeBuyNowToStorage({ productId, quantity: 1 });
+                                    navigate("/checkout");
                                 }}
                             >
                                 <FiZap size={18} strokeWidth={2} aria-hidden />

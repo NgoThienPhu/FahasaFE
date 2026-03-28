@@ -96,7 +96,7 @@ const Products: React.FC = () => {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Sản phẩm</h1>
+                <h1 className={styles.title}>Sách</h1>
             </header>
 
             <div className={styles.layout}>

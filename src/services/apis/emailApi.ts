@@ -1,4 +1,4 @@
-import apiClient, { type APIResponse } from "./config";
+import apiClient, { type APIResponse } from "./apiConfig";
 
 interface VerifyOTPParams {
     otp: string;

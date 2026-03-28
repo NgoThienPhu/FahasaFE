@@ -6,7 +6,8 @@ import { useCart } from "../../../contexts/CartContext";
 import bookApi from "../../../services/apis/bookApi";
 import type { Book } from "../../../services/entities/Book";
 import LazyImage from "../../../components/lazy_image/LazyImage";
-import { BookPlaceholderIcon } from "../../../components/icons/BookPlaceholderIcon";
+import { LuBookMarked } from "react-icons/lu";
+import { clearBuyNowFromStorage } from "../../checkout/Checkout";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -104,7 +105,11 @@ const ProfileCart: React.FC = () => {
                         <span className={styles.cartTotalLabel}>Tổng tiền:</span>
                         <span className={styles.cartTotalValue}>{formatPrice(totalPrice)}</span>
                     </div>
-                    <NavLink to="/checkout" className={styles.btnCheckout}>
+                    <NavLink
+                        to="/checkout"
+                        className={styles.btnCheckout}
+                        onClick={() => clearBuyNowFromStorage()}
+                    >
                         Thanh toán
                     </NavLink>
                 </div>
@@ -119,7 +124,7 @@ const ProfileCart: React.FC = () => {
                             <li key={id} className={styles.cartRow}>
                                 <span className={styles.cartThumb}>
                                     <span className={styles.thumbPlaceholder}>
-                                        <BookPlaceholderIcon size={22} />
+                                        <LuBookMarked size={22} strokeWidth={1.65} aria-hidden />
                                     </span>
                                 </span>
                                 <div className={styles.cartInfo}>
@@ -169,13 +174,13 @@ const ProfileCart: React.FC = () => {
                                         className={styles.thumbImg}
                                         placeholder={
                                             <span className={styles.thumbPlaceholder}>
-                                                <BookPlaceholderIcon size={22} />
+                                                <LuBookMarked size={22} strokeWidth={1.65} aria-hidden />
                                             </span>
                                         }
                                     />
                                 ) : (
                                     <span className={styles.thumbPlaceholder}>
-                                        <BookPlaceholderIcon size={22} />
+                                        <LuBookMarked size={22} strokeWidth={1.65} aria-hidden />
                                     </span>
                                 )}
                             </NavLink>

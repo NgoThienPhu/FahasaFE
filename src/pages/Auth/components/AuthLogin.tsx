@@ -4,7 +4,7 @@ import authApi from "../../../services/apis/authApi";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../../contexts/NotificationContext";
-import type { APIResponseError } from "../../../services/apis/config";
+import type { APIResponseError } from "../../../services/apis/apiConfig";
 
 const AuthLogin: React.FC = () => {
 

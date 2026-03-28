@@ -1,16 +1,16 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Layout } from './components/layout/Layout/Layout'
-import Loading from './components/Loading/Loading'
-import Introduce from './pages/Introduce/Introduce'
-import Profile from './pages/Profile/Profile'
+import { Layout } from './components/layout/root/Layout'
+import Loading from './components/loading/Loading'
+import Introduce from './pages/introduce/Introduce'
+import Profile from './pages/profile/Profile'
 
-const Home = lazy(() => import('./pages/Home/Home'))
-const Auth = lazy(() => import('./pages/Auth/Auth'))
-const Products = lazy(() => import('./pages/Products/Products'))
-const ProductDetail = lazy(() => import('./pages/ProductDetail/ProductDetail'))
-const ResetPassword = lazy(() => import('./pages/Auth/components/ResetPassword'))
-const Checkout = lazy(() => import('./pages/Checkout/Checkout'))
+const Home = lazy(() => import('./pages/home/Home'))
+const Auth = lazy(() => import('./pages/auth/Auth'))
+const Products = lazy(() => import('./pages/products/Products'))
+const ProductDetail = lazy(() => import('./pages/product_detail/ProductDetail'))
+const ResetPassword = lazy(() => import('./pages/auth/components/ResetPassword'))
+const Checkout = lazy(() => import('./pages/checkout/Checkout'))
 
 function App() {
   return (

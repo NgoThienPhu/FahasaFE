@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams, NavLink } from "react-router-dom";
 import styles from "./ResetPassword.module.css";
 import authApi from "../../../services/apis/authApi";
-import Loading from "../../../components/Loading/Loading";
+import Loading from "../../../components/loading/Loading";
 import { useNotification } from "../../../contexts/NotificationContext";
-import type { APIResponseError } from "../../../services/apis/config";
+import type { APIResponseError } from "../../../services/apis/apiConfig";
 
 type Status = "checking" | "invalid" | "ready" | "success";
 

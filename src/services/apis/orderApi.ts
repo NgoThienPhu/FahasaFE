@@ -1,4 +1,4 @@
-import apiClient, { type APISuccessResponse } from "./config";
+import apiClient, { type APISuccessResponse } from "./apiConfig";
 
 export interface OrderLineItem {
     bookId: string;

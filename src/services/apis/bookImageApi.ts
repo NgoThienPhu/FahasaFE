@@ -1,4 +1,4 @@
-import apiClient, { type APISuccessResponse } from "./config";
+import apiClient, { type APISuccessResponse } from "./apiConfig";
 import type { BookImage } from "../entities/BookImage";
 
 const bookImageApi = {

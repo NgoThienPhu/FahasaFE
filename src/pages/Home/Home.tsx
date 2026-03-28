@@ -4,7 +4,7 @@ import BookCard from "../../components/book_card/BookCard";
 import bookApi from "../../services/apis/bookApi";
 import { NavLink } from "react-router-dom";
 import { FiBook } from "react-icons/fi";
-import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
+import { LuBookMarked } from "react-icons/lu";
 import type { Book } from "../../services/entities/Book";
 
 const FEATURED_SIZE = 4;
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
                 </p>
                 <div className={styles.heroActions}>
                     <a className={styles.btnPrimary} href="#featured">
-                        <BookPlaceholderIcon size={17} />
+                        <LuBookMarked size={17} strokeWidth={1.65} aria-hidden />
                         Sách nổi bật
                     </a>
                     <NavLink className={styles.btnSecondary} to="/products">
@@ -64,7 +64,7 @@ const Home: React.FC = () => {
                         ) : featuredBooks.length === 0 ? (
                             <div className={styles.featuredEmpty}>
                                 <div className={styles.featuredEmptyIcon} aria-hidden>
-                                    <BookPlaceholderIcon size={22} />
+                                    <LuBookMarked size={22} strokeWidth={1.65} aria-hidden />
                                 </div>
                                 <p className={styles.featuredEmptyTitle}>Hiện chưa có sách nổi bật</p>
                                 <p className={styles.featuredEmptyText}>Các tựa sách được đề xuất sẽ hiển thị tại đây.</p>

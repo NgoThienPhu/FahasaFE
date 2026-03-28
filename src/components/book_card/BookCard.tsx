@@ -3,7 +3,7 @@ import styles from "./BookCard.module.css";
 import { NavLink } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import LazyImage from "../lazy_image/LazyImage";
-import { BookPlaceholderIcon } from "../icons/BookPlaceholderIcon";
+import { LuBookMarked } from "react-icons/lu";
 import type { Book } from "../../services/entities/Book";
 import { useCart } from "../../contexts/CartContext";
 import { useNotification } from "../../contexts/NotificationContext";
@@ -47,13 +47,13 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                         className={styles.coverImg}
                         placeholder={
                             <span className={styles.coverPlaceholderIcon}>
-                                <BookPlaceholderIcon size={26} />
+                                <LuBookMarked size={26} strokeWidth={1.65} aria-hidden />
                             </span>
                         }
                     />
                 ) : (
                     <span className={styles.coverPlaceholderIcon}>
-                        <BookPlaceholderIcon size={26} />
+                        <LuBookMarked size={26} strokeWidth={1.65} aria-hidden />
                     </span>
                 )}
             </div>

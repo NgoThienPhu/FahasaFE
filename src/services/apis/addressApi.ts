@@ -1,4 +1,4 @@
-import apiClient, { type APIResponse, type APISuccessResponse } from "./config";
+import apiClient, { type APIResponse, type APISuccessResponse } from "./apiConfig";
 import type { Address } from "../entities/Address";
 
 

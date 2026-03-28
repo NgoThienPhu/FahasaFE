@@ -1,4 +1,4 @@
-import apiClient, { type APISuccessResponse, type APIPaginationSuccessResponse } from "./config";
+import apiClient, { type APISuccessResponse, type APIPaginationSuccessResponse } from "./apiConfig";
 import type { Book } from "../entities/Book";
 
 export interface GetBooksParams {

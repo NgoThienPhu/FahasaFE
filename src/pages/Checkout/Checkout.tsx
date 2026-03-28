@@ -7,21 +7,62 @@ import {
     FiPackage,
     FiShoppingBag,
     FiCheckCircle,
+    FiMinus,
+    FiPlus,
 } from "react-icons/fi";
 import styles from "./Checkout.module.css";
-import { useCart } from "../../contexts/CartContext";
+import { useCart, type CartItem } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNotification } from "../../contexts/NotificationContext";
 import bookApi from "../../services/apis/bookApi";
 import orderApi from "../../services/apis/orderApi";
 import type { CreateOrderData } from "../../services/apis/orderApi";
 import userApi from "../../services/apis/userApi";
-import type { APIResponseError } from "../../services/apis/config";
+import type { APIResponseError } from "../../services/apis/apiConfig";
 import type { Book } from "../../services/entities/Book";
 import type { CreateAddressRequestDTO } from "../../services/apis/userApi";
 import LazyImage from "../../components/lazy_image/LazyImage";
-import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
-import Loading from "../../components/Loading/Loading";
+import { LuBookMarked } from "react-icons/lu";
+import Loading from "../../components/loading/Loading";
+
+export const CHECKOUT_BUY_NOW_STORAGE_KEY = "fahasa_checkout_buy_now";
+
+export type BuyNowPayload = {
+    productId: string;
+    quantity: number;
+};
+
+export function readBuyNowFromStorage(): BuyNowPayload | null {
+    if (typeof window === "undefined") return null;
+    try {
+        const raw = sessionStorage.getItem(CHECKOUT_BUY_NOW_STORAGE_KEY);
+        if (!raw) return null;
+        const o = JSON.parse(raw) as unknown;
+        if (!o || typeof o !== "object") return null;
+        const productId = String((o as { productId?: unknown }).productId ?? "").trim();
+        const q = Number((o as { quantity?: unknown }).quantity);
+        if (!productId || !Number.isFinite(q) || q < 1) return null;
+        return { productId, quantity: Math.min(999, Math.floor(q)) };
+    } catch {
+        return null;
+    }
+}
+
+export function writeBuyNowToStorage(payload: BuyNowPayload): void {
+    try {
+        sessionStorage.setItem(CHECKOUT_BUY_NOW_STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+        /* ignore */
+    }
+}
+
+export function clearBuyNowFromStorage(): void {
+    try {
+        sessionStorage.removeItem(CHECKOUT_BUY_NOW_STORAGE_KEY);
+    } catch {
+        /* ignore */
+    }
+}
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -140,15 +181,30 @@ function mapApiErrorsToFields(err: unknown): Partial<Record<AddressFieldKey, str
 }
 
 const Checkout: React.FC = () => {
-    const { items, clearCart } = useCart();
+    const { items, clearCart, setItemQuantity, removeItem } = useCart();
     const { isAuth } = useAuth();
     const { addNotification } = useNotification();
+
+    const [buyNowLine, setBuyNowLine] = useState<BuyNowPayload | null>(() => readBuyNowFromStorage());
+
+    const checkoutItems: CartItem[] = useMemo(
+        () =>
+            buyNowLine
+                ? [{ productId: buyNowLine.productId, quantity: buyNowLine.quantity }]
+                : items,
+        [buyNowLine, items]
+    );
+
+    const isBuyNowMode = Boolean(buyNowLine);
 
     const [step, setStep] = useState<"checkout" | "success">("checkout");
     const [orderCode, setOrderCode] = useState("");
 
     const [books, setBooks] = useState<Book[]>([]);
-    const [loadingBooks, setLoadingBooks] = useState(() => items.length > 0);
+    const [loadingBooks, setLoadingBooks] = useState(() => {
+        const bn = readBuyNowFromStorage();
+        return bn != null || items.length > 0;
+    });
 
     const [addresses, setAddresses] = useState<SavedAddress[]>([]);
     const [loadingAddresses, setLoadingAddresses] = useState(false);
@@ -163,14 +219,18 @@ const Checkout: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
 
     const productIdsKey = useMemo(
-        () => items.map((it) => it.productId).sort().join(","),
-        [items]
+        () => checkoutItems.map((it) => it.productId).sort().join(","),
+        [checkoutItems]
     );
 
     useEffect(() => {
-        if (!items.length) return;
+        if (!productIdsKey) {
+            setBooks([]);
+            setLoadingBooks(false);
+            return;
+        }
+        const ids = productIdsKey.split(",").filter(Boolean);
         setLoadingBooks(true);
-        const ids = items.map((it) => it.productId);
         bookApi
             .getBookByIds(ids)
             .then((res) => {
@@ -179,7 +239,7 @@ const Checkout: React.FC = () => {
             })
             .catch(() => setBooks([]))
             .finally(() => setLoadingBooks(false));
-    }, [productIdsKey, items]);
+    }, [productIdsKey]);
 
     useEffect(() => {
         if (!isAuth) return;
@@ -223,6 +283,25 @@ const Checkout: React.FC = () => {
         });
     };
 
+    const adjustLineQuantity = (productId: string, delta: number) => {
+        const line = checkoutItems.find((x) => x.productId === productId);
+        if (!line) return;
+        const next = line.quantity + delta;
+        if (isBuyNowMode && buyNowLine?.productId === productId) {
+            if (next < 1) return;
+            const q = Math.min(999, next);
+            const payload: BuyNowPayload = { productId, quantity: q };
+            setBuyNowLine(payload);
+            writeBuyNowToStorage(payload);
+            return;
+        }
+        if (next < 1) {
+            removeItem(productId);
+            return;
+        }
+        setItemQuantity(productId, Math.min(999, next));
+    };
+
     const bookMap = useMemo(() => {
         const map: Record<string, Book> = {};
         books.forEach((b) => {
@@ -235,7 +314,7 @@ const Checkout: React.FC = () => {
     const { subtotal, shippingFee, total, missingBooks } = useMemo(() => {
         let sub = 0;
         const missing: string[] = [];
-        for (const it of items) {
+        for (const it of checkoutItems) {
             const book = bookMap[it.productId];
             if (!book) {
                 missing.push(it.productId);
@@ -250,7 +329,7 @@ const Checkout: React.FC = () => {
             total: sub + ship,
             missingBooks: missing,
         };
-    }, [items, bookMap]);
+    }, [checkoutItems, bookMap]);
 
     const effectiveAddress = (): CreateAddressRequestDTO | null => {
         if (!isAuth || savedAddresses.length === 0 || useNewAddress) {
@@ -273,13 +352,17 @@ const Checkout: React.FC = () => {
         e.preventDefault();
         setFieldErrors({});
         setSubmitError("");
-        if (!items.length) {
-            addNotification("error", "Giỏ hàng trống");
+        if (!checkoutItems.length) {
+            addNotification("error", "Không có sản phẩm để thanh toán");
             return;
         }
         if (missingBooks.length > 0) {
-            setSubmitError("Một số sản phẩm không còn trong hệ thống. Vui lòng cập nhật giỏ hàng.");
-            addNotification("error", "Có sản phẩm không hợp lệ trong giỏ");
+            setSubmitError(
+                isBuyNowMode
+                    ? "Sản phẩm không còn trong hệ thống. Vui lòng quay lại và chọn sách khác."
+                    : "Một số sản phẩm không còn trong hệ thống. Vui lòng cập nhật giỏ hàng."
+            );
+            addNotification("error", "Có sản phẩm không hợp lệ trong đơn");
             return;
         }
         const addr = effectiveAddress();
@@ -303,7 +386,7 @@ const Checkout: React.FC = () => {
         setSubmitting(true);
         try {
             const res = await orderApi.createOrder({
-                items: items.map((it) => ({
+                items: checkoutItems.map((it) => ({
                     bookId: it.productId,
                     quantity: it.quantity,
                 })),
@@ -322,7 +405,12 @@ const Checkout: React.FC = () => {
                 fromApi ||
                 `FH${Date.now().toString(36).toUpperCase().slice(-10)}`;
 
-            clearCart();
+            if (buyNowLine) {
+                clearBuyNowFromStorage();
+                setBuyNowLine(null);
+            } else {
+                clearCart();
+            }
             setOrderCode(code);
             setStep("success");
             addNotification("success", res.message?.trim() || "Đặt hàng thành công");
@@ -375,7 +463,7 @@ const Checkout: React.FC = () => {
         );
     }
 
-    if (!items.length) {
+    if (!checkoutItems.length) {
         return (
             <div className={styles.page}>
                 <nav className={styles.breadcrumb} aria-label="Breadcrumb">
@@ -387,10 +475,12 @@ const Checkout: React.FC = () => {
                     <div className={styles.emptyIcon} aria-hidden>
                         <FiShoppingBag size={40} strokeWidth={1.25} />
                     </div>
-                    <h1 className={styles.emptyTitle}>Giỏ hàng đang trống</h1>
-                    <p className={styles.emptyText}>Thêm sách vào giỏ để tiến hành thanh toán.</p>
+                    <h1 className={styles.emptyTitle}>Không có sản phẩm để thanh toán</h1>
+                    <p className={styles.emptyText}>
+                        Chọn sách và dùng Mua ngay, hoặc thêm sách vào giỏ rồi thanh toán từ giỏ hàng.
+                    </p>
                     <NavLink to="/products" className={styles.emptyCta}>
-                        Xem sản phẩm
+                        Xem sách
                     </NavLink>
                 </div>
             </div>
@@ -406,13 +496,21 @@ const Checkout: React.FC = () => {
             <nav className={styles.breadcrumb} aria-label="Breadcrumb">
                 <NavLink to="/">Trang chủ</NavLink>
                 <FiChevronRight className={styles.breadcrumbSep} aria-hidden />
-                <NavLink to={{ pathname: "/profile", search: "?tab=cart" }}>Giỏ hàng</NavLink>
-                <FiChevronRight className={styles.breadcrumbSep} aria-hidden />
+                {isBuyNowMode ? null : (
+                    <>
+                        <NavLink to={{ pathname: "/profile", search: "?tab=cart" }}>Giỏ hàng</NavLink>
+                        <FiChevronRight className={styles.breadcrumbSep} aria-hidden />
+                    </>
+                )}
                 <span className={styles.breadcrumbCurrent}>Thanh toán</span>
             </nav>
 
             <h1 className={styles.title}>Thanh toán</h1>
-            <p className={styles.subtitle}>Kiểm tra đơn hàng, địa chỉ giao hàng và phương thức thanh toán.</p>
+            <p className={styles.subtitle}>
+                {isBuyNowMode
+                    ? "Thanh toán cho sách bạn vừa chọn — không dùng giỏ hàng."
+                    : "Kiểm tra đơn hàng, địa chỉ giao hàng và phương thức thanh toán."}
+            </p>
 
             <form className={styles.layout} onSubmit={handlePlaceOrder}>
                 <div>
@@ -706,12 +804,12 @@ const Checkout: React.FC = () => {
                     <div className={styles.sectionHead} style={{ marginBottom: 12, border: "none", paddingBottom: 0 }}>
                         <FiPackage className={styles.sectionIcon} size={22} />
                         <h2 className={styles.summaryTitle} style={{ margin: 0 }}>
-                            Đơn hàng ({items.reduce((s, i) => s + i.quantity, 0)} sản phẩm)
+                            Đơn hàng ({checkoutItems.reduce((s, i) => s + i.quantity, 0)} sản phẩm)
                         </h2>
                     </div>
 
                     <div className={styles.lineItems}>
-                        {items.map((it) => {
+                        {checkoutItems.map((it) => {
                             const book = bookMap[it.productId];
                             const imageUrl = book?.primaryImage?.url;
                             const title = book?.title ?? `Sản phẩm #${it.productId}`;
@@ -724,10 +822,10 @@ const Checkout: React.FC = () => {
                                                 src={imageUrl}
                                                 alt=""
                                                 className={styles.thumbImg}
-                                                placeholder={<BookPlaceholderIcon size={20} />}
+                                                placeholder={<LuBookMarked size={20} strokeWidth={1.65} aria-hidden />}
                                             />
                                         ) : (
-                                            <BookPlaceholderIcon size={20} />
+                                            <LuBookMarked size={20} strokeWidth={1.65} aria-hidden />
                                         )}
                                     </div>
                                     <div className={styles.lineBody}>
@@ -735,7 +833,33 @@ const Checkout: React.FC = () => {
                                             {title}
                                         </NavLink>
                                         <div className={styles.lineMeta}>
-                                            {formatPrice(price)} × {it.quantity}
+                                            {formatPrice(price)} / cuốn
+                                        </div>
+                                        <div className={styles.lineQtyRow}>
+                                            <div className={styles.lineQty}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.btnQty}
+                                                    onClick={() => adjustLineQuantity(it.productId, -1)}
+                                                    disabled={isBuyNowMode && it.quantity <= 1}
+                                                    aria-label="Giảm số lượng"
+                                                >
+                                                    <FiMinus size={14} strokeWidth={2.5} aria-hidden />
+                                                </button>
+                                                <span className={styles.qtyValue}>{it.quantity}</span>
+                                                <button
+                                                    type="button"
+                                                    className={styles.btnQty}
+                                                    onClick={() => adjustLineQuantity(it.productId, 1)}
+                                                    disabled={it.quantity >= 999}
+                                                    aria-label="Tăng số lượng"
+                                                >
+                                                    <FiPlus size={14} strokeWidth={2.5} aria-hidden />
+                                                </button>
+                                            </div>
+                                            <span className={styles.lineSubtotal}>
+                                                {formatPrice(price * it.quantity)}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
