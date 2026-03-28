@@ -6,9 +6,6 @@ type BookPlaceholderIconProps = {
     strokeWidth?: number;
 };
 
-/**
- * Icon mặc định khi chưa có ảnh bìa (Lucide — nét gọn, dễ nhận diện).
- */
 export function BookPlaceholderIcon({
     size = 24,
     className,

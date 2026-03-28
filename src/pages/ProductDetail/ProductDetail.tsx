@@ -10,7 +10,7 @@ import type { Book } from "../../services/entities/Book";
 import Loading from "../../components/Loading/Loading";
 import LazyImage from "../../components/lazy_image/LazyImage";
 import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
-import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle } from "react-icons/fi";
+import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle, FiZap } from "react-icons/fi";
 import { useCart } from "../../contexts/CartContext";
 import { useNotification } from "../../contexts/NotificationContext";
 
@@ -80,9 +80,10 @@ const ProductDetail: React.FC = () => {
                 <span className={styles.breadcrumbCurrent}>{book.title}</span>
             </nav>
 
-            <div className={styles.main}>
-                <div className={styles.leftCol}>
-                    <div className={styles.gallery}>
+            <article className={styles.detailCard}>
+                <div className={styles.detailTop}>
+                    <div className={styles.detailMedia}>
+                        <div className={styles.gallery}>
                         <div className={styles.mainImageWrap}>
                             {images.length > 0 ? (
                                 <button
@@ -97,14 +98,14 @@ const ProductDetail: React.FC = () => {
                                         className={styles.mainImage}
                                         placeholder={
                                             <span className={styles.imgPlaceholder}>
-                                                <BookPlaceholderIcon size={56} strokeWidth={1.4} />
+                                                <BookPlaceholderIcon size={46} strokeWidth={1.4} />
                                             </span>
                                         }
                                     />
                                 </button>
                             ) : (
                                 <div className={styles.mainImagePlaceholder}>
-                                    <BookPlaceholderIcon size={56} strokeWidth={1.4} />
+                                    <BookPlaceholderIcon size={46} strokeWidth={1.4} />
                                 </div>
                             )}
                             {images.length > 1 && (
@@ -158,37 +159,10 @@ const ProductDetail: React.FC = () => {
                                 zoom={{ scrollToZoom: true }}
                             />
                         )}
+                        </div>
                     </div>
-                    <div className={styles.actionButtons}>
-                        <button
-                            type="button"
-                            className={styles.btnCart}
-                            onClick={() => {
-                                const productId = book.id != null ? String(book.id) : "";
-                                addItem(productId, 1);
-                                addNotification("success", "Đã thêm vào giỏ hàng");
-                            }}
-                        >
-                            <FiShoppingCart size={20} />
-                            Thêm giỏ
-                        </button>
-                        <button
-                            type="button"
-                            className={styles.btnBuy}
-                            onClick={() => {
-                                const productId = book.id != null ? String(book.id) : "";
-                                addItem(productId, 1);
-                                addNotification("success", "Đã thêm vào giỏ hàng");
-                                navigate({ pathname: "/profile", search: "?tab=cart" });
-                            }}
-                        >
-                            Mua ngay
-                        </button>
-                    </div>
-                </div>
 
-                <div className={styles.rightCol}>
-                    <div className={styles.infoCard}>
+                    <div className={styles.detailInfo}>
                         <h1 className={styles.title}>{book.title}</h1>
                         <div className={styles.meta}>
                             {book.publisher ? <span>NXB: {book.publisher}</span> : null}
@@ -200,25 +174,52 @@ const ProductDetail: React.FC = () => {
                         <div className={styles.priceRow}>
                             <span className={styles.priceCurrent}>{formatPrice(priceValue)}</span>
                         </div>
+                        {book.summary ? (
+                            <div className={styles.summaryBlock}>
+                                <h2 className={styles.summaryLabel}>Tóm tắt</h2>
+                                <p className={styles.detailSummary}>{book.summary}</p>
+                            </div>
+                        ) : null}
+                        <div className={styles.actionButtons}>
+                            <button
+                                type="button"
+                                className={styles.btnCart}
+                                onClick={() => {
+                                    const productId = book.id != null ? String(book.id) : "";
+                                    addItem(productId, 1);
+                                    addNotification("success", "Đã thêm vào giỏ hàng");
+                                }}
+                            >
+                                <FiShoppingCart size={18} strokeWidth={2} aria-hidden />
+                                Thêm vào giỏ
+                            </button>
+                            <button
+                                type="button"
+                                className={styles.btnBuy}
+                                onClick={() => {
+                                    const productId = book.id != null ? String(book.id) : "";
+                                    addItem(productId, 1);
+                                    addNotification("success", "Đã thêm vào giỏ hàng");
+                                    navigate({ pathname: "/profile", search: "?tab=cart" });
+                                }}
+                            >
+                                <FiZap size={18} strokeWidth={2} aria-hidden />
+                                Mua ngay
+                            </button>
+                        </div>
                     </div>
-
-                    {book.summary ? (
-                        <div className={styles.card}>
-                            <h2 className={styles.cardTitle}>Tóm tắt</h2>
-                            <p className={styles.detailSummary}>{book.summary}</p>
-                        </div>
-                    ) : null}
-                    {book.description ? (
-                        <div className={styles.card}>
-                            <h2 className={styles.cardTitle}>Mô tả</h2>
-                            <div
-                                className={styles.descriptionContent}
-                                dangerouslySetInnerHTML={{ __html: book.description }}
-                            />
-                        </div>
-                    ) : null}
                 </div>
-            </div>
+
+                {book.description ? (
+                    <section className={styles.detailSection}>
+                        <h2 className={styles.descriptionTitle}>Mô tả</h2>
+                        <div
+                            className={styles.descriptionContent}
+                            dangerouslySetInnerHTML={{ __html: book.description }}
+                        />
+                    </section>
+                ) : null}
+            </article>
         </div>
     );
 };

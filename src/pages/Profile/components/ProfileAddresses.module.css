@@ -14,7 +14,6 @@
     }
 }
 
-/* ----- Header ----- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -57,7 +56,6 @@
     cursor: not-allowed;
 }
 
-/* ----- Loading & Empty ----- */
 .empty {
     color: var(--text-muted);
     padding: 24px 0;
@@ -101,7 +99,6 @@
     line-height: 1.5;
 }
 
-/* ----- Address list ----- */
 .listContainer {
     display: flex;
     flex-direction: column;
@@ -227,7 +224,6 @@
     color: var(--text-muted);
 }
 
-/* ----- Action buttons ----- */
 .actionBtns {
     display: flex;
     flex-direction: column;
@@ -264,28 +260,20 @@
     color: #dc3545;
 }
 
-/* ----- Form ----- */
 .formCard {
-    margin-top: 20px;
-    padding: 24px;
+    margin-top: 12px;
+    padding: 14px 16px 16px;
     background: #fafafa;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--primary-border-color);
 }
 
 .formTitle {
-    margin: 0 0 6px 0;
-    font-size: 1.05rem;
+    margin: 0 0 10px 0;
+    font-size: 0.98rem;
     font-weight: 700;
     color: var(--text);
-    letter-spacing: 0.2px;
-}
-
-.formDescription {
-    margin: 0 0 20px 0;
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    line-height: 1.5;
+    letter-spacing: 0.01em;
 }
 
 .form {
@@ -293,39 +281,42 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
 }
 
 .formError {
     color: #b91c1c;
     background: #fef2f2;
-    padding: 12px 14px;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
     border: 1px solid #fecaca;
 }
 
 .formGroup label,
 .formGroupSmall label {
     display: block;
-    margin-bottom: 6px;
-    font-size: 0.8rem;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-muted);
-    letter-spacing: 0.3px;
 }
 
 .formGroup input,
 .formGroupSmall input,
 .input {
     width: 100%;
-    padding: 10px 14px;
+    padding: 7px 10px;
     border: 1px solid var(--primary-border-color);
-    border-radius: 8px;
-    font-size: 0.95rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
     color: var(--text);
     background: #fff;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+    color: #9ca3af;
 }
 
 .formGroup input:focus,
@@ -333,13 +324,13 @@
 .input:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+    box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.12);
 }
 
 .row,
 .rowTwo {
     display: flex;
-    gap: 14px;
+    gap: 10px;
 }
 
 .formGroupSmall {
@@ -350,15 +341,16 @@
 .checkboxLabel {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
+    gap: 8px;
+    font-size: 0.8125rem;
     color: var(--text);
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .checkboxLabel input {
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
     accent-color: var(--primary-color);
 }
 
@@ -367,26 +359,26 @@
 }
 
 .checkboxHint {
-    margin-left: 6px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     font-weight: 400;
 }
 
 .formActions {
     display: flex;
-    gap: 12px;
-    margin-top: 8px;
-    padding-top: 4px;
+    gap: 8px;
+    margin-top: 4px;
+    padding-top: 6px;
+    justify-content: flex-end;
 }
 
 .btnSave {
-    padding: 10px 18px;
+    padding: 7px 14px;
     background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -403,12 +395,12 @@
 }
 
 .btnCancel {
-    padding: 10px 20px;
+    padding: 7px 12px;
     background: #fff;
     color: var(--text);
     border: 1px solid var(--primary-border-color);
-    border-radius: 8px;
-    font-size: 0.95rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -424,7 +416,6 @@
     cursor: not-allowed;
 }
 
-/* ----- Delete confirmation modal ----- */
 .deleteOverlay {
     position: fixed;
     inset: 0;
@@ -521,7 +512,6 @@
     cursor: not-allowed;
 }
 
-/* ----- Responsive ----- */
 @media (max-width: 600px) {
     .addressMain {
         flex-direction: column;
@@ -542,10 +532,10 @@
     .row,
     .rowTwo {
         flex-direction: column;
-        gap: 0;
+        gap: 10px;
     }
 
     .formCard {
-        padding: 18px;
+        padding: 12px 14px 14px;
     }
 }

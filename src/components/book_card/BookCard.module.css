@@ -42,7 +42,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #fff; /* icon placeholder trên nền gradient */
+    color: #fff;
 }
 
 .coverImg {

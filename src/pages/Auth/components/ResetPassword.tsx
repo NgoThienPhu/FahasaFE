@@ -22,13 +22,10 @@ const ResetPassword: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
     const { addNotification } = useNotification();
 
-    // Chuyển trạng thái đổi mật khẩu thành công
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-    // Dùng ref để nhớ lần đặt lại password thành công, tránh useEffect chạy lại đổi trạng thái thành invalid
     const didResetSuccess = useRef(false);
 
-    // Kiểm tra token khi vừa vào trang (chỉ chạy khi chưa đặt lại thành công)
     useEffect(() => {
         if (didResetSuccess.current) return;
         if (!ressetPasswordToken) {
@@ -56,7 +53,6 @@ const ResetPassword: React.FC = () => {
             });
     }, [ressetPasswordToken, addNotification]);
 
-    // Validate mật khẩu
     const validate = useCallback((): string | null => {
         if (!password.trim() || !confirmPassword.trim()) {
             return "Vui lòng nhập đầy đủ mật khẩu mới và xác nhận.";
@@ -73,7 +69,6 @@ const ResetPassword: React.FC = () => {
         return null;
     }, [password, confirmPassword]);
 
-    // Hiển thị lỗi và cập nhật trạng thái invalid
     const handleInvalidToken = useCallback(
         (msg?: string) => {
             setStatus("invalid");
@@ -89,7 +84,6 @@ const ResetPassword: React.FC = () => {
         [addNotification]
     );
 
-    // Xử lý gửi form đặt lại mật khẩu
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const v = validate();
@@ -103,7 +97,7 @@ const ResetPassword: React.FC = () => {
             await authApi.ressetPassword({ ressetPasswordToken, newPassword: password });
             setStatus("success");
             setShowSuccessAlert(true);
-            didResetSuccess.current = true; // đánh dấu đã đổi pass thành công
+            didResetSuccess.current = true;
             addNotification(
                 "success",
                 "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại."
@@ -141,7 +135,6 @@ const ResetPassword: React.FC = () => {
         }
     };
 
-    // Hiển thị các trạng thái giao diện
     if (status === "checking") {
         return <Loading notify="Đang kiểm tra liên kết..." />;
     }
@@ -172,7 +165,6 @@ const ResetPassword: React.FC = () => {
     }
 
     if (status === "invalid") {
-        // Ngăn sau khi thành công mà lại hiển thị giao diện invalid nếu trạng thái trong ref
         if (didResetSuccess.current) return null;
         return (
             <div className={styles.resetContainer}>
@@ -193,7 +185,6 @@ const ResetPassword: React.FC = () => {
         );
     }
 
-    // Giao diện mặc định: nhập mật khẩu mới
     return (
         <div className={styles.resetContainer}>
             <div className={styles.card}>

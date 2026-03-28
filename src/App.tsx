@@ -10,6 +10,7 @@ const Auth = lazy(() => import('./pages/Auth/Auth'))
 const Products = lazy(() => import('./pages/Products/Products'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail/ProductDetail'))
 const ResetPassword = lazy(() => import('./pages/Auth/components/ResetPassword'))
+const Checkout = lazy(() => import('./pages/Checkout/Checkout'))
 
 function App() {
   return (
@@ -44,6 +45,11 @@ function App() {
         <Route path="profile" element={
           <Suspense fallback={<Loading notify='Đang tải...' />}>
             <Profile />
+          </Suspense>
+        } />
+        <Route path="checkout" element={
+          <Suspense fallback={<Loading notify='Đang tải...' />}>
+            <Checkout />
           </Suspense>
         } />
         <Route path="*" element={<>Trang không tồn tại</>} />

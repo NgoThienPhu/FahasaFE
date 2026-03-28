@@ -14,7 +14,6 @@
     }
 }
 
-/* ----- Sections ----- */
 .section {
     margin-bottom: 28px;
     padding: 0;
@@ -111,7 +110,6 @@
     line-height: 1.45;
 }
 
-/* ----- Basic info grid ----- */
 .basicInfoGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -129,7 +127,6 @@
     border-top: 1px solid var(--primary-border-color);
 }
 
-/* ----- Badges ----- */
 .valueWithBadge {
     display: flex;
     align-items: center;
@@ -163,7 +160,6 @@
     color: #e65100;
 }
 
-/* ----- Editable row ----- */
 .editableValue {
     display: flex;
     align-items: center;
@@ -191,7 +187,6 @@
     background: var(--primary-light);
 }
 
-/* ----- Edit form ----- */
 .editGroup {
     display: flex;
     flex-direction: column;
@@ -221,7 +216,6 @@
     color: var(--text-muted);
 }
 
-/* Select giới tính: cùng kích thước và font với input */
 select.editInput {
     cursor: pointer;
     min-height: 2.75rem;
@@ -306,7 +300,6 @@ select.editInput option {
     cursor: not-allowed;
 }
 
-/* ----- Verify button ----- */
 .verificationGroup {
     display: flex;
     flex-direction: column;
@@ -336,7 +329,6 @@ select.editInput option {
     transform: none;
 }
 
-/* ----- Responsive ----- */
 @media (max-width: 768px) {
     .section {
         margin-bottom: 20px;

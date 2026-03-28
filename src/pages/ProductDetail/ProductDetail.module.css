@@ -65,7 +65,6 @@
     opacity: 0.9;
 }
 
-/* Breadcrumb */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -97,47 +96,75 @@
     white-space: nowrap;
 }
 
-/* Two columns */
-.main {
+.detailCard {
+    background: #fff;
+    border: 1px solid var(--primary-border-color);
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.detailTop {
     display: grid;
-    grid-template-columns: minmax(220px, 280px) 1fr;
-    gap: 40px;
+    grid-template-columns: minmax(160px, 260px) 1fr;
+    gap: 24px 36px;
+    padding: 22px 24px 24px;
     align-items: start;
 }
 
 @media (max-width: 900px) {
-    .main {
+    .detailTop {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 20px;
+        padding: 18px 18px 20px;
     }
 }
 
-/* Left column */
-.leftCol {
+.detailMedia {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    position: sticky;
-    top: 24px;
-}
-
-@media (max-width: 900px) {
-    .leftCol {
-        position: static;
-    }
+    gap: 14px;
+    min-width: 0;
 }
 
 .gallery {
-    background: #fff;
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--primary-border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.detailInfo {
+    min-width: 0;
+}
+
+.detailSection {
+    margin: 0;
+    padding: 20px 24px 24px;
+    border-top: 1px solid var(--primary-border-color);
+}
+
+@media (max-width: 900px) {
+    .detailSection {
+        padding: 18px 18px 20px;
+    }
+}
+
+.descriptionTitle {
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
 }
 
 .mainImageWrap {
     position: relative;
     width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
     aspect-ratio: 3/4;
     max-height: 300px;
     background: #f5f5f5;
@@ -231,8 +258,8 @@
 
 .thumb {
     position: relative;
-    flex: 0 0 56px;
-    height: 75px;
+    flex: 0 0 50px;
+    height: 68px;
     border: 2px solid transparent;
     border-radius: 6px;
     overflow: hidden;
@@ -272,71 +299,81 @@
 }
 
 .actionButtons {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+    width: 100%;
+    max-width: 400px;
+}
+
+@media (max-width: 480px) {
+    .actionButtons {
+        grid-template-columns: 1fr;
+        max-width: none;
+    }
+}
+
+.btnCart,
+.btnBuy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s,
+        transform 0.15s ease;
 }
 
 .btnCart {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 14px;
-    border: 1px solid var(--primary-color);
-    border-radius: 8px;
+    border: 2px solid var(--primary-border-color);
     background: #fff;
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    color: var(--text);
 }
 
 .btnCart:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
     background: var(--primary-light);
 }
 
+.btnCart:active {
+    transform: scale(0.98);
+}
+
 .btnBuy {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 8px;
-    background: var(--primary-color);
+    border: 2px solid transparent;
+    background: linear-gradient(180deg, #f43f5e 0%, var(--primary-color) 100%);
     color: #fff;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: opacity 0.2s;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
 }
 
 .btnBuy:hover {
-    opacity: 0.92;
+    box-shadow: 0 6px 18px rgba(225, 29, 72, 0.4);
+    filter: brightness(1.03);
 }
 
-/* Right column */
-.rightCol {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    max-width: 100%;
+.btnBuy:active {
+    transform: scale(0.98);
 }
 
-.infoCard {
-    background: #fff;
-    border-radius: 12px;
-    padding: 28px 24px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--primary-border-color);
+.btnCart:focus-visible,
+.btnBuy:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .title {
-    margin: 0 0 20px 0;
+    margin: 0 0 16px 0;
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1.35;
@@ -379,21 +416,24 @@
     letter-spacing: -0.02em;
 }
 
-.card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 28px 24px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--primary-border-color);
+.summaryBlock {
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--primary-border-color);
 }
 
-.cardTitle {
-    margin: 0 0 16px 0;
-    font-size: 1.05rem;
+.summaryLabel {
+    margin: 0 0 8px 0;
+    font-size: 0.78rem;
     font-weight: 700;
-    color: var(--text);
-    border-bottom: 2px solid var(--primary-color);
-    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.summaryBlock .detailSummary {
+    font-size: 0.9rem;
+    line-height: 1.65;
 }
 
 .detailRow {
@@ -436,7 +476,6 @@
     white-space: pre-wrap;
 }
 
-/* Nội dung HTML từ TipTap */
 .descriptionContent {
     font-size: 0.95rem;
     line-height: 1.7;

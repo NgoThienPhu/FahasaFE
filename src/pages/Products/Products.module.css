@@ -39,7 +39,6 @@
     position: relative;
 }
 
-/* ----- Sidebar ----- */
 .sidebar {
     width: 260px;
     flex-shrink: 0;
@@ -200,7 +199,6 @@
     color: var(--text);
 }
 
-/* ----- Main ----- */
 .main {
     flex: 1;
     min-width: 0;
@@ -418,7 +416,6 @@
     margin-left: 4px;
 }
 
-/* ----- Mobile ----- */
 @media (max-width: 900px) {
     .sidebar {
         position: fixed;

@@ -1,7 +1,6 @@
 .introduceContainer {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 56px 24px 72px;
+    width: 100%;
+    max-width: 1200px;
     background: #fff;
 }
 

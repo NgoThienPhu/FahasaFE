@@ -98,12 +98,10 @@ const AuthRegister: React.FC = () => {
         } catch (err: any) {
             const response = err as APIResponseError;
 
-            // Lỗi validation từ backend: hiển thị dưới field và trên form
             if (response.errors) {
                 setErrors(response.errors);
                 setError("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
             } else {
-                // Lỗi hệ thống chung: dùng notification
                 addNotification(
                     "error",
                     response.message || "Đăng ký thất bại. Vui lòng thử lại sau."

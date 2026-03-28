@@ -269,21 +269,16 @@ const ProfileAddresses: React.FC = () => {
             {(showForm || editingId) && (
                 <div className={styles.formCard}>
                     <h3 className={styles.formTitle}>
-                        {editingId ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"}
+                        {editingId ? "Sửa địa chỉ" : "Địa chỉ mới"}
                     </h3>
-                    <p className={styles.formDescription}>
-                        {editingId
-                            ? "Cập nhật thông tin địa chỉ bên dưới và bấm lưu."
-                            : "Vui lòng nhập đầy đủ thông tin bên dưới để lưu địa chỉ giao hàng của bạn."}
-                    </p>
                     <form className={styles.form} onSubmit={handleSubmit}>
                         {error && <div className={styles.formError}>{error}</div>}
 
                         <div className={styles.rowTwo}>
                             <div className={styles.formGroup}>
-                                <label>Họ và tên</label>
+                                <label>Họ tên</label>
                                 <input
-                                    placeholder="Ví dụ: Nguyễn Văn A"
+                                    placeholder="Nguyễn Văn A"
                                     className={styles.input}
                                     value={form.fullName}
                                     onChange={(e) => setForm({ ...form, fullName: e.target.value })}
@@ -291,9 +286,9 @@ const ProfileAddresses: React.FC = () => {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Số điện thoại</label>
+                                <label>SĐT</label>
                                 <input
-                                    placeholder="Ví dụ: 0912345678"
+                                    placeholder="0912345678"
                                     className={styles.input}
                                     value={form.phoneNumber}
                                     onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
@@ -302,9 +297,9 @@ const ProfileAddresses: React.FC = () => {
                         </div>
 
                         <div className={styles.formGroup}>
-                            <label>Chi tiết địa chỉ</label>
+                            <label>Địa chỉ</label>
                             <input
-                                placeholder="Số nhà, tên đường, ví dụ: Số 1, Phố A"
+                                placeholder="Số nhà, đường"
                                 className={styles.input}
                                 value={form.addressDetail}
                                 onChange={(e) => setForm({ ...form, addressDetail: e.target.value })}
@@ -313,9 +308,9 @@ const ProfileAddresses: React.FC = () => {
 
                         <div className={styles.row}>
                             <div className={styles.formGroupSmall}>
-                                <label>Tỉnh/Thành phố</label>
+                                <label>Tỉnh/TP</label>
                                 <input
-                                    placeholder="Ví dụ: Hà Nội"
+                                    placeholder="Hà Nội"
                                     className={styles.input}
                                     value={form.city}
                                     onChange={(e) => setForm({ ...form, city: e.target.value })}
@@ -324,7 +319,7 @@ const ProfileAddresses: React.FC = () => {
                             <div className={styles.formGroupSmall}>
                                 <label>Quận/Huyện</label>
                                 <input
-                                    placeholder="Ví dụ: Quận Hoàn Kiếm"
+                                    placeholder="Hoàn Kiếm"
                                     className={styles.input}
                                     value={form.district}
                                     onChange={(e) => setForm({ ...form, district: e.target.value })}
@@ -333,7 +328,7 @@ const ProfileAddresses: React.FC = () => {
                             <div className={styles.formGroupSmall}>
                                 <label>Phường/Xã</label>
                                 <input
-                                    placeholder="Ví dụ: Phường Tràng Tiền"
+                                    placeholder="Tràng Tiền"
                                     className={styles.input}
                                     value={form.ward}
                                     onChange={(e) => setForm({ ...form, ward: e.target.value })}
@@ -349,9 +344,9 @@ const ProfileAddresses: React.FC = () => {
                                 disabled={!!editingId && !!form.isDefault}
                             />{" "}
                             Đặt làm địa chỉ mặc định
-                            {!!editingId && !!form.isDefault && (
-                                <span className={styles.checkboxHint}>(đã là địa chỉ mặc định)</span>
-                            )}
+                            {!!editingId && !!form.isDefault ? (
+                                <span className={styles.checkboxHint}> (đang mặc định)</span>
+                            ) : null}
                         </label>
 
                         <div className={styles.formActions}>
@@ -377,11 +372,7 @@ const ProfileAddresses: React.FC = () => {
                                 Hủy
                             </button>
                             <button type="submit" className={styles.btnSave} disabled={isSubmitting}>
-                                {isSubmitting
-                                    ? "Đang lưu..."
-                                    : editingId
-                                      ? "Cập nhật địa chỉ"
-                                      : "Lưu địa chỉ"}
+                                {isSubmitting ? "Đang lưu..." : editingId ? "Cập nhật" : "Lưu"}
                             </button>
                         </div>
                     </form>

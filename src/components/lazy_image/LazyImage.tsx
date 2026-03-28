@@ -5,7 +5,6 @@ interface LazyImageProps {
     src: string;
     alt?: string;
     className?: string;
-    /** Optional placeholder (e.g. text) shown while loading or if no src */
     placeholder?: React.ReactNode;
 }
 

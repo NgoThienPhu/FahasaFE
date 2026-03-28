@@ -66,13 +66,11 @@ const AuthLogin: React.FC = () => {
             console.error("Đăng nhập thất bại:", err);
             const apiError = err as APIResponseError;
 
-            // Sai tài khoản / mật khẩu: hiển thị ngay trên giao diện
             if (apiError.status === 400 || apiError.status === 401) {
                 setError("Tên đăng nhập hoặc mật khẩu không đúng.");
                 return;
             }
 
-            // Lỗi hệ thống khác: dùng notification toàn cục
             addNotification(
                 "error",
                 apiError.message || "Đăng nhập thất bại. Vui lòng thử lại sau."
