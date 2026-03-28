@@ -5,7 +5,7 @@ export interface GetBooksParams {
     page: number;
     size: number;
     search?: string;
-    orderBy?: "asc" | "desc";
+    orderBy?: "ASC" | "DESC";
     sortBy?: "title" | "publishDate" | "author" | "createdAt" | "category";
     categoryId?: string;
 }

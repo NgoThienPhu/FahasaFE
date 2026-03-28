@@ -42,7 +42,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #fff; /* ensures FiBookOpen is visible on gradient */
+    color: #fff; /* icon placeholder trên nền gradient */
 }
 
 .coverImg {

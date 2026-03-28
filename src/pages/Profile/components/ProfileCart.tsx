@@ -6,6 +6,7 @@ import { useCart } from "../../../contexts/CartContext";
 import bookApi from "../../../services/apis/bookApi";
 import type { Book } from "../../../services/entities/Book";
 import LazyImage from "../../../components/lazy_image/LazyImage";
+import { BookPlaceholderIcon } from "../../../components/icons/BookPlaceholderIcon";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -117,7 +118,9 @@ const ProfileCart: React.FC = () => {
                         return (
                             <li key={id} className={styles.cartRow}>
                                 <span className={styles.cartThumb}>
-                                    <span className={styles.thumbPlaceholder}>📖</span>
+                                    <span className={styles.thumbPlaceholder}>
+                                        <BookPlaceholderIcon size={22} />
+                                    </span>
                                 </span>
                                 <div className={styles.cartInfo}>
                                     <span className={styles.cartBookTitle}>Sản phẩm không tìm thấy (ID: {id})</span>
@@ -164,10 +167,16 @@ const ProfileCart: React.FC = () => {
                                         src={imageUrl}
                                         alt=""
                                         className={styles.thumbImg}
-                                        placeholder={<span className={styles.thumbPlaceholder}>📖</span>}
+                                        placeholder={
+                                            <span className={styles.thumbPlaceholder}>
+                                                <BookPlaceholderIcon size={22} />
+                                            </span>
+                                        }
                                     />
                                 ) : (
-                                    <span className={styles.thumbPlaceholder}>📖</span>
+                                    <span className={styles.thumbPlaceholder}>
+                                        <BookPlaceholderIcon size={22} />
+                                    </span>
                                 )}
                             </NavLink>
                             <div className={styles.cartInfo}>

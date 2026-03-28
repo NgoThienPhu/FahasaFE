@@ -28,7 +28,7 @@ const Products: React.FC = () => {
                 page: pageOneBased - 1,
                 size: PAGE_SIZE,
                 sortBy: "title",
-                orderBy: "asc",
+                orderBy: "ASC",
             };
             if (categoryIds.length > 0) params.categoryId = categoryIds[0];
 

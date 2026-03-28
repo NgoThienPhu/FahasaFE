@@ -9,6 +9,7 @@ import bookImageApi from "../../services/apis/bookImageApi";
 import type { Book } from "../../services/entities/Book";
 import Loading from "../../components/Loading/Loading";
 import LazyImage from "../../components/lazy_image/LazyImage";
+import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
 import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle } from "react-icons/fi";
 import { useCart } from "../../contexts/CartContext";
 import { useNotification } from "../../contexts/NotificationContext";
@@ -94,11 +95,17 @@ const ProductDetail: React.FC = () => {
                                         src={images[selectedImageIndex] ?? images[0]}
                                         alt={book.title}
                                         className={styles.mainImage}
-                                        placeholder={<span className={styles.imgPlaceholder}>Ảnh sách</span>}
+                                        placeholder={
+                                            <span className={styles.imgPlaceholder}>
+                                                <BookPlaceholderIcon size={56} strokeWidth={1.4} />
+                                            </span>
+                                        }
                                     />
                                 </button>
                             ) : (
-                                <div className={styles.mainImagePlaceholder}>Ảnh bìa</div>
+                                <div className={styles.mainImagePlaceholder}>
+                                    <BookPlaceholderIcon size={56} strokeWidth={1.4} />
+                                </div>
                             )}
                             {images.length > 1 && (
                                 <>

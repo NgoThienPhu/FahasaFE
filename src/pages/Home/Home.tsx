@@ -3,7 +3,8 @@ import styles from "./Home.module.css";
 import BookCard from "../../components/book_card/BookCard";
 import bookApi from "../../services/apis/bookApi";
 import { NavLink } from "react-router-dom";
-import { FiBook, FiBookOpen } from "react-icons/fi";
+import { FiBook } from "react-icons/fi";
+import { BookPlaceholderIcon } from "../../components/icons/BookPlaceholderIcon";
 import type { Book } from "../../services/entities/Book";
 
 const FEATURED_SIZE = 4;
@@ -18,7 +19,7 @@ const Home: React.FC = () => {
                 page: 0,
                 size: FEATURED_SIZE,
                 sortBy: "title",
-                orderBy: "asc",
+                orderBy: "ASC",
             })
             .then((res) => {
                 const list = Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : []);
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
                 </p>
                 <div className={styles.heroActions}>
                     <a className={styles.btnPrimary} href="#featured">
-                        <FiBookOpen size={16} />
+                        <BookPlaceholderIcon size={17} />
                         Sách nổi bật
                     </a>
                     <NavLink className={styles.btnSecondary} to="/products">
@@ -63,7 +64,7 @@ const Home: React.FC = () => {
                         ) : featuredBooks.length === 0 ? (
                             <div className={styles.featuredEmpty}>
                                 <div className={styles.featuredEmptyIcon} aria-hidden>
-                                    <FiBookOpen size={20} />
+                                    <BookPlaceholderIcon size={22} />
                                 </div>
                                 <p className={styles.featuredEmptyTitle}>Hiện chưa có sách nổi bật</p>
                                 <p className={styles.featuredEmptyText}>Các tựa sách được đề xuất sẽ hiển thị tại đây.</p>
