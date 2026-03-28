@@ -51,7 +51,7 @@
     color: var(--primary-color);
 }
 
-.btnCheckout {
+.btnPayment {
     padding: 8px 16px;
     border-radius: 999px;
     border: none;
@@ -69,11 +69,11 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
 }
 
-.btnCheckout:hover {
+.btnPayment:hover {
     background: #c41a3a;
 }
 
-.btnCheckout:active {
+.btnPayment:active {
     transform: translateY(1px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }

@@ -13,7 +13,7 @@ import { LuBookMarked } from "react-icons/lu";
 import { FiShoppingCart, FiChevronRight, FiChevronLeft, FiAlertCircle, FiZap } from "react-icons/fi";
 import { useCart } from "../../contexts/CartContext";
 import { useNotification } from "../../contexts/NotificationContext";
-import { writeBuyNowToStorage } from "../checkout/Checkout";
+import { writeBuyNowToStorage } from "../payment/Payment";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -205,7 +205,7 @@ const ProductDetail: React.FC = () => {
                                     const productId = book.id != null ? String(book.id) : "";
                                     if (!productId) return;
                                     writeBuyNowToStorage({ productId, quantity: 1 });
-                                    navigate("/checkout");
+                                    navigate("/payment");
                                 }}
                             >
                                 <FiZap size={18} strokeWidth={2} aria-hidden />

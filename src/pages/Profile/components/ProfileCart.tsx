@@ -7,7 +7,7 @@ import bookApi from "../../../services/apis/bookApi";
 import type { Book } from "../../../services/entities/Book";
 import LazyImage from "../../../components/lazy_image/LazyImage";
 import { LuBookMarked } from "react-icons/lu";
-import { clearBuyNowFromStorage } from "../../checkout/Checkout";
+import { clearBuyNowFromStorage } from "../../payment/Payment";
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("vi-VN", { style: "decimal", minimumFractionDigits: 0 }).format(price) + " ₫";
@@ -106,8 +106,8 @@ const ProfileCart: React.FC = () => {
                         <span className={styles.cartTotalValue}>{formatPrice(totalPrice)}</span>
                     </div>
                     <NavLink
-                        to="/checkout"
-                        className={styles.btnCheckout}
+                        to="/payment"
+                        className={styles.btnPayment}
                         onClick={() => clearBuyNowFromStorage()}
                     >
                         Thanh toán

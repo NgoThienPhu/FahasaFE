@@ -61,7 +61,16 @@ const AuthLogin: React.FC = () => {
             const userProfile = responseGetProfile;
 
             updateUser({ ...userProfile.data });
-            navigate("/", { replace: true });
+            const sp = new URLSearchParams(window.location.search);
+            const raw = sp.get("redirect");
+            const safe =
+                raw &&
+                raw.startsWith("/") &&
+                !raw.startsWith("//") &&
+                !raw.includes("://")
+                    ? raw
+                    : null;
+            navigate(safe ?? "/", { replace: true });
         } catch (err: any) {
             console.error("Đăng nhập thất bại:", err);
             const apiError = err as APIResponseError;

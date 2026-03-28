@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/layout/root/Layout'
 import Loading from './components/loading/Loading'
 import Introduce from './pages/introduce/Introduce'
@@ -10,7 +10,7 @@ const Auth = lazy(() => import('./pages/auth/Auth'))
 const Products = lazy(() => import('./pages/products/Products'))
 const ProductDetail = lazy(() => import('./pages/product_detail/ProductDetail'))
 const ResetPassword = lazy(() => import('./pages/auth/components/ResetPassword'))
-const Checkout = lazy(() => import('./pages/checkout/Checkout'))
+const Payment = lazy(() => import('./pages/payment/Payment'))
 
 function App() {
   return (
@@ -47,11 +47,12 @@ function App() {
             <Profile />
           </Suspense>
         } />
-        <Route path="checkout" element={
+        <Route path="payment" element={
           <Suspense fallback={<Loading notify='Đang tải...' />}>
-            <Checkout />
+            <Payment />
           </Suspense>
         } />
+        <Route path="checkout" element={<Navigate to="/payment" replace />} />
         <Route path="*" element={<>Trang không tồn tại</>} />
       </Route>
     </Routes>

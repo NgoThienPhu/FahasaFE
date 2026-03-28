@@ -93,7 +93,19 @@ const AuthRegister: React.FC = () => {
         setLoading(true);
         try {
             await register(formData);
-            navigation("/");
+            const sp = new URLSearchParams(window.location.search);
+            const raw = sp.get("redirect");
+            const safe =
+                raw &&
+                raw.startsWith("/") &&
+                !raw.startsWith("//") &&
+                !raw.includes("://")
+                    ? raw
+                    : null;
+            const search = safe
+                ? `tab=login&redirect=${encodeURIComponent(safe)}`
+                : "tab=login";
+            navigation({ pathname: "/auth", search }, { replace: true });
             addNotification("success", "Đăng ký thành công! Vui lòng đăng nhập.");
         } catch (err: any) {
             const response = err as APIResponseError;

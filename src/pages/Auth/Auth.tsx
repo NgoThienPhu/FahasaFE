@@ -1,9 +1,15 @@
 import React from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Auth.module.css";
-import AuthLogin from "./components/AuthLogin";
-import AuthRegister from "./components/AuthRegister";
+import AuthLogin from "../auth/components/AuthLogin";
+import AuthRegister from "../auth/components/AuthRegister";
 import { useAuth } from "../../contexts/AuthContext";
+
+function safeInternalRedirect(raw: string | null): string | null {
+    if (!raw || !raw.startsWith("/") || raw.startsWith("//")) return null;
+    if (raw.includes("://")) return null;
+    return raw;
+}
 
 const Auth: React.FC = () => {
     const { isAuth } = useAuth();
@@ -22,8 +28,10 @@ const Auth: React.FC = () => {
         setTab(tabFromUrl);
     }, [tabFromUrl]);
 
-    if (isAuth) {
-        return <Navigate to="/" replace />;
+     if (isAuth) {
+        const params = new URLSearchParams(location.search);
+        const next = safeInternalRedirect(params.get("redirect"));
+        return <Navigate to={next ?? "/"} replace />;
     }
 
     const changeTab = (next: "login" | "register") => {

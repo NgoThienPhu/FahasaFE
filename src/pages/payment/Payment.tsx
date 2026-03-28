@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
     FiChevronRight,
     FiMapPin,
@@ -9,8 +9,9 @@ import {
     FiCheckCircle,
     FiMinus,
     FiPlus,
+    FiLock,
 } from "react-icons/fi";
-import styles from "./Checkout.module.css";
+import styles from "./Payment.module.css";
 import { useCart, type CartItem } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNotification } from "../../contexts/NotificationContext";
@@ -25,7 +26,7 @@ import LazyImage from "../../components/lazy_image/LazyImage";
 import { LuBookMarked } from "react-icons/lu";
 import Loading from "../../components/loading/Loading";
 
-export const CHECKOUT_BUY_NOW_STORAGE_KEY = "fahasa_checkout_buy_now";
+export const PAYMENT_BUY_NOW_STORAGE_KEY = "fahasa_payment_buy_now";
 
 export type BuyNowPayload = {
     productId: string;
@@ -35,7 +36,7 @@ export type BuyNowPayload = {
 export function readBuyNowFromStorage(): BuyNowPayload | null {
     if (typeof window === "undefined") return null;
     try {
-        const raw = sessionStorage.getItem(CHECKOUT_BUY_NOW_STORAGE_KEY);
+        const raw = sessionStorage.getItem(PAYMENT_BUY_NOW_STORAGE_KEY);
         if (!raw) return null;
         const o = JSON.parse(raw) as unknown;
         if (!o || typeof o !== "object") return null;
@@ -50,7 +51,7 @@ export function readBuyNowFromStorage(): BuyNowPayload | null {
 
 export function writeBuyNowToStorage(payload: BuyNowPayload): void {
     try {
-        sessionStorage.setItem(CHECKOUT_BUY_NOW_STORAGE_KEY, JSON.stringify(payload));
+        sessionStorage.setItem(PAYMENT_BUY_NOW_STORAGE_KEY, JSON.stringify(payload));
     } catch {
         /* ignore */
     }
@@ -58,7 +59,7 @@ export function writeBuyNowToStorage(payload: BuyNowPayload): void {
 
 export function clearBuyNowFromStorage(): void {
     try {
-        sessionStorage.removeItem(CHECKOUT_BUY_NOW_STORAGE_KEY);
+        sessionStorage.removeItem(PAYMENT_BUY_NOW_STORAGE_KEY);
     } catch {
         /* ignore */
     }
@@ -106,7 +107,7 @@ function pickOrderCodeFromResponse(data: CreateOrderData | undefined): string {
     return "";
 }
 
-function getCheckoutErrorMessage(err: unknown): string {
+function getPaymentErrorMessage(err: unknown): string {
     if (err && typeof err === "object") {
         const e = err as Partial<APIResponseError> & { message?: string };
         if (typeof e.message === "string" && e.message.trim()) return e.message.trim();
@@ -180,14 +181,15 @@ function mapApiErrorsToFields(err: unknown): Partial<Record<AddressFieldKey, str
     return out;
 }
 
-const Checkout: React.FC = () => {
+const Payment: React.FC = () => {
     const { items, clearCart, setItemQuantity, removeItem } = useCart();
-    const { isAuth } = useAuth();
+    const { isAuth, isLoading: authLoading } = useAuth();
     const { addNotification } = useNotification();
+    const location = useLocation();
 
     const [buyNowLine, setBuyNowLine] = useState<BuyNowPayload | null>(() => readBuyNowFromStorage());
 
-    const checkoutItems: CartItem[] = useMemo(
+    const paymentItems: CartItem[] = useMemo(
         () =>
             buyNowLine
                 ? [{ productId: buyNowLine.productId, quantity: buyNowLine.quantity }]
@@ -197,7 +199,7 @@ const Checkout: React.FC = () => {
 
     const isBuyNowMode = Boolean(buyNowLine);
 
-    const [step, setStep] = useState<"checkout" | "success">("checkout");
+    const [step, setStep] = useState<"payment" | "success">("payment");
     const [orderCode, setOrderCode] = useState("");
 
     const [books, setBooks] = useState<Book[]>([]);
@@ -219,8 +221,8 @@ const Checkout: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
 
     const productIdsKey = useMemo(
-        () => checkoutItems.map((it) => it.productId).sort().join(","),
-        [checkoutItems]
+        () => paymentItems.map((it) => it.productId).sort().join(","),
+        [paymentItems]
     );
 
     useEffect(() => {
@@ -284,7 +286,7 @@ const Checkout: React.FC = () => {
     };
 
     const adjustLineQuantity = (productId: string, delta: number) => {
-        const line = checkoutItems.find((x) => x.productId === productId);
+        const line = paymentItems.find((x) => x.productId === productId);
         if (!line) return;
         const next = line.quantity + delta;
         if (isBuyNowMode && buyNowLine?.productId === productId) {
@@ -314,7 +316,7 @@ const Checkout: React.FC = () => {
     const { subtotal, shippingFee, total, missingBooks } = useMemo(() => {
         let sub = 0;
         const missing: string[] = [];
-        for (const it of checkoutItems) {
+        for (const it of paymentItems) {
             const book = bookMap[it.productId];
             if (!book) {
                 missing.push(it.productId);
@@ -329,7 +331,7 @@ const Checkout: React.FC = () => {
             total: sub + ship,
             missingBooks: missing,
         };
-    }, [checkoutItems, bookMap]);
+    }, [paymentItems, bookMap]);
 
     const effectiveAddress = (): CreateAddressRequestDTO | null => {
         if (!isAuth || savedAddresses.length === 0 || useNewAddress) {
@@ -352,7 +354,11 @@ const Checkout: React.FC = () => {
         e.preventDefault();
         setFieldErrors({});
         setSubmitError("");
-        if (!checkoutItems.length) {
+        if (!isAuth) {
+            addNotification("error", "Vui lòng đăng nhập để đặt hàng");
+            return;
+        }
+        if (!paymentItems.length) {
             addNotification("error", "Không có sản phẩm để thanh toán");
             return;
         }
@@ -386,7 +392,7 @@ const Checkout: React.FC = () => {
         setSubmitting(true);
         try {
             const res = await orderApi.createOrder({
-                items: checkoutItems.map((it) => ({
+                items: paymentItems.map((it) => ({
                     bookId: it.productId,
                     quantity: it.quantity,
                 })),
@@ -416,7 +422,7 @@ const Checkout: React.FC = () => {
             addNotification("success", res.message?.trim() || "Đặt hàng thành công");
         } catch (unknownErr: unknown) {
             const mapped = mapApiErrorsToFields(unknownErr);
-            const msg = getCheckoutErrorMessage(unknownErr);
+            const msg = getPaymentErrorMessage(unknownErr);
             if (Object.keys(mapped).length > 0) {
                 if (showAddressForm) {
                     setFieldErrors(mapped);
@@ -463,7 +469,7 @@ const Checkout: React.FC = () => {
         );
     }
 
-    if (!checkoutItems.length) {
+    if (!paymentItems.length) {
         return (
             <div className={styles.page}>
                 <nav className={styles.breadcrumb} aria-label="Breadcrumb">
@@ -482,6 +488,42 @@ const Checkout: React.FC = () => {
                     <NavLink to="/products" className={styles.emptyCta}>
                         Xem sách
                     </NavLink>
+                </div>
+            </div>
+        );
+    }
+
+    if (authLoading) {
+        return <Loading notify="Đang kiểm tra tài khoản..." />;
+    }
+
+    if (!isAuth) {
+        const redirectTarget = `${location.pathname}${location.search}`;
+        const authHref = `/auth?redirect=${encodeURIComponent(redirectTarget)}`;
+        return (
+            <div className={styles.page}>
+                <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+                    <NavLink to="/">Trang chủ</NavLink>
+                    <FiChevronRight className={styles.breadcrumbSep} aria-hidden />
+                    <span className={styles.breadcrumbCurrent}>Thanh toán</span>
+                </nav>
+                <div className={styles.empty}>
+                    <div className={styles.emptyIcon} aria-hidden>
+                        <FiLock size={40} strokeWidth={1.25} />
+                    </div>
+                    <h1 className={styles.emptyTitle}>Đăng nhập để thanh toán</h1>
+                    <p className={styles.emptyText}>
+                        Vui lòng đăng nhập tài khoản để tiếp tục đặt hàng. Đơn của bạn vẫn được giữ trong phiên này (
+                        giỏ hàng hoặc mua nhanh).
+                    </p>
+                    <div className={styles.emptyActions}>
+                        <NavLink to={authHref} className={styles.emptyCta}>
+                            Đăng nhập
+                        </NavLink>
+                        <NavLink to="/products" className={styles.emptyCtaOutline}>
+                            Tiếp tục xem sách
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         );
@@ -804,12 +846,12 @@ const Checkout: React.FC = () => {
                     <div className={styles.sectionHead} style={{ marginBottom: 12, border: "none", paddingBottom: 0 }}>
                         <FiPackage className={styles.sectionIcon} size={22} />
                         <h2 className={styles.summaryTitle} style={{ margin: 0 }}>
-                            Đơn hàng ({checkoutItems.reduce((s, i) => s + i.quantity, 0)} sản phẩm)
+                            Đơn hàng ({paymentItems.reduce((s, i) => s + i.quantity, 0)} sản phẩm)
                         </h2>
                     </div>
 
                     <div className={styles.lineItems}>
-                        {checkoutItems.map((it) => {
+                        {paymentItems.map((it) => {
                             const book = bookMap[it.productId];
                             const imageUrl = book?.primaryImage?.url;
                             const title = book?.title ?? `Sản phẩm #${it.productId}`;
@@ -897,4 +939,4 @@ const Checkout: React.FC = () => {
     );
 };
 
-export default Checkout;
+export default Payment;

@@ -293,6 +293,23 @@
     border: 1px solid #fecaca;
 }
 
+.fieldError {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #b91c1c;
+    line-height: 1.35;
+}
+
+.inputError {
+    border-color: #dc2626 !important;
+}
+
+.inputError:focus {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.12) !important;
+}
+
 .formGroup label,
 .formGroupSmall label {
     display: block;
