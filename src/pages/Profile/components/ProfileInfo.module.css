@@ -1,5 +1,8 @@
 .tabContent {
     padding: 0;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     animation: fadeIn 0.35s ease;
 }
 
@@ -18,6 +21,9 @@
 .profileHero {
     position: relative;
     margin-bottom: 24px;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     border-radius: 16px;
     overflow: hidden;
     background: linear-gradient(135deg, #fff 0%, #fff8fa 45%, #ffeef3 100%);
@@ -38,9 +44,12 @@
 .heroInner {
     position: relative;
     display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 24px 22px;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 18px 22px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .avatar {
@@ -62,16 +71,19 @@
 
 .heroText {
     min-width: 0;
-    flex: 1;
+    flex: 1 1 0;
+    max-width: 100%;
 }
 
 .heroName {
     margin: 0 0 4px 0;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--text);
     letter-spacing: -0.03em;
     line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .heroUsername {
@@ -79,12 +91,16 @@
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-muted);
+    overflow-wrap: anywhere;
+    word-break: break-all;
 }
 
 .heroMeta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .statusPill {
@@ -95,6 +111,8 @@
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 700;
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .statusOn {
@@ -138,6 +156,7 @@
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
+    min-width: 0;
     background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
     border-bottom: 1px solid var(--primary-border-color);
 }
@@ -151,6 +170,9 @@
     align-items: center;
     gap: 10px;
     letter-spacing: -0.02em;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-wrap: anywhere;
 }
 
 .sectionHeaderIcon {
@@ -167,6 +189,7 @@
 }
 
 .editButton {
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     gap: 8px;

@@ -4,7 +4,7 @@ import type { Address } from "../entities/Address";
 
 interface CreateAddressParams extends Omit<Address, "id"> {}
 
-export interface UpdateAddressParams extends Omit<Address, "id"> {}
+export interface UpdateAddressParams extends Omit<Address,"id" | "createdAt" | "updatedAt"> {}
 
 const addressApi = {
 

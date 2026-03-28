@@ -50,10 +50,12 @@ const ProfileCart: React.FC = () => {
         return map;
     }, [books]);
 
-    const getPrice = (book: Book) =>
-        typeof (book as { price?: number }).price === "number"
-            ? (book as { price: number }).price
-            : book.price?.price ?? 0;
+    const getPrice = (book: Book) => {
+        if (typeof (book as any).price === "number") {
+            return (book as any).price;
+        }
+        return (book as any).price?.price ?? 0;
+    };
 
     const totalPrice = React.useMemo(() => {
         return items.reduce((sum, it) => {
@@ -75,19 +77,14 @@ const ProfileCart: React.FC = () => {
                         <div className={styles.emptyIcon} aria-hidden>
                             <FiShoppingCart size={30} strokeWidth={1.5} />
                         </div>
-                        <h2 className={styles.emptyTitle}>Giỏ hàng đang trống</h2>
-                        <p className={styles.emptyDesc}>
+                        <p className={styles.emptyText}>Giỏ hàng đang trống</p>
+                        <p className={styles.emptySubtext}>
                             Hãy chọn vài cuốn sách — ưu đãi và giao nhanh đang chờ bạn ở cửa hàng.
                         </p>
-                        <div className={styles.emptyActions}>
-                            <NavLink to="/products" className={styles.emptyCtaPrimary}>
-                                Khám phá sách
-                                <FiArrowRight size={16} aria-hidden />
-                            </NavLink>
-                            <NavLink to="/products" className={styles.emptyCtaSecondary}>
-                                Xem khuyến mãi
-                            </NavLink>
-                        </div>
+                        <NavLink to="/products" className={styles.emptyCta}>
+                            Khám phá sách
+                            <FiArrowRight size={16} aria-hidden />
+                        </NavLink>
                     </div>
                 </div>
             </div>

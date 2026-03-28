@@ -1,4 +1,6 @@
 .tabContent {
+    max-width: 100%;
+    box-sizing: border-box;
     animation: fadeIn 0.35s ease;
 }
 
@@ -507,33 +509,37 @@
     }
 }
 
-/* Empty state */
 .emptyWrap {
-    padding: 40px 16px 56px;
+    width: 600px;
+    max-width: 100%;
+    padding: 8px 0 32px;
     display: flex;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .emptyCard {
     position: relative;
-    width: min(520px, 100%);
+    width: 100%;
+    max-width: 100%;
     border-radius: 20px;
     padding: 36px 28px 32px;
     text-align: center;
     overflow: hidden;
     background: #fff;
     border: 1px solid var(--primary-border-color);
-    box-shadow: 0 12px 40px rgba(17, 24, 39, 0.08);
+    box-shadow: 0 12px 36px rgba(17, 24, 39, 0.08);
+    box-sizing: border-box;
 }
 
 .emptyGlow {
     position: absolute;
-    top: -40%;
+    top: -45%;
     left: 50%;
     transform: translateX(-50%);
-    width: 120%;
-    height: 70%;
-    background: radial-gradient(ellipse at center, rgba(225, 29, 72, 0.12) 0%, transparent 70%);
+    width: 130%;
+    height: 85%;
+    background: radial-gradient(ellipse at center, rgba(225, 29, 72, 0.11) 0%, transparent 68%);
     pointer-events: none;
 }
 
@@ -546,80 +552,55 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(145deg, rgba(225, 29, 72, 0.14) 0%, rgba(225, 29, 72, 0.06) 100%);
+    background: linear-gradient(145deg, rgba(225, 29, 72, 0.12) 0%, rgba(225, 29, 72, 0.05) 100%);
     color: var(--primary-color);
-    border: 1px solid rgba(225, 29, 72, 0.12);
+    border: 1px solid rgba(225, 29, 72, 0.1);
 }
 
-.emptyTitle {
+.emptyText {
     position: relative;
-    margin: 0 0 10px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--text);
+    margin: 0 0 10px 0;
     letter-spacing: -0.02em;
 }
 
-.emptyDesc {
+.emptySubtext {
     position: relative;
-    margin: 0 auto 22px;
-    max-width: 400px;
     font-size: 0.9rem;
     color: var(--text-muted);
-    line-height: 1.6;
+    margin: 0 auto 22px;
+    max-width: 480px;
+    line-height: 1.55;
 }
 
-.emptyActions {
+.emptyCta {
     position: relative;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.emptyCtaPrimary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     padding: 12px 22px;
     border-radius: 999px;
-    border: 1px solid transparent;
+    border: none;
     background: var(--primary-color);
     color: #fff;
     font-size: 0.9rem;
     font-weight: 800;
+    cursor: pointer;
     text-decoration: none;
-    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(225, 29, 72, 0.3);
-    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(225, 29, 72, 0.28);
+    transition: opacity 0.2s, transform 0.15s;
 }
 
-.emptyCtaPrimary:hover {
-    background: #c41a3a;
+.emptyCta:hover {
+    opacity: 0.94;
+    color: #fff;
 }
 
-.emptyCtaPrimary:active {
+.emptyCta:active {
     transform: translateY(1px);
-}
-
-.emptyCtaSecondary {
-    padding: 12px 22px;
-    border-radius: 999px;
-    border: 1px solid var(--primary-border-color);
-    background: #fff;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
-    white-space: nowrap;
-}
-
-.emptyCtaSecondary:hover {
-    background: rgba(225, 29, 72, 0.06);
-    border-color: rgba(225, 29, 72, 0.25);
-    color: var(--primary-color);
 }
 
 @media (max-width: 960px) {

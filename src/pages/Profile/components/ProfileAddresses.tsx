@@ -3,7 +3,16 @@ import styles from "./ProfileAddresses.module.css";
 import { useNotification } from "../../../contexts/NotificationContext";
 import userApi, { type CreateAddressRequestDTO } from "../../../services/apis/userApi";
 import addressApi from "../../../services/apis/addressApi";
-import { FiMapPin, FiPhone, FiEdit2, FiTrash2, FiHome, FiPlus, FiArrowLeft } from "react-icons/fi";
+import {
+    FiMapPin,
+    FiPhone,
+    FiEdit2,
+    FiTrash2,
+    FiHome,
+    FiPlus,
+    FiArrowLeft,
+    FiNavigation,
+} from "react-icons/fi";
 
 type AddressFieldKey = keyof Omit<CreateAddressRequestDTO, "isDefault">;
 
@@ -158,14 +167,31 @@ const ProfileAddresses: React.FC = () => {
         }
     };
 
+    const canAddMore = addresses.length < 3;
+    const listCount = addresses.length;
+
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <h2>Địa chỉ</h2>
-                {(showForm || editingId !== null || addresses.length < 3) && (
+            <header className={styles.pageHeader}>
+                <div className={styles.headerText}>
+                    <div className={styles.headerIconWrap} aria-hidden>
+                        <FiNavigation size={22} strokeWidth={2} />
+                    </div>
+                    <div className={styles.headerTextCol}>
+                        <h2 className={styles.pageTitle}>Địa chỉ giao hàng</h2>
+                        <p className={styles.pageSubtitle}>
+                            {showForm || editingId
+                                ? editingId
+                                    ? "Cập nhật thông tin nhận hàng của bạn."
+                                    : "Thêm địa chỉ mới — tối đa 3 địa chỉ."
+                                : `Đang có ${listCount}/3 địa chỉ đã lưu.`}
+                        </p>
+                    </div>
+                </div>
+                {(showForm || editingId !== null || canAddMore) && (
                     <button
                         type="button"
-                        className={styles.addBtnHeader}
+                        className={showForm || editingId ? styles.btnGhost : styles.addBtnHeader}
                         onClick={() => {
                             setFieldErrors({});
                             setSubmitError("");
@@ -185,30 +211,70 @@ const ProfileAddresses: React.FC = () => {
                     >
                         {showForm || editingId ? (
                             <>
-                                <FiArrowLeft size={18} />
+                                <FiArrowLeft size={18} aria-hidden />
                                 Quay lại danh sách
                             </>
                         ) : (
                             <>
-                                <FiPlus size={18} />
+                                <FiPlus size={18} aria-hidden />
                                 Thêm địa chỉ
                             </>
                         )}
                     </button>
                 )}
-            </div>
+            </header>
 
             {!showForm && !editingId && (
                 <>
                     {isLoading ? (
-                        <div className={styles.empty}>Đang tải địa chỉ...</div>
-                    ) : addresses.length === 0 ? (
-                        <div className={styles.emptyCard}>
-                            <div className={styles.emptyIcon}>
-                                <FiMapPin />
+                        <div className={styles.skeletonWrap} aria-busy="true">
+                            <div className={styles.skeletonCard}>
+                                <span className={styles.skelLine} style={{ width: "40%" }} />
+                                <span className={styles.skelLine} style={{ width: "70%" }} />
+                                <span className={styles.skelLine} style={{ width: "90%" }} />
                             </div>
-                            <p className={styles.emptyText}>Chưa có địa chỉ nào</p>
-                            <p className={styles.emptySubtext}>Thêm địa chỉ để thuận tiện cho giao hàng</p>
+                            <div className={styles.skeletonCard}>
+                                <span className={styles.skelLine} style={{ width: "45%" }} />
+                                <span className={styles.skelLine} style={{ width: "65%" }} />
+                                <span className={styles.skelLine} style={{ width: "85%" }} />
+                            </div>
+                        </div>
+                    ) : addresses.length === 0 ? (
+                        <div className={styles.emptyWrap}>
+                            <div className={styles.emptyCard}>
+                                <div className={styles.emptyGlow} aria-hidden />
+                                <div className={styles.emptyIcon}>
+                                    <FiMapPin size={30} strokeWidth={1.5} aria-hidden />
+                                </div>
+                                <p className={styles.emptyText}>Chưa có địa chỉ giao hàng</p>
+                                <p className={styles.emptySubtext}>
+                                    Lưu địa chỉ để đặt hàng nhanh hơn và theo dõi giao nhận thuận tiện.
+                                </p>
+                                {canAddMore && (
+                                    <button
+                                        type="button"
+                                        className={styles.emptyCta}
+                                        onClick={() => {
+                                            setFieldErrors({});
+                                            setSubmitError("");
+                                            setEditingId(null);
+                                            setForm({
+                                                fullName: "",
+                                                phoneNumber: "",
+                                                addressDetail: "",
+                                                city: "",
+                                                district: "",
+                                                ward: "",
+                                                isDefault: false,
+                                            });
+                                            setShowForm(true);
+                                        }}
+                                    >
+                                        <FiPlus size={18} aria-hidden />
+                                        Thêm địa chỉ đầu tiên
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <div className={styles.listContainer}>
@@ -217,67 +283,71 @@ const ProfileAddresses: React.FC = () => {
                                     key={a.id}
                                     className={`${styles.addressCard} ${a.isDefault ? styles.defaultCard : ""}`}
                                 >
-                                    {a.isDefault && (
-                                        <span className={styles.defaultBadge}>
-                                            <FiHome className={styles.defaultBadgeIcon} />
-                                            Mặc định
-                                        </span>
-                                    )}
-                                    <div className={styles.addressMain}>
-                                        <div className={styles.addressContent}>
-                                            <div className={styles.addressHeader}>
-                                                <div className={styles.addressTitle}>
-                                                    <h3 className={styles.addressName}>{a.fullName}</h3>
-                                                    <div className={styles.addressMeta}>
-                                                        <FiPhone className={styles.metaIcon} />
-                                                        <span className={styles.addressPhone}>{a.phoneNumber}</span>
+                                    <div className={styles.cardInner}>
+                                        <div className={styles.addressMain}>
+                                            <div className={styles.addressContent}>
+                                                <div className={styles.addressHeader}>
+                                                    <div className={styles.nameRow}>
+                                                        <h3 className={styles.addressName}>{a.fullName}</h3>
+                                                        {a.isDefault && (
+                                                            <span className={styles.defaultBadge}>
+                                                                <FiHome size={14} strokeWidth={2} aria-hidden />
+                                                                Mặc định
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div className={styles.phonePill}>
+                                                        <FiPhone size={14} strokeWidth={2} aria-hidden />
+                                                        <span>{a.phoneNumber}</span>
+                                                    </div>
+                                                </div>
+                                                <div className={styles.addressBlock}>
+                                                    <span className={styles.pinIcon} aria-hidden>
+                                                        <FiMapPin size={18} />
+                                                    </span>
+                                                    <div>
+                                                        <p className={styles.addressDetail}>{a.addressDetail}</p>
+                                                        <p className={styles.addressLocation}>
+                                                            {[a.ward, a.district, a.city].filter(Boolean).join(", ")}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className={styles.addressLine}>
-                                                <div className={styles.addressIcon}>
-                                                    <FiMapPin />
-                                                </div>
-                                                <div>
-                                                    <div className={styles.addressDetail}>{a.addressDetail}</div>
-                                                    <div className={styles.addressLocation}>
-                                                        {a.ward && `${a.ward}, `}
-                                                        {a.district && `${a.district}, `}
-                                                        {a.city}
-                                                    </div>
-                                                </div>
+                                            <div className={styles.actionBtns}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.editBtn}
+                                                    title="Chỉnh sửa"
+                                                    aria-label="Chỉnh sửa địa chỉ"
+                                                    onClick={() => {
+                                                        setEditingId(a.id);
+                                                        setForm({
+                                                            fullName: a.fullName ?? "",
+                                                            phoneNumber: a.phoneNumber ?? "",
+                                                            addressDetail: a.addressDetail ?? "",
+                                                            city: a.city ?? "",
+                                                            district: a.district ?? "",
+                                                            ward: a.ward ?? "",
+                                                            isDefault: !!a.isDefault,
+                                                        });
+                                                        setShowForm(true);
+                                                        setFieldErrors({});
+                                                        setSubmitError("");
+                                                    }}
+                                                >
+                                                    <FiEdit2 size={18} />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.deleteBtn}
+                                                    title="Xóa địa chỉ"
+                                                    aria-label="Xóa địa chỉ"
+                                                    onClick={() => openDeleteConfirm(a.id)}
+                                                    disabled={deletingId === a.id}
+                                                >
+                                                    <FiTrash2 size={18} />
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div className={styles.actionBtns}>
-                                            <button
-                                                className={styles.editBtn}
-                                                title="Chỉnh sửa"
-                                                onClick={() => {
-                                                    setEditingId(a.id);
-                                                    setForm({
-                                                        fullName: a.fullName ?? "",
-                                                        phoneNumber: a.phoneNumber ?? "",
-                                                        addressDetail: a.addressDetail ?? "",
-                                                        city: a.city ?? "",
-                                                        district: a.district ?? "",
-                                                        ward: a.ward ?? "",
-                                                        isDefault: !!a.isDefault,
-                                                    });
-                                                    setShowForm(true);
-                                                    setFieldErrors({});
-                                                    setSubmitError("");
-                                                }}
-                                            >
-                                                <FiEdit2 />
-                                            </button>
-                                            <button
-                                                className={styles.deleteBtn}
-                                                title="Xóa"
-                                                onClick={() => openDeleteConfirm(a.id)}
-                                                disabled={deletingId === a.id}
-                                            >
-                                                <FiTrash2 />
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -289,12 +359,18 @@ const ProfileAddresses: React.FC = () => {
 
             {(showForm || editingId) && (
                 <div className={styles.formCard}>
-                    <h3 className={styles.formTitle}>
-                        {editingId ? "Sửa địa chỉ" : "Địa chỉ mới"}
-                    </h3>
+                    <div className={styles.formCardHead}>
+                        <h3 className={styles.formTitle}>
+                            {editingId ? "Sửa địa chỉ" : "Thêm địa chỉ mới"}
+                        </h3>
+                        <p className={styles.formHint}>
+                            Thông tin dùng để giao hàng — vui lòng điền chính xác.
+                        </p>
+                    </div>
                     <form className={styles.form} onSubmit={handleSubmit}>
                         {submitError && <div className={styles.formError}>{submitError}</div>}
 
+                        <p className={styles.formSectionLabel}>Người nhận</p>
                         <div className={styles.rowTwo}>
                             <div className={styles.formGroup}>
                                 <label htmlFor="addr-fullName">Họ tên</label>
@@ -339,8 +415,9 @@ const ProfileAddresses: React.FC = () => {
                             </div>
                         </div>
 
+                        <p className={styles.formSectionLabel}>Địa chỉ</p>
                         <div className={styles.formGroup}>
-                            <label htmlFor="addr-detail">Địa chỉ</label>
+                            <label htmlFor="addr-detail">Số nhà, đường</label>
                             <input
                                 id="addr-detail"
                                 placeholder="Số nhà, đường"
