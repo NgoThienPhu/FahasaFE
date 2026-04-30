@@ -59,7 +59,7 @@ header{
   transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
 }
 
-.navLink.active {
+.active {
   color: var(--primary-color);
 }
 
@@ -73,7 +73,7 @@ header{
   background: var(--primary-color);
   transform: translateX(-50%) scaleX(0);
   transform-origin: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.28s ease;
 }
 
 .navLink:hover {
@@ -92,11 +92,11 @@ header{
 }
 
 .navLink:hover::after,
-.navLink.active::after {
+.active::after {
   transform: translateX(-50%) scaleX(1);
 }
 
-.navLink:focus::after {
+.navLink:focus:not(.active)::after {
   transform: translateX(-50%) scaleX(0);
 }
 
@@ -105,7 +105,7 @@ header{
 }
 
 .navLink:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
 }
 
 .authActions {
