@@ -1,5 +1,7 @@
 .tabContent {
-    animation: fadeIn 0.3s ease;
+    max-width: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 0.35s ease;
 }
 
 @keyframes fadeIn {
@@ -13,20 +15,109 @@
     }
 }
 
-.emptyState {
+.emptyWrap {
+    width: 600px;
+    max-width: 100%;
+    padding: 8px 0 32px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.emptyCard {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+    padding: 36px 28px 32px;
     text-align: center;
-    padding: 60px 40px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--primary-border-color);
+    box-shadow: 0 12px 36px rgba(17, 24, 39, 0.08);
+    box-sizing: border-box;
 }
 
-.emptyState h2 {
-    font-size: 1.2rem;
+.emptyGlow {
+    position: absolute;
+    top: -45%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130%;
+    height: 85%;
+    background: radial-gradient(ellipse at center, rgba(225, 29, 72, 0.11) 0%, transparent 68%);
+    pointer-events: none;
+}
+
+.emptyIcon {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, rgba(225, 29, 72, 0.12) 0%, rgba(225, 29, 72, 0.05) 100%);
+    color: var(--primary-color);
+    border: 1px solid rgba(225, 29, 72, 0.1);
+}
+
+.emptyText {
+    position: relative;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: var(--text);
-    margin: 0 0 15px 0;
-    font-weight: 700;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
 }
 
-.emptyState p {
+.emptySubtext {
+    position: relative;
     font-size: 0.9rem;
     color: var(--text-muted);
-    margin: 0;
+    margin: 0 auto 22px;
+    max-width: 460px;
+    line-height: 1.55;
+}
+
+.emptyCta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(225, 29, 72, 0.28);
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.emptyCta:hover {
+    opacity: 0.94;
+    color: #fff;
+}
+
+.emptyCta:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+    .emptyCard {
+        padding: 28px 18px 24px;
+        border-radius: 16px;
+    }
+
+    .emptyIcon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+    }
 }

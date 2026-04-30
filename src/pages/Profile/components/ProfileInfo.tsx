@@ -191,9 +191,10 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                 type="button"
                                 className={styles.editButton}
                                 onClick={() => onEditModeChange("basicInfo")}
+                                aria-label="Sửa thông tin cơ bản"
+                                title="Sửa thông tin cơ bản"
                             >
                                 <FiEdit2 size={16} aria-hidden />
-                                Chỉnh sửa
                             </button>
                         )}
                     </div>
@@ -359,6 +360,30 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                 </span>
                                 Email
                             </h2>
+                            <span
+                                className={`${styles.badge} ${user.email.isVerify ? styles.verified : styles.unverified}`}
+                            >
+                                {user.email.isVerify ? (
+                                    <>
+                                        <FiCheck size={12} aria-hidden /> Đã xác nhận
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiAlertCircle size={12} aria-hidden /> Chưa xác nhận
+                                    </>
+                                )}
+                            </span>
+                            {editMode !== "email" && (
+                                <button
+                                    type="button"
+                                    className={styles.editButton}
+                                    onClick={() => onEditModeChange("email")}
+                                    aria-label="Sửa email"
+                                    title="Sửa email"
+                                >
+                                    <FiEdit2 size={16} aria-hidden />
+                                </button>
+                            )}
                         </div>
                         <div className={styles.sectionBody}>
                             <div className={styles.infoGroup}>
@@ -408,19 +433,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                     <div className={styles.verificationGroup}>
                                         <div className={styles.contactBlock}>
                                             <p className={styles.contactValue}>{user.email.email}</p>
-                                            <span
-                                                className={`${styles.badge} ${user.email.isVerify ? styles.verified : styles.unverified}`}
-                                            >
-                                                {user.email.isVerify ? (
-                                                    <>
-                                                        <FiCheck size={12} aria-hidden /> Đã xác nhận
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <FiAlertCircle size={12} aria-hidden /> Chưa xác nhận
-                                                    </>
-                                                )}
-                                            </span>
                                         </div>
                                         <div className={styles.contactActions}>
                                             {!user.email.isVerify && (
@@ -430,18 +442,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                                     onClick={() => onSendCode("email")}
                                                     disabled={isLoading}
                                                 >
-                                                    Xác thực ngay
+                                                    Xác thực
                                                 </button>
                                             )}
-                                            <button
-                                                type="button"
-                                                className={styles.editIconBtn}
-                                                onClick={() => onEditModeChange("email")}
-                                                title="Chỉnh sửa email"
-                                                aria-label="Chỉnh sửa email"
-                                            >
-                                                <FiEdit2 size={18} aria-hidden />
-                                            </button>
                                         </div>
                                     </div>
                                 )}
@@ -459,6 +462,30 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                 </span>
                                 Số điện thoại
                             </h2>
+                            <span
+                                className={`${styles.badge} ${user.phoneNumber.isVerify ? styles.verified : styles.unverified}`}
+                            >
+                                {user.phoneNumber.isVerify ? (
+                                    <>
+                                        <FiCheck size={12} aria-hidden /> Đã xác nhận
+                                    </>
+                                ) : (
+                                    <>
+                                        <FiAlertCircle size={12} aria-hidden /> Chưa xác nhận
+                                    </>
+                                )}
+                            </span>
+                            {editMode !== "phone" && (
+                                <button
+                                    type="button"
+                                    className={styles.editButton}
+                                    onClick={() => onEditModeChange("phone")}
+                                    aria-label="Sửa số điện thoại"
+                                    title="Sửa số điện thoại"
+                                >
+                                    <FiEdit2 size={16} aria-hidden />
+                                </button>
+                            )}
                         </div>
                         <div className={styles.sectionBody}>
                             <div className={styles.infoGroup}>
@@ -507,19 +534,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                     <div className={styles.verificationGroup}>
                                         <div className={styles.contactBlock}>
                                             <p className={styles.contactValue}>{user.phoneNumber.phoneNumber}</p>
-                                            <span
-                                                className={`${styles.badge} ${user.phoneNumber.isVerify ? styles.verified : styles.unverified}`}
-                                            >
-                                                {user.phoneNumber.isVerify ? (
-                                                    <>
-                                                        <FiCheck size={12} aria-hidden /> Đã xác nhận
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <FiAlertCircle size={12} aria-hidden /> Chưa xác nhận
-                                                    </>
-                                                )}
-                                            </span>
                                         </div>
                                         <div className={styles.contactActions}>
                                             {!user.phoneNumber.isVerify && (
@@ -529,18 +543,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                                                     onClick={() => onSendCode("phone")}
                                                     disabled={isLoading}
                                                 >
-                                                    Xác thực ngay
+                                                    Xác thực
                                                 </button>
                                             )}
-                                            <button
-                                                type="button"
-                                                className={styles.editIconBtn}
-                                                onClick={() => onEditModeChange("phone")}
-                                                title="Chỉnh sửa số điện thoại"
-                                                aria-label="Chỉnh sửa số điện thoại"
-                                            >
-                                                <FiEdit2 size={18} aria-hidden />
-                                            </button>
                                         </div>
                                     </div>
                                 )}

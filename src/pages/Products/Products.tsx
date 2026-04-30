@@ -30,19 +30,20 @@ const Products: React.FC = () => {
                 sortBy: "title",
                 orderBy: "ASC",
             };
+            
             if (categoryIds.length > 0) params.categoryId = categoryIds[0];
 
             bookApi
                 .getBooks(params)
                 .then((res) => {
-                    const list = Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : []);
-                    setBooks(list as Book[]);
-                    const p = res.pagination || res;
-                    const page0 = p.page || 0;
-                    const totalPages = p.totalPages || 1;
-                    const totalItems = p.totalItems || list.length;
+                    const list = res.data;
+                    setBooks(list);
+                    const p = res.pagination;
+                    const page = p.page;
+                    const totalPages = p.totalPages;
+                    const totalItems = p.totalItems;
                     setPagination({
-                        page: page0 + 1,
+                        page: page + 1,
                         totalPages,
                         totalItems,
                     });
@@ -96,7 +97,7 @@ const Products: React.FC = () => {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Sách</h1>
+                {/*Nơi cần chèn thông tin nào nó trên header của body danh sách sản phẩm*/}
             </header>
 
             <div className={styles.layout}>

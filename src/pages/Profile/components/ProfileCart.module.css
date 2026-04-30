@@ -63,10 +63,10 @@
 }
 
 .cartLayout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+    display: flex;
+    flex-direction: column;
     gap: 24px;
-    align-items: start;
+    align-items: stretch;
 }
 
 .cartItemsSection {
@@ -79,50 +79,50 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
 .cartRow {
     margin: 0;
     padding: 0;
-    border-radius: 14px;
+    border-radius: 12px;
     background: #fff;
-    border: 1px solid var(--primary-border-color);
-    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
-    transition: box-shadow 0.25s ease, border-color 0.2s ease, transform 0.2s ease;
+    border: 1px solid #e8edf3;
+    box-shadow: 0 1px 6px rgba(17, 24, 39, 0.04);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .cartRow:hover {
-    box-shadow: 0 8px 28px rgba(17, 24, 39, 0.08);
-    border-color: rgba(225, 29, 72, 0.18);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
+    border-color: rgba(225, 29, 72, 0.16);
 }
 
 .rowInner {
-    display: flex;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    align-items: center;
     gap: 16px;
-    padding: 16px 18px;
+    padding: 14px 16px;
 }
 
 .cartThumb {
     position: relative;
     flex-shrink: 0;
     width: 72px;
-    min-height: 102px;
+    height: 102px;
     border-radius: 10px;
     overflow: hidden;
-    background: linear-gradient(160deg, var(--primary-light, #fff5f7) 0%, #fafafa 100%);
+    background: #f8fafc;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s ease;
 }
 
 .cartThumb:hover {
     transform: scale(1.02);
-    box-shadow: inset 0 0 0 1px rgba(225, 29, 72, 0.12), 0 4px 12px rgba(225, 29, 72, 0.12);
 }
 
 .thumbImg {
@@ -144,12 +144,12 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    justify-content: center;
+    gap: 6px;
+    justify-content: flex-start;
 }
 
 .cartBookTitle {
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text);
     text-decoration: none;
@@ -169,14 +169,14 @@
     font-size: 0.8125rem;
     color: var(--text-muted);
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.35;
 }
 
 .priceLine {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .unitLabel {
@@ -188,7 +188,7 @@
 }
 
 .cartPrice {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--primary-color);
 }
@@ -202,22 +202,22 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
 }
 
 .cartQtyWrap {
     display: flex;
     align-items: center;
     border: 1px solid var(--primary-border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     background: #fafafa;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .btnQty {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -238,7 +238,7 @@
 }
 
 .cartQtyValue {
-    min-width: 40px;
+    min-width: 34px;
     text-align: center;
     font-size: 0.9rem;
     font-weight: 700;
@@ -250,7 +250,7 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-    min-width: 120px;
+    min-width: 112px;
     text-align: right;
 }
 
@@ -264,7 +264,7 @@
 }
 
 .subValue {
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: 800;
     color: var(--text);
     letter-spacing: -0.02em;
@@ -272,15 +272,15 @@
 }
 
 .btnRemove {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border: none;
     background: transparent;
     color: var(--text-muted);
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s;
 }
@@ -295,21 +295,20 @@
 }
 
 .cartSummary {
-    position: sticky;
-    top: 16px;
+    position: static;
 }
 
 .summaryCard {
-    background: linear-gradient(180deg, #fff 0%, #fffafb 100%);
-    border: 1px solid var(--primary-border-color);
-    border-radius: 16px;
-    padding: 22px 20px 20px;
-    box-shadow: 0 4px 24px rgba(17, 24, 39, 0.06);
+    background: #fff;
+    border: 1px solid #e8edf3;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 1px 8px rgba(17, 24, 39, 0.05);
 }
 
 .summaryTitle {
-    margin: 0 0 16px 0;
-    font-size: 0.78rem;
+    margin: 0 0 10px 0;
+    font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -325,12 +324,12 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 12px;
-    font-size: 0.9rem;
+    gap: 10px;
+    font-size: 0.85rem;
 }
 
 .summaryRow {
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .summaryRow dt {
@@ -347,7 +346,7 @@
 
 .summaryRowMuted {
     margin-bottom: 0;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
 }
 
@@ -360,24 +359,24 @@
 .summaryDivider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--primary-border-color), transparent);
-    margin: 16px 0 14px;
+    margin: 8px 0 10px;
 }
 
 .summaryTotalRow {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 18px;
+    margin-top: 10px;
 }
 
 .summaryTotalLabel {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--text);
 }
 
 .summaryTotalValue {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--primary-color);
     letter-spacing: -0.03em;
@@ -387,19 +386,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    padding: 14px 18px;
-    border-radius: 12px;
+    margin-top: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
     border: none;
     background: linear-gradient(180deg, #f43f5e 0%, var(--primary-color) 100%);
     color: #fff;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 800;
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
-    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
 }
 
 .btnPayment:hover {
@@ -414,8 +414,8 @@
 .linkContinue {
     display: block;
     text-align: center;
-    margin-top: 14px;
-    font-size: 0.875rem;
+    margin-top: 10px;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-muted);
     text-decoration: none;
@@ -619,16 +619,18 @@
     }
 
     .rowInner {
-        flex-wrap: wrap;
+        grid-template-columns: 72px minmax(0, 1fr);
+        align-items: start;
     }
 
     .rowControls {
         width: 100%;
         justify-content: flex-end;
         flex-wrap: wrap;
-        padding-top: 4px;
-        border-top: 1px dashed var(--primary-border-color);
-        margin-left: 88px;
+        padding-top: 10px;
+        border-top: 1px solid #edf1f6;
+        margin-left: 0;
+        grid-column: 1 / -1;
     }
 
     .cartSubtotal {
@@ -655,11 +657,12 @@
     .rowInner {
         padding: 14px;
         gap: 12px;
+        grid-template-columns: 64px minmax(0, 1fr);
     }
 
     .cartThumb {
         width: 64px;
-        min-height: 90px;
+        height: 90px;
     }
 
     .rowControls {

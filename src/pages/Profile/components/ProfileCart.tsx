@@ -287,10 +287,6 @@ const ProfileCart: React.FC = () => {
                                     <dt>Tạm tính ({totalCount} cuốn)</dt>
                                     <dd>{formatPrice(totalPrice)}</dd>
                                 </div>
-                                <div className={styles.summaryRowMuted}>
-                                    <dt>Phí vận chuyển</dt>
-                                    <dd>Tính khi thanh toán</dd>
-                                </div>
                             </dl>
                             <div className={styles.summaryDivider} />
                             <div className={styles.summaryTotalRow}>
@@ -304,9 +300,6 @@ const ProfileCart: React.FC = () => {
                             >
                                 Tiến hành thanh toán
                                 <FiArrowRight size={18} aria-hidden />
-                            </NavLink>
-                            <NavLink to="/products" className={styles.linkContinue}>
-                                ← Tiếp tục mua sắm
                             </NavLink>
                         </div>
                     </aside>

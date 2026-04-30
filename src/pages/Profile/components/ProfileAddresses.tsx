@@ -8,7 +8,6 @@ import {
     FiPhone,
     FiEdit2,
     FiTrash2,
-    FiHome,
     FiPlus,
     FiArrowLeft,
     FiNavigation,
@@ -284,32 +283,29 @@ const ProfileAddresses: React.FC = () => {
                                     className={`${styles.addressCard} ${a.isDefault ? styles.defaultCard : ""}`}
                                 >
                                     <div className={styles.cardInner}>
-                                        <div className={styles.addressMain}>
-                                            <div className={styles.addressContent}>
-                                                <div className={styles.addressHeader}>
-                                                    <div className={styles.nameRow}>
-                                                        <h3 className={styles.addressName}>{a.fullName}</h3>
-                                                        {a.isDefault && (
-                                                            <span className={styles.defaultBadge}>
-                                                                <FiHome size={14} strokeWidth={2} aria-hidden />
-                                                                Mặc định
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className={styles.phonePill}>
-                                                        <FiPhone size={14} strokeWidth={2} aria-hidden />
-                                                        <span>{a.phoneNumber}</span>
-                                                    </div>
+                                        <div className={styles.cardRow}>
+                                            <div className={styles.nameCol}>
+                                                <div className={styles.nameRow}>
+                                                    <h3 className={styles.addressName}>{a.fullName}</h3>
                                                 </div>
+                                            </div>
+                                            <div className={styles.addressCol}>
                                                 <div className={styles.addressBlock}>
-                                                    <span className={styles.pinIcon} aria-hidden>
-                                                        <FiMapPin size={18} />
-                                                    </span>
-                                                    <div>
-                                                        <p className={styles.addressDetail}>{a.addressDetail}</p>
-                                                        <p className={styles.addressLocation}>
-                                                            {[a.ward, a.district, a.city].filter(Boolean).join(", ")}
-                                                        </p>
+                                                    <div className={styles.contactInBox}>
+                                                        <div className={styles.phonePill}>
+                                                            <FiPhone size={14} strokeWidth={2} aria-hidden />
+                                                            <span>{a.phoneNumber}</span>
+                                                        </div>
+                                                        <div className={styles.addressLine}>
+                                                            <span className={styles.pinIcon} aria-hidden>
+                                                                <FiMapPin size={18} />
+                                                            </span>
+                                                            <span className={styles.addressDetail}>{a.addressDetail}</span>
+                                                            <span className={styles.addressSeparator}>, </span>
+                                                            <span className={styles.addressLocation}>
+                                                                {[a.ward, a.district, a.city].filter(Boolean).join(", ")}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -439,22 +435,22 @@ const ProfileAddresses: React.FC = () => {
 
                         <div className={styles.row}>
                             <div className={styles.formGroupSmall}>
-                                <label htmlFor="addr-city">Tỉnh/TP</label>
+                                <label htmlFor="addr-ward">Phường/Xã</label>
                                 <input
-                                    id="addr-city"
-                                    placeholder="Hà Nội"
-                                    className={`${styles.input} ${fieldErrors.city ? styles.inputError : ""}`}
-                                    value={form.city}
+                                    id="addr-ward"
+                                    placeholder="Tràng Tiền"
+                                    className={`${styles.input} ${fieldErrors.ward ? styles.inputError : ""}`}
+                                    value={form.ward}
                                     onChange={(e) => {
-                                        setForm({ ...form, city: e.target.value });
-                                        clearFieldError("city");
+                                        setForm({ ...form, ward: e.target.value });
+                                        clearFieldError("ward");
                                     }}
-                                    aria-invalid={!!fieldErrors.city}
-                                    aria-describedby={fieldErrors.city ? "err-city" : undefined}
+                                    aria-invalid={!!fieldErrors.ward}
+                                    aria-describedby={fieldErrors.ward ? "err-ward" : undefined}
                                 />
-                                {fieldErrors.city && (
-                                    <span id="err-city" className={styles.fieldError} role="alert">
-                                        {fieldErrors.city}
+                                {fieldErrors.ward && (
+                                    <span id="err-ward" className={styles.fieldError} role="alert">
+                                        {fieldErrors.ward}
                                     </span>
                                 )}
                             </div>
@@ -479,22 +475,22 @@ const ProfileAddresses: React.FC = () => {
                                 )}
                             </div>
                             <div className={styles.formGroupSmall}>
-                                <label htmlFor="addr-ward">Phường/Xã</label>
+                                <label htmlFor="addr-city">Tỉnh/TP</label>
                                 <input
-                                    id="addr-ward"
-                                    placeholder="Tràng Tiền"
-                                    className={`${styles.input} ${fieldErrors.ward ? styles.inputError : ""}`}
-                                    value={form.ward}
+                                    id="addr-city"
+                                    placeholder="Hà Nội"
+                                    className={`${styles.input} ${fieldErrors.city ? styles.inputError : ""}`}
+                                    value={form.city}
                                     onChange={(e) => {
-                                        setForm({ ...form, ward: e.target.value });
-                                        clearFieldError("ward");
+                                        setForm({ ...form, city: e.target.value });
+                                        clearFieldError("city");
                                     }}
-                                    aria-invalid={!!fieldErrors.ward}
-                                    aria-describedby={fieldErrors.ward ? "err-ward" : undefined}
+                                    aria-invalid={!!fieldErrors.city}
+                                    aria-describedby={fieldErrors.city ? "err-city" : undefined}
                                 />
-                                {fieldErrors.ward && (
-                                    <span id="err-ward" className={styles.fieldError} role="alert">
-                                        {fieldErrors.ward}
+                                {fieldErrors.city && (
+                                    <span id="err-city" className={styles.fieldError} role="alert">
+                                        {fieldErrors.city}
                                     </span>
                                 )}
                             </div>
