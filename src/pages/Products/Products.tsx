@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./Products.module.css";
 import BookCard from "../../components/book_card/BookCard";
-import productApi, { type Category } from "../../services/apis/productApi";
+import categoryApi from "../../services/apis/categoryApi";
 import bookApi, { type GetBooksParams } from "../../services/apis/bookApi";
 import type { Book } from "../../services/entities/Book";
-import { FiFilter, FiX, FiInbox } from "react-icons/fi";
+import { FiFilter, FiX, FiInbox, FiSearch } from "react-icons/fi";
+import type { Category } from "../../services/entities/Category";
 
 const PAGE_SIZE = 10;
 const PAGINATION_SPREAD = 2;
@@ -12,17 +13,18 @@ const PAGINATION_SPREAD = 2;
 const Products: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [pagination, setPagination] = useState({ page: 1, totalPages: 1, totalItems: 0 });
-    const [loading, setLoading] = useState(true);
+    const [initialBooksLoad, setInitialBooksLoad] = useState(true);
+    const [booksListLoading, setBooksListLoading] = useState(false);
 
     const [categories, setCategories] = useState<Category[]>([]);
     const [categoryIds, setCategoryIds] = useState<string[]>([]);
-    const [minPrice, setMinPrice] = useState("");
-    const [maxPrice, setMaxPrice] = useState("");
+    const [searchDraft, setSearchDraft] = useState("");
+    const [appliedSearch, setAppliedSearch] = useState("");
     const [showFilters, setShowFilters] = useState(false);
 
     const loadBooks = useCallback(
         (pageOneBased: number = 1) => {
-            setLoading(true);
+            setBooksListLoading(true);
 
             const params: GetBooksParams = {
                 page: pageOneBased - 1,
@@ -32,6 +34,9 @@ const Products: React.FC = () => {
             };
             
             if (categoryIds.length > 0) params.categoryId = categoryIds[0];
+
+            const q = appliedSearch.trim();
+            if (q) params.search = q;
 
             bookApi
                 .getBooks(params)
@@ -52,13 +57,16 @@ const Products: React.FC = () => {
                     setBooks([]);
                     setPagination((prev) => ({ ...prev, page: 1, totalPages: 1, totalItems: 0 }));
                 })
-                .finally(() => setLoading(false));
+                .finally(() => {
+                    setBooksListLoading(false);
+                    setInitialBooksLoad(false);
+                });
         },
-        [categoryIds]
+        [categoryIds, appliedSearch]
     );
 
     useEffect(() => {
-        productApi.getCategories().then(setCategories);
+        categoryApi.getCategories().then((resp) => setCategories(resp.data));
     }, []);
 
     useEffect(() => {
@@ -66,16 +74,21 @@ const Products: React.FC = () => {
     }, [loadBooks]);
 
     const toggleCategory = (id: string) => {
-        setCategoryIds((prev) => (prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]));
+        setCategoryIds((prev) => (prev.includes(id) ? [] : [id]));
     };
 
     const clearFilters = () => {
         setCategoryIds([]);
-        setMinPrice("");
-        setMaxPrice("");
+        setSearchDraft("");
+        setAppliedSearch("");
     };
 
-    const hasActiveFilters = categoryIds.length > 0 || minPrice.trim() !== "" || maxPrice.trim() !== "";
+    const hasActiveFilters = categoryIds.length > 0 || appliedSearch.length > 0;
+
+    const submitSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        setAppliedSearch(searchDraft.trim());
+    };
 
     const getPageNumbers = (): (number | "ellipsis")[] => {
         const { totalPages, page: current } = pagination;
@@ -96,10 +109,6 @@ const Products: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <header className={styles.header}>
-                {/*Nơi cần chèn thông tin nào nó trên header của body danh sách sản phẩm*/}
-            </header>
-
             <div className={styles.layout}>
                 <aside
                     className={`${styles.sidebar} ${showFilters ? styles.sidebarOpen : ""}`}
@@ -120,43 +129,26 @@ const Products: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className={styles.filterBlock} aria-disabled="true">
-                        <h3 className={styles.filterLabel}>Thể loại</h3>
-                        <p className={styles.filterNote}>Sẽ bổ sung sau</p>
-                        <div className={styles.categoryList}>
-                            {categories.map((c) => (
-                                <label key={c.id} className={styles.checkboxRow}>
-                                    <input
-                                        type="checkbox"
-                                        checked={categoryIds.includes(c.id)}
-                                        onChange={() => toggleCategory(c.id)}
-                                        disabled
-                                        aria-disabled="true"
-                                    />
-                                    <span>{c.name}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-
                     <div className={styles.filterBlock}>
-                        <h3 className={styles.filterLabel}>Khoảng giá (₫)</h3>
-                        <div className={styles.priceRow}>
-                            <input
-                                type="text"
-                                placeholder="Từ"
-                                className={styles.input}
-                                value={minPrice}
-                                onChange={(e) => setMinPrice(e.target.value)}
-                            />
-                            <span className={styles.priceSep}>–</span>
-                            <input
-                                type="text"
-                                placeholder="Đến"
-                                className={styles.input}
-                                value={maxPrice}
-                                onChange={(e) => setMaxPrice(e.target.value)}
-                            />
+                        <h3 className={styles.filterLabel}>Thể loại</h3>
+                        <div className={styles.categoryList}>
+                            {categories.length > 0 ? (
+                                categories.map((c) => (
+                                    <label key={c.id} className={styles.checkboxRow}>
+                                        <input
+                                            type="checkbox"
+                                            checked={categoryIds.includes(c.id)}
+                                            onChange={() => toggleCategory(c.id)}
+                                        />
+                                        <span>{c.name}</span>
+                                    </label>
+                              
+                                ))
+                            ) : (
+                                <div className={styles.empty}>Không có thể loại nào</div>
+                            )}
+                      
+             
                         </div>
                     </div>
 
@@ -180,29 +172,60 @@ const Products: React.FC = () => {
                 </aside>
 
                 <main className={styles.main}>
-                    {loading ? (
+                    {initialBooksLoad ? (
                         <div className={styles.loading}>Đang tải...</div>
-                    ) : !Array.isArray(books) || books.length === 0 ? (
-                        <div className={styles.empty}>
-                            <div className={styles.emptyIcon} aria-hidden>
-                                <FiInbox size={24} />
-                            </div>
-                            <h2 className={styles.emptyTitle}>Không tìm thấy sản phẩm</h2>
-                            <p className={styles.emptyHint}>
-                                Hãy thử thay đổi khoảng giá, danh mục hoặc xóa các bộ lọc đang áp dụng.
-                            </p>
-                            {hasActiveFilters && (
-                                <button type="button" className={styles.btnClear} onClick={clearFilters}>
-                                    Xóa tất cả bộ lọc
-                                </button>
-                            )}
-                        </div>
                     ) : (
                         <>
-                            <div className={styles.grid}>
-                                {books.map((book) => (
-                                    <BookCard key={String(book.id)} book={book} />
-                                ))}
+                            <form className={styles.searchForm} onSubmit={submitSearch} role="search" aria-label="Tìm sách theo tên">
+                                <input
+                                    type="search"
+                                    name="bookSearch"
+                                    className={styles.searchInput}
+                                    placeholder="Tìm theo tên sách..."
+                                    value={searchDraft}
+                                    onChange={(e) => setSearchDraft(e.target.value)}
+                                    autoComplete="off"
+                                    enterKeyHint="search"
+                                />
+                                <button type="submit" className={styles.searchBtn} disabled={booksListLoading}>
+                                    <FiSearch size={18} aria-hidden />
+                                    Tìm
+                                </button>
+                            </form>
+
+                            <div className={styles.listRegion}>
+                                {booksListLoading && (
+                                    <div
+                                        className={styles.listLoadingOverlay}
+                                        role="status"
+                                        aria-live="polite"
+                                        aria-busy="true"
+                                    >
+                                        <span className={styles.listLoadingText}>Đang tải...</span>
+                                    </div>
+                                )}
+                                {!Array.isArray(books) || books.length === 0 ? (
+                                    <div className={styles.empty}>
+                                        <div className={styles.emptyIcon} aria-hidden>
+                                            <FiInbox size={24} />
+                                        </div>
+                                        <h2 className={styles.emptyTitle}>Không tìm thấy sản phẩm</h2>
+                                        <p className={styles.emptyHint}>
+                                            Hãy thử từ khóa khác, thể loại khác hoặc xóa bộ lọc đang áp dụng.
+                                        </p>
+                                        {hasActiveFilters && (
+                                            <button type="button" className={styles.btnClear} onClick={clearFilters}>
+                                                Xóa tất cả bộ lọc
+                                            </button>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className={styles.grid}>
+                                        {books.map((book) => (
+                                            <BookCard key={String(book.id)} book={book} />
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             {pagination.totalPages > 1 && (
@@ -210,7 +233,7 @@ const Products: React.FC = () => {
                                     <button
                                         type="button"
                                         className={styles.pageBtn}
-                                        disabled={pagination.page <= 1}
+                                        disabled={booksListLoading || pagination.page <= 1}
                                         onClick={() => loadBooks(pagination.page - 1)}
                                         aria-label="Trang trước"
                                     >
@@ -227,6 +250,7 @@ const Products: React.FC = () => {
                                                     key={item}
                                                     type="button"
                                                     className={pagination.page === item ? styles.pageNumActive : styles.pageNum}
+                                                    disabled={booksListLoading}
                                                     onClick={() => loadBooks(item)}
                                                     aria-label={`Trang ${item}`}
                                                     aria-current={pagination.page === item ? "page" : undefined}
@@ -239,7 +263,7 @@ const Products: React.FC = () => {
                                     <button
                                         type="button"
                                         className={styles.pageBtn}
-                                        disabled={pagination.page >= pagination.totalPages}
+                                        disabled={booksListLoading || pagination.page >= pagination.totalPages}
                                         onClick={() => loadBooks(pagination.page + 1)}
                                         aria-label="Trang sau"
                                     >
